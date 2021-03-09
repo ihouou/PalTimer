@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2048
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pal98Timer", "Pal98Timer\Pal98Timer.csproj", "{B8491493-B2EB-43BB-ACE1-4D0D5FCBFA35}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pal98TimerOBSPlugin", "Pal98TimerOBSPlugin\Pal98TimerOBSPlugin.csproj", "{9D504350-B1B8-4DF7-81A0-010828EFBDD1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B8491493-B2EB-43BB-ACE1-4D0D5FCBFA35}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8491493-B2EB-43BB-ACE1-4D0D5FCBFA35}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8491493-B2EB-43BB-ACE1-4D0D5FCBFA35}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8491493-B2EB-43BB-ACE1-4D0D5FCBFA35}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9D504350-B1B8-4DF7-81A0-010828EFBDD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D504350-B1B8-4DF7-81A0-010828EFBDD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D504350-B1B8-4DF7-81A0-010828EFBDD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D504350-B1B8-4DF7-81A0-010828EFBDD1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7DC127F3-5205-4510-8451-72965CD7054C}
+	EndGlobalSection
+EndGlobal
