@@ -94,7 +94,7 @@
     <Compile Include="ColorDialogEx.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="SdlPal98Dos.cs" />
+    <Compile Include="仙剑98官方Steam.cs" />
     <Compile Include="简版.cs" />
     <Compile Include="DataServer.cs" />
     <Compile Include="DebugForm.cs">

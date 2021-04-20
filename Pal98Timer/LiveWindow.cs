@@ -38,6 +38,8 @@ namespace Pal98Timer
         //private bool IsRTMPRunning = false;
         public string RTMPAddress = "";
 
+        public string TarWindowTitle = "仙剑奇侠传 WIN-95 版 [补丁版本：3.0.2014.628]";
+
         public LiveWindow()
         {
             InitializeComponent();
@@ -58,7 +60,7 @@ namespace Pal98Timer
                         Image gameimg = null;
                         if (GameCurrentWindow == IntPtr.Zero)
                         {
-                            GameCurrentWindow = User32.FindWindow(null, "仙剑奇侠传 WIN-95 版 [补丁版本：3.0.2014.628]");
+                            GameCurrentWindow = User32.FindWindow(null, TarWindowTitle);
                         }
                         if (GameCurrentWindow != IntPtr.Zero)
                         {

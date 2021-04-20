@@ -15,7 +15,7 @@ using System.Windows.Forms;
 namespace Pal98Timer
 {
 
-    public class SdlPal98Dos : TimerCore
+    public class 仙剑98官方Steam : TimerCore
     {
         public PCloud cloud;
         private bool IsAllRun = true;
@@ -25,6 +25,7 @@ namespace Pal98Timer
         public IntPtr GameWindowHandle = IntPtr.Zero;
         private int PID = -1;
         private Process PalProcess;
+        private long PALBaseAddr = -1;
         private int CheckInterval = 70;
         private bool _HasGameStart = false;
         private bool _IsFirstStarted = false;
@@ -59,14 +60,15 @@ namespace Pal98Timer
 
         private DataServer obsdataserver = null;
 
-        private Sdlpal98DosGameObject GameObj = new Sdlpal98DosGameObject();
+        private Pal98SteamGameObject GameObj = new Pal98SteamGameObject();
 
         private List<string> NamedBattleRes = new List<string>();
 
         private bool IsShowSpeed = false;
 
-        public SdlPal98Dos() : base()
+        public 仙剑98官方Steam() : base()
         {
+            BestFile = "Pal98Steam_best.txt";
             try
             {
                 cloud = new PCloud();
@@ -112,8 +114,8 @@ namespace Pal98Timer
             {
                 Check = delegate ()
                 {
-                    if (PositionCheck(new int[3] { 19, 1696, 384 }, new int[3] { 19, 1680, 376 })
-                        || PositionAroundCheck(19, 1696, 384))
+                    if (PositionCheck(new int[3] { 19, 1840, 504 }, new int[3] { 19, 1840, 496 })
+                        || PositionAroundCheck(19, 1840, 504))
                     {
                         return true;
                     }
@@ -136,7 +138,7 @@ namespace Pal98Timer
                 Check = delegate ()
                 {
                     //if (PositionCheck(new int[3] { 6, 1072, 1080 }, new int[3] { 6, 1088, 1088 }))
-                    if (PositionAroundCheck(6, 1072, 1080, 2))
+                    if (PositionAroundCheck(6, 1248, 1200, 2))
                     {
                         return true;
                     }
@@ -147,7 +149,7 @@ namespace Pal98Timer
             {
                 Check = delegate ()
                 {
-                    if (PositionAroundCheck(40, 1456, 872, 5))
+                    if (PositionAroundCheck(40, 1616, 984, 5))
                     {
                         return true;
                     }
@@ -158,7 +160,7 @@ namespace Pal98Timer
             {
                 Check = delegate ()
                 {
-                    if (PositionAroundCheck(49, 304, 1560, 5))
+                    if (PositionAroundCheck(49, 464, 1672, 5))
                     {
                         return true;
                     }
@@ -170,7 +172,7 @@ namespace Pal98Timer
                 Check = delegate ()
                 {
                     //if (PositionCheck(new int[3] { 62, 1152, 1264 }))
-                    if (PositionAroundCheck(62, 1152, 1264, 2))
+                    if (PositionAroundCheck(62, 1312, 1376, 2))
                     {
                         return true;
                     }
@@ -181,7 +183,7 @@ namespace Pal98Timer
             {
                 Check = delegate ()
                 {
-                    if (GameObj.BossID == 75 && GameObj.BattleTotalBlood <= 0)
+                    if (GameObj.BossID == 472 && GameObj.BattleTotalBlood <= 0)
                     {
                         return true;
                     }
@@ -192,7 +194,7 @@ namespace Pal98Timer
             {
                 Check = delegate ()
                 {
-                    if (GameObj.BossID == 76 && GameObj.BattleTotalBlood <= 0)
+                    if (GameObj.BossID == 473 && GameObj.BattleTotalBlood <= 0)
                     {
                         return true;
                     }
@@ -204,7 +206,7 @@ namespace Pal98Timer
                 Check = delegate ()
                 {
                     //if (PositionCheck(new int[3] { 83, 320, 1056 }))
-                    if (PositionAroundCheck(80, 256, 1344, 5))
+                    if (PositionAroundCheck(83, 472, 1172, 5))
                     {
                         return true;
                     }
@@ -216,7 +218,7 @@ namespace Pal98Timer
                 Check = delegate ()
                 {
                     //if (PositionCheck(new int[3] { 85, 1136, 536 }))
-                    if (PositionAroundCheck(106, 64, 960, 5))
+                    if (PositionAroundCheck(106, 224, 1072, 5))
                     {
                         return true;
                     }
@@ -228,7 +230,7 @@ namespace Pal98Timer
                 Check = delegate ()
                 {
                     //if (PositionCheck(new int[3] { 107, 1520, 408 }))
-                    if (PositionAroundCheck(107, 1520, 408, 5))
+                    if (PositionAroundCheck(107, 1680, 520, 5))
                     {
                         return true;
                     }
@@ -240,7 +242,7 @@ namespace Pal98Timer
                 Check = delegate ()
                 {
                     //if (PositionCheck(new int[3] { 101, 256, 224 }))
-                    if (PositionAroundCheck(101, 272, 216, 2))
+                    if (PositionAroundCheck(101, 416, 336, 2))
                     {
                         return true;
                     }
@@ -269,14 +271,14 @@ namespace Pal98Timer
                     return false;*/
                     if (!Data.GetValue<bool>("caiyi"))
                     {
-                        if (GameObj.BossID == 71)
+                        if (GameObj.BossID == 468)
                         {
                             Data["caiyi"] = true;
                         }
                     }
                     else
                     {
-                        if (GameObj.BossID != 71 || (GameObj.BossID == 71 && GameObj.BattleTotalBlood <= 0))
+                        if (GameObj.BossID != 468 || (GameObj.BossID == 468 && GameObj.BattleTotalBlood <= 0))
                         {
                             Data["caiyi"] = false;
                             return true;
@@ -294,7 +296,7 @@ namespace Pal98Timer
                     {
                         return true;
                     }*/
-                    if (PositionAroundCheck(164, 1024, 992, 4) || GameObj.Area == 165 || PositionAroundCheck(147, 1024, 448, 2))
+                    if (PositionAroundCheck(164, 1136, 1096, 4) || GameObj.Area == 165 || PositionAroundCheck(147, 1184, 560, 2))
                     {
                         return true;
                     }
@@ -306,7 +308,7 @@ namespace Pal98Timer
                 Check = delegate ()
                 {
                     //if (PositionCheck(new int[3] { 147, 1024, 448 }))
-                    if (PositionAroundCheck(146, 304, 1048, 3))
+                    if (PositionAroundCheck(145, 1184, 272, 3))
                     {
                         return true;
                     }
@@ -317,7 +319,7 @@ namespace Pal98Timer
             {
                 Check = delegate ()
                 {
-                    if (GameObj.BossID == 144 && GameObj.BattleTotalBlood <= 0)
+                    if (GameObj.BossID == 542 && GameObj.BattleTotalBlood <= 0)
                     {
                         return true;
                     }
@@ -328,7 +330,7 @@ namespace Pal98Timer
             {
                 Check = delegate ()
                 {
-                    if (GameObj.BossID == 67 && GameObj.BattleTotalBlood <= 0)
+                    if (GameObj.BossID == 464 && GameObj.BattleTotalBlood <= 0)
                     {
                         return true;
                     }
@@ -339,7 +341,7 @@ namespace Pal98Timer
             {
                 Check = delegate ()
                 {
-                    if (PositionAroundCheck(247, 1408, 1584, 5))
+                    if (PositionAroundCheck(247, 1568, 1696, 5))
                     {
                         return true;
                     }
@@ -361,7 +363,7 @@ namespace Pal98Timer
             {
                 Check = delegate ()
                 {
-                    if (PositionCheck(new int[3] { 228, 992, 928 }))
+                    if (PositionCheck(new int[3] { 228, 1152, 1040 }))
                     {
                         return true;
                     }
@@ -372,7 +374,7 @@ namespace Pal98Timer
             {
                 Check = delegate ()
                 {
-                    if (GameObj.BossID == 149 && GameObj.BattleTotalBlood <= 0)
+                    if (GameObj.BossID == 546 && GameObj.BattleTotalBlood <= 0)
                     {
                         return true;
                     }
@@ -564,7 +566,7 @@ namespace Pal98Timer
             btnExportCurrent.Text = "导出本次成绩";
             btnExportCurrent.Click += delegate (object sender, EventArgs e) {
                 DateTime now = DateTime.Now;
-                string filename = "SdlPal98Dos_" + now.ToString("yyyyMMddHHmmss");
+                string filename = "Pal98Steam_" + now.ToString("yyyyMMddHHmmss");
                 string ext = GetRStr();
 
                 try
@@ -589,15 +591,15 @@ namespace Pal98Timer
             btnSetCurrentToBest.Text = "设置本次成绩为最佳";
             btnSetCurrentToBest.Click += delegate (object sender, EventArgs e) {
                 DateTime now = DateTime.Now;
-                string filename = "SdlPal98Dos_" + now.ToString("yyyyMMddHHmmss");
+                string filename = "Pal98Steam_" + now.ToString("yyyyMMddHHmmss");
                 string ext = GetRStr();
                 try
                 {
-                    if (File.Exists("SdlPal98Dos_best.txt"))
+                    if (File.Exists("Pal98Steam_best.txt"))
                     {
-                        File.Move("SdlPal98Dos_best.txt", "SdlPal98Dos_best" + filename + ".txt");
+                        File.Move("Pal98Steam_best.txt", "Pal98Steam_best" + filename + ".txt");
                     }
-                    using (FileStream fileStream = new FileStream("SdlPal98Dos_best.txt", FileMode.Create))
+                    using (FileStream fileStream = new FileStream("Pal98Steam_best.txt", FileMode.Create))
                     {
                         using (StreamWriter streamWriter = new StreamWriter(fileStream, Encoding.Default))
                         {
@@ -658,6 +660,7 @@ namespace Pal98Timer
                 if (LiveView == null)
                 {
                     LiveView = new LiveWindow();
+                    LiveView.TarWindowTitle = "Pal Win95 [v2019-04-03-gf3d3391 + steam] ";
                     LiveView.FormClosed += delegate (object sender1, FormClosedEventArgs e1) {
                         this.LiveView = null;
                     };
@@ -940,12 +943,12 @@ namespace Pal98Timer
         private bool HasAlertMutiPal = false;
         private bool GetPalHandle()
         {
-            Process[] res = Process.GetProcessesByName("sdlpal");
+            Process[] res = Process.GetProcessesByName("PAL");
             if (res.Length > 1)
             {
                 if (!HasAlertMutiPal)
                 {
-                    cryerror = "检测到多个sdlpal.exe进程，请关闭其他的，只保留一个！";
+                    cryerror = "检测到多个PAL.exe进程，请关闭其他的，只保留一个！";
                     HasAlertMutiPal = true;
                 }
                 return false;
@@ -962,7 +965,7 @@ namespace Pal98Timer
                     GameWindowHandle = res[0].MainWindowHandle;
                     PID = PalProcess.Id;
                     PalHandle = new IntPtr(Kernel32.OpenProcess(0x1F0FFF, false, PID));
-
+                    PALBaseAddr = PalProcess.MainModule.BaseAddress.ToInt64();
                     CalcPalMD5();
 
                     return true;
@@ -984,6 +987,7 @@ namespace Pal98Timer
                         PalProcess = null;
                         PID = -1;
                         GMD5 = "none";
+                        PALBaseAddr = -1;
                         return false;
                     }
                 }
@@ -995,6 +999,7 @@ namespace Pal98Timer
                 PalProcess = null;
                 PID = -1;
                 GMD5 = "none";
+                PALBaseAddr = -1;
                 return false;
             }
         }
@@ -1003,9 +1008,9 @@ namespace Pal98Timer
         {
             try
             {
-                string dllmd5 = GetFileMD5(GetGameFilePath("SDL.dll"));
-                string datamd5 = GetFileMD5(GetGameFilePath("Pal\\DATA.MKF"));
-                string sssmd5 = GetFileMD5(GetGameFilePath("Pal\\SSS.MKF"));
+                string dllmd5 = GetFileMD5(GetGameFilePath("PAL.exe"));
+                string datamd5 = GetFileMD5(GetGameFilePath("Data.mkf"));
+                string sssmd5 = GetFileMD5(GetGameFilePath("Sss.mkf"));
                 GMD5 = dllmd5 + "_" + datamd5 + "_" + sssmd5;
             }
             catch
@@ -1039,7 +1044,7 @@ namespace Pal98Timer
                 {
                     string palpath = PalProcess.MainModule.FileName;
                     string[] spli = palpath.Split('\\');
-                    spli[spli.Length - 1] = "Pal\\1.RPG";
+                    spli[spli.Length - 1] = "SAVE\\1.RPG";
                     palpath = "";
                     foreach (string s in spli)
                     {
@@ -1092,9 +1097,9 @@ namespace Pal98Timer
         {
             short lastx = GameObj.X;
             short lasty = GameObj.Y;
-            short lastarea = GameObj.Area;
+            int lastarea = GameObj.Area;
 
-            GameObj.Flush(PalHandle, PID);
+            GameObj.Flush(PalHandle, PID, PALBaseAddr);
 
             try
             {
@@ -1130,14 +1135,14 @@ namespace Pal98Timer
             catch
             { }
         }
-        private Sdlpal98DosBattleItemWatch biw = new Sdlpal98DosBattleItemWatch();
+        private Pal98SteamBattleItemWatch biw = new Pal98SteamBattleItemWatch();
         private string CurrentNamedBattle = "";
         private string WillAppendNamedBattle = "";
         private void BattleBegin()
         {
             BattleLong = new TimeSpan(0);
             InBattleTime = DateTime.Now;
-            biw = new Sdlpal98DosBattleItemWatch();
+            biw = new Pal98SteamBattleItemWatch();
             if (CurrentStep <= 5)
             {
                 //战斗前记录下个数
@@ -1375,7 +1380,7 @@ namespace Pal98Timer
         }
         private void CheckCheatBegin()
         {
-            if (PositionCheck(new int[3] { 177, 1088, 608 }, new int[3] { 177, 1120, 608 }, new int[3] { 177, 1120, 592 }))
+            if (PositionCheck(new int[3] { 177, 1296, 728 }, new int[3] { 177, 1264, 728 }, new int[3] { 177, 1296, 712 }, new int[3] { 177, 1232, 728 }))
             {
                 IsInUnCheat = true;
             }
@@ -1534,7 +1539,7 @@ namespace Pal98Timer
             {
                 palpath = palpath.Substring(0, palpath.Length - 1);
             }
-            return palpath + "\\Pal\\";
+            return palpath;
         }
 
         private void SaveGameEx(FormEx f, ExEnd cb, string fn = "SRPG.bin")
@@ -1544,7 +1549,7 @@ namespace Pal98Timer
             FormEx.Run(delegate ()
             {
                 Dictionary<int, DateTime> RPGs = new Dictionary<int, DateTime>();
-                string palfolder = GetPalFolder();
+                string palfolder = GetPalFolder() + "SAVE\\";
                 for (int i = 1; i <= 5; ++i)
                 {
                     string p = palfolder + i + ".RPG";
@@ -1558,7 +1563,7 @@ namespace Pal98Timer
                 string ChangedFile = "";
                 while (IsListenSave && ChangedFile == "")
                 {
-                    for (int i = 0; i <= 5; ++i)
+                    for (int i = 1; i <= 5; ++i)
                     {
                         string p = palfolder + i + ".RPG";
                         if (File.Exists(p))
@@ -1595,9 +1600,9 @@ namespace Pal98Timer
                 }
 
                 SRPGobj so = new SRPGobj();
-                so.RPG = SaveObject.GetSaveBuffer(this.PalHandle);
+                //so.RPG = SaveObject.GetSaveBuffer(this.PalHandle);
                 so.TimerStr = GetRStr();
-                /*try
+                try
                 {
                     using (FileStream rfs = new FileStream(ChangedFile, FileMode.Open))
                     {
@@ -1609,7 +1614,7 @@ namespace Pal98Timer
                 catch (Exception ex)
                 {
                     cb(false, ex.Message);
-                }*/
+                }
 
                 string FilePath = fn;
                 try
@@ -1860,36 +1865,38 @@ namespace Pal98Timer
         }
     }
 
-    public class Sdlpal98DosGameObject
+    public class Pal98SteamGameObject
     {
-        public const int BaseAddrPTR = 0x0044129C;//
-        public const int MoneyOffset = 0x4468;//
-        public const int XOffset = 0x43EC;//?
-        public const int YOffset = 0x43EE;//?
-        public const int AreaOffset = 0x444A;//
-        public const int CurrentBGMPTR = 0x00448028;//
-        public const int AreaBGMOffset = 0x4454;//
-        public const int BattleEnemySlotOffsetPTR = 0x00454d8c;
-        public const int ItemSlotOffsetPTR = 0x472C;//
+        //public const long BaseAddrPTR = 0x00428000;
+        public const long MoneyOffset = 0x486044;//!
+        public const long XOffset = 0x486006;//!
+        public const long YOffset = 0x486008;//!
+        public const long AreaOffset = 0x486026;//!
+        public const long CurrentBGMOffset = 0x24A;
+        public const long AreaBGMOffset = 0x486030;
+        public const long BattleEnemySlotOffset = 0x4C6C38;//!
+        public const long ItemSlotOffset = 0x486308;//!
+        public const long BattleFlagOffset = 0x4C6BB8;//! 0为不在战斗 其他为在战斗
 
-        public short[] BossIDs = new short[] { 88, 149, 75, 76, 38, 144, 67, 66, 103, 71 };
-        //88:蛇男 149:拜月 75:骷髅将军 76:赤鬼王 38:大蜘蛛 144:火龙 67:凤凰 66:麒麟 103:蛇女灵儿 71:彩衣
+        public short[] BossIDs = new short[] { 486, 546, 472, 473, 498, 542, 464, 463, 502, 468 };
+        //486:蛇男 546:拜月 472:骷髅将军 473:赤鬼王 498:大蜘蛛 542:火龙 464:凤凰 463:麒麟 502:蛇女灵儿 468:彩衣
 
         public int Money = 0;
         public short X = 0;
         public short Y = 0;
-        public short Area = 0;
+        public int Area = 0;
         public short CurrentBGM = 0;//0x3胜利 0x1失败 0x4葫芦界面
         public short AreaBGM = 0;
+        public bool BattleFlag = false;
 
         private IntPtr handle;
         private int PID;
-        public int BaseAddr = 0x0;
-        public int BattleEnemySlotAddr = 0x0;
-        public int ItemSlotAddr = 0x0;
+        public long BaseAddr = 0x0;
+        public long BattleEnemySlotAddr = 0x0;
+        public long ItemSlotAddr = 0x0;
 
         public Dictionary<short, short> Items = new Dictionary<short, short>();
-        public List<Sdlpal98DosEnemyObject> Enemies = new List<Sdlpal98DosEnemyObject>();
+        public List<Pal98SteamEnemyObject> Enemies = new List<Pal98SteamEnemyObject>();
         public short BossID = -1;
         public short BattleTotalBlood = 0;
 
@@ -1921,7 +1928,7 @@ namespace Pal98Timer
             return tmp;
         }
 
-        public Sdlpal98DosGameObject()
+        public Pal98SteamGameObject()
         {
             this.InitNamedBattles();
         }
@@ -1933,7 +1940,7 @@ namespace Pal98Timer
                 Name = "苗胖",
                 Checker = delegate ()
                 {
-                    if (GetEnemyCount(87) == 1 && GetEnemyCount(97) == 2)
+                    if (GetEnemyCount(485) == 1 && GetEnemyCount(495) == 2)
                     {
                         return true;
                     }
@@ -1945,7 +1952,7 @@ namespace Pal98Timer
                 Name = "皮鞭月如",
                 Checker = delegate ()
                 {
-                    if (GetEnemyCount(82) == 1)
+                    if (GetEnemyCount(480) == 1)
                     {
                         return true;
                     }
@@ -1957,7 +1964,7 @@ namespace Pal98Timer
                 Name = "擂台",
                 Checker = delegate ()
                 {
-                    if (GetEnemyCount(85) == 1)
+                    if (GetEnemyCount(483) == 1)
                     {
                         return true;
                     }
@@ -1969,7 +1976,7 @@ namespace Pal98Timer
                 Name = "蛇男",
                 Checker = delegate ()
                 {
-                    if (GetEnemyCount(88) == 1)
+                    if (GetEnemyCount(486) == 1)
                     {
                         return true;
                     }
@@ -1981,7 +1988,7 @@ namespace Pal98Timer
                 Name = "狐狸",
                 Checker = delegate ()
                 {
-                    if (GetEnemyCount(72) == 1 && Enemies.Count == 1)
+                    if (GetEnemyCount(469) == 1 && Enemies.Count == 1)
                     {
                         return true;
                     }
@@ -1993,7 +2000,7 @@ namespace Pal98Timer
                 Name = "智障",
                 Checker = delegate ()
                 {
-                    if (GetEnemyCount(84) == 1 && GetEnemyCount(54) == 1 && GetEnemyCount(56) == 1)
+                    if (GetEnemyCount(482) == 1 && GetEnemyCount(451) == 1 && GetEnemyCount(453) == 1)
                     {
                         return true;
                     }
@@ -2005,7 +2012,7 @@ namespace Pal98Timer
                 Name = "老和尚",
                 Checker = delegate ()
                 {
-                    if (GetEnemyCount(126) == 1)
+                    if (GetEnemyCount(524) == 1)
                     {
                         return true;
                     }
@@ -2017,7 +2024,7 @@ namespace Pal98Timer
                 Name = "鬼将军",
                 Checker = delegate ()
                 {
-                    if (GetEnemyCount(75) == 1)
+                    if (GetEnemyCount(472) == 1)
                     {
                         return true;
                     }
@@ -2029,7 +2036,7 @@ namespace Pal98Timer
                 Name = "赤鬼王",
                 Checker = delegate ()
                 {
-                    if (GetEnemyCount(76) == 1)
+                    if (GetEnemyCount(473) == 1)
                     {
                         return true;
                     }
@@ -2041,7 +2048,7 @@ namespace Pal98Timer
                 Name = "石长老1",
                 Checker = delegate ()
                 {
-                    if (GetEnemyCount(119) == 1 && GetEnemyCount(129) == 2)
+                    if (GetEnemyCount(496) == 1 && GetEnemyCount(527) == 2)
                     {
                         return true;
                     }
@@ -2053,7 +2060,7 @@ namespace Pal98Timer
                 Name = "金蟾鬼母",
                 Checker = delegate ()
                 {
-                    if (GetEnemyCount(101) == 1 && GetEnemyCount(68) == 1)
+                    if (GetEnemyCount(500) == 1 && GetEnemyCount(465) == 1)
                     {
                         return true;
                     }
@@ -2065,7 +2072,7 @@ namespace Pal98Timer
                 Name = "石长老2",
                 Checker = delegate ()
                 {
-                    if (GetEnemyCount(119) == 1 && Enemies.Count == 1)
+                    if (GetEnemyCount(496) == 1 && Enemies.Count == 1)
                     {
                         return true;
                     }
@@ -2077,7 +2084,7 @@ namespace Pal98Timer
                 Name = "林天南",
                 Checker = delegate ()
                 {
-                    if (GetEnemyCount(127) == 1)
+                    if (GetEnemyCount(525) == 1)
                     {
                         return true;
                     }
@@ -2089,7 +2096,7 @@ namespace Pal98Timer
                 Name = "嫂子",
                 Checker = delegate ()
                 {
-                    if (GetEnemyCount(71) == 1)
+                    if (GetEnemyCount(468) == 1)
                     {
                         return true;
                     }
@@ -2101,7 +2108,7 @@ namespace Pal98Timer
                 Name = "黑森林雷蜘蛛",
                 Checker = delegate ()
                 {
-                    if (GetEnemyCount(99) == 1 && Enemies.Count == 1 && Area == 140)
+                    if (GetEnemyCount(498) == 1 && Enemies.Count == 1 && Area == 140)
                     {
                         return true;
                     }
@@ -2113,7 +2120,7 @@ namespace Pal98Timer
                 Name = "天鬼皇",
                 Checker = delegate ()
                 {
-                    if (GetEnemyCount(131) == 1)
+                    if (GetEnemyCount(529) == 1)
                     {
                         return true;
                     }
@@ -2125,7 +2132,7 @@ namespace Pal98Timer
                 Name = "镇狱冥王",
                 Checker = delegate ()
                 {
-                    if (GetEnemyCount(121) == 1)
+                    if (GetEnemyCount(519) == 1)
                     {
                         return true;
                     }
@@ -2137,7 +2144,7 @@ namespace Pal98Timer
                 Name = "风龙",
                 Checker = delegate ()
                 {
-                    if (GetEnemyCount(146) == 1)
+                    if (GetEnemyCount(544) == 1)
                     {
                         return true;
                     }
@@ -2149,7 +2156,7 @@ namespace Pal98Timer
                 Name = "土龙",
                 Checker = delegate ()
                 {
-                    if (GetEnemyCount(143) == 1)
+                    if (GetEnemyCount(541) == 1)
                     {
                         return true;
                     }
@@ -2161,7 +2168,7 @@ namespace Pal98Timer
                 Name = "雷龙",
                 Checker = delegate ()
                 {
-                    if (GetEnemyCount(147) == 1)
+                    if (GetEnemyCount(545) == 1)
                     {
                         return true;
                     }
@@ -2173,7 +2180,7 @@ namespace Pal98Timer
                 Name = "毒龙",
                 Checker = delegate ()
                 {
-                    if (GetEnemyCount(141) == 1)
+                    if (GetEnemyCount(539) == 1)
                     {
                         return true;
                     }
@@ -2185,7 +2192,7 @@ namespace Pal98Timer
                 Name = "水龙",
                 Checker = delegate ()
                 {
-                    if (GetEnemyCount(145) == 1)
+                    if (GetEnemyCount(543) == 1)
                     {
                         return true;
                     }
@@ -2197,7 +2204,7 @@ namespace Pal98Timer
                 Name = "金龙",
                 Checker = delegate ()
                 {
-                    if (GetEnemyCount(142) == 1)
+                    if (GetEnemyCount(540) == 1)
                     {
                         return true;
                     }
@@ -2209,7 +2216,7 @@ namespace Pal98Timer
                 Name = "火龙",
                 Checker = delegate ()
                 {
-                    if (GetEnemyCount(144) == 1)
+                    if (GetEnemyCount(542) == 1)
                     {
                         return true;
                     }
@@ -2221,7 +2228,7 @@ namespace Pal98Timer
                 Name = "凤凰",
                 Checker = delegate ()
                 {
-                    if (GetEnemyCount(67) == 1)
+                    if (GetEnemyCount(464) == 1)
                     {
                         return true;
                     }
@@ -2233,7 +2240,7 @@ namespace Pal98Timer
                 Name = "麒麟",
                 Checker = delegate ()
                 {
-                    if (GetEnemyCount(66) == 1)
+                    if (GetEnemyCount(463) == 1)
                     {
                         return true;
                     }
@@ -2245,7 +2252,7 @@ namespace Pal98Timer
                 Name = "水魔兽",
                 Checker = delegate ()
                 {
-                    if (GetEnemyCount(150) == 1)
+                    if (GetEnemyCount(547) == 1)
                     {
                         return true;
                     }
@@ -2257,7 +2264,7 @@ namespace Pal98Timer
                 Name = "盖罗娇",
                 Checker = delegate ()
                 {
-                    if (GetEnemyCount(102) == 1 && GetEnemyCount(92) == 1)
+                    if (GetEnemyCount(490) == 1 && GetEnemyCount(501) == 1)
                     {
                         return true;
                     }
@@ -2269,7 +2276,7 @@ namespace Pal98Timer
                 Name = "殿前",
                 Checker = delegate ()
                 {
-                    if (GetEnemyCount(130) == 2)
+                    if (GetEnemyCount(528) == 2)
                     {
                         return true;
                     }
@@ -2281,7 +2288,7 @@ namespace Pal98Timer
                 Name = "树精",
                 Checker = delegate ()
                 {
-                    if (GetEnemyCount(65) == 1)
+                    if (GetEnemyCount(462) == 1)
                     {
                         return true;
                     }
@@ -2293,7 +2300,7 @@ namespace Pal98Timer
                 Name = "拜月",
                 Checker = delegate ()
                 {
-                    if (GetEnemyCount(149) == 1)
+                    if (GetEnemyCount(546) == 1)
                     {
                         return true;
                     }
@@ -2307,7 +2314,7 @@ namespace Pal98Timer
             short res = 0;
             if (this.Enemies != null)
             {
-                foreach (Sdlpal98DosEnemyObject eo in this.Enemies)
+                foreach (Pal98SteamEnemyObject eo in this.Enemies)
                 {
                     if (eo.ID == EID)
                     {
@@ -2330,22 +2337,26 @@ namespace Pal98Timer
             return "";
         }
 
-        public void Flush(IntPtr handle, int PID)
+        public void Flush(IntPtr handle, int PID,long PALBaseAddr)
         {
             if (PID != this.PID)
             {
                 this.PID = PID;
                 this.handle = handle;
             }
-            BaseAddr = Readm<int>(this.handle, BaseAddrPTR);
-            BattleEnemySlotAddr = BattleEnemySlotOffsetPTR;
-            ItemSlotAddr = BaseAddr + ItemSlotOffsetPTR;
+            //Process p = Process.GetProcessById(this.PID);
+            //BaseAddr = p.MainModule.BaseAddress.ToInt64();
+            BaseAddr = PALBaseAddr;
+            //BaseAddr = Readm<int>(this.handle, BaseAddrPTR);
+            BattleEnemySlotAddr = BaseAddr + BattleEnemySlotOffset;
+            ItemSlotAddr = BaseAddr + ItemSlotOffset;
             Money = Readm<int>(this.handle, BaseAddr + MoneyOffset);
             X = Readm<short>(this.handle, BaseAddr + XOffset);
             Y = Readm<short>(this.handle, BaseAddr + YOffset);
-            Area = Readm<short>(this.handle, BaseAddr + AreaOffset);
-            CurrentBGM = Readm<short>(this.handle, CurrentBGMPTR);
+            Area = Readm<int>(this.handle, BaseAddr + AreaOffset);
+            CurrentBGM = Readm<short>(this.handle, BaseAddr+ CurrentBGMOffset);
             AreaBGM = Readm<short>(this.handle, BaseAddr + AreaBGMOffset);
+            BattleFlag = (Readm<int>(this.handle, BaseAddr + BattleFlagOffset) != 0);
 
             FlushItems();
             FlushBattleEnemies();
@@ -2354,7 +2365,7 @@ namespace Pal98Timer
         private void FlushItems()
         {
             Dictionary<short, short> tmp = new Dictionary<short, short>();
-            int currentaddr = ItemSlotAddr;
+            long currentaddr = ItemSlotAddr;
             for (int i = 0; i < 251; ++i, currentaddr += 0x6)
             {
                 short id = Readm<short>(this.handle, currentaddr);
@@ -2380,25 +2391,28 @@ namespace Pal98Timer
         {
             BossID = -1;
             BattleTotalBlood = 0;
-            List<Sdlpal98DosEnemyObject> tmp = new List<Sdlpal98DosEnemyObject>();
-            int currentaddr = BattleEnemySlotAddr;
-            for (int i = 0; i < 5; ++i, currentaddr += Sdlpal98DosEnemyObject.Length)
+            List<Pal98SteamEnemyObject> tmp = new List<Pal98SteamEnemyObject>();
+            if (this.BattleFlag)
             {
-                if (Readm<short>(handle, currentaddr) <= 0)
+                long currentaddr = BattleEnemySlotAddr;
+                for (int i = 0; i < 5; ++i, currentaddr += Pal98SteamEnemyObject.Length)
                 {
-                    continue;
+                    if (Readm<short>(handle, currentaddr) <= 0)
+                    {
+                        continue;
+                    }
+                    Pal98SteamEnemyObject c = new Pal98SteamEnemyObject(handle, currentaddr);
+                    if (c.Blood > 0)
+                    {
+                        BattleTotalBlood += c.Blood;
+                    }
+                    //if (BossIDs.Contains<short>(c.ID))
+                    if (ArrayContains<short>(BossIDs, c.ID))
+                    {
+                        BossID = c.ID;
+                    }
+                    tmp.Add(c);
                 }
-                Sdlpal98DosEnemyObject c = new Sdlpal98DosEnemyObject(handle, currentaddr);
-                if (c.Blood > 0)
-                {
-                    BattleTotalBlood += c.Blood;
-                }
-                //if (BossIDs.Contains<short>(c.ID))
-                if (ArrayContains<short>(BossIDs, c.ID))
-                {
-                    BossID = c.ID;
-                }
-                tmp.Add(c);
             }
             Enemies = tmp;
         }
@@ -2427,7 +2441,7 @@ namespace Pal98Timer
             }
         }
 
-        public static T Readm<T>(IntPtr handle, int addr)
+        public static T Readm<T>(IntPtr handle, long addr)
         {
             T res = default(T);
             Type t = typeof(T);
@@ -2468,9 +2482,9 @@ namespace Pal98Timer
         }
     }
 
-    public class Sdlpal98DosEnemyObject
+    public class Pal98SteamEnemyObject
     {
-        public const int Length = 0xCC;
+        public const int Length = 0xC8;
 
         private const int IDOffset = 0x0;
         private const int BloodOffset = 0x18;
@@ -2478,21 +2492,21 @@ namespace Pal98Timer
         public short ID;
         public short Blood;
 
-        public Sdlpal98DosEnemyObject(IntPtr handle, int HeadAddr)
+        public Pal98SteamEnemyObject(IntPtr handle, long HeadAddr)
         {
-            ID = GameObject.Readm<short>(handle, HeadAddr + IDOffset);
-            ID -= 398;
-            Blood = GameObject.Readm<short>(handle, HeadAddr + BloodOffset);
+            ID = Pal98SteamGameObject.Readm<short>(handle, HeadAddr + IDOffset);
+            //ID -= 398;
+            Blood = Pal98SteamGameObject.Readm<short>(handle, HeadAddr + BloodOffset);
         }
     }
 
-    public class Sdlpal98DosBattleItemWatch
+    public class Pal98SteamBattleItemWatch
     {
         private List<short> ids = new List<short>();
         private Dictionary<short, short> BattleGetItemWatch = new Dictionary<short, short>();
         private Dictionary<short, short> BattleUseItemWatch = new Dictionary<short, short>();
         private Dictionary<short, short> BattleLastItemCount = new Dictionary<short, short>();
-        public Sdlpal98DosBattleItemWatch()
+        public Pal98SteamBattleItemWatch()
         {
             ids = new List<short>();
             BattleGetItemWatch = new Dictionary<short, short>();
@@ -2519,7 +2533,7 @@ namespace Pal98Timer
                 BattleUseItemWatch[id] = (short)(BattleUseItemWatch[id] - cha);
             }
         }
-        public void SetCount(Sdlpal98DosGameObject GameObj)
+        public void SetCount(Pal98SteamGameObject GameObj)
         {
             foreach (short id in ids)
             {
