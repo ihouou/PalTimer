@@ -467,7 +467,7 @@ namespace Pal98Timer
             //return "蜂" + MaxFC + " 蜜" + MaxFM + " 火" + MaxHCG + " 血" + MaxXLL + " 夜" + MaxYXY + " 剑" + MaxLQJ;
             if (IsShowSpeed)
             {
-                return MoveSpeed.ToString("F2") + "   " + "蜂" + MaxFC + " 蜜" + MaxFM + " 火" + MaxHCG + " 血" + MaxXLL + " 夜" + MaxYXY + " 剑" + MaxLQJ;
+                return GameObj.MaxGameSpeed.ToString("F3") + "   " + "蜂" + MaxFC + " 蜜" + MaxFM + " 火" + MaxHCG + " 血" + MaxXLL + " 夜" + MaxYXY + " 剑" + MaxLQJ;
             }
             else
             {
@@ -520,7 +520,7 @@ namespace Pal98Timer
 
         public override void Reset()
         {
-            MoveSpeed = 0;
+            GameObj.ResetGameSpeed();
             HandPauseCount = 0;
             HasAlertMutiPal = false;
             HasUnCheated = false;
@@ -694,6 +694,11 @@ namespace Pal98Timer
             };
             btnGameSpeedShow.CheckedChanged += delegate (object sender, EventArgs e) {
                 IsShowSpeed = btnGameSpeedShow.Checked;
+                GameObj.CalcGameSpeed = IsShowSpeed;
+                if (!IsShowSpeed)
+                {
+                    GameObj.ResetGameSpeed();
+                }
             };
 
             btnCloud = form.NewMenuButton(9);
@@ -1090,50 +1095,10 @@ namespace Pal98Timer
                 IsPause = true;
             }
         }
-
-        private DateTime LastFlushTime = DateTime.Now;
-        private float MoveSpeed = 0;
+        
         private void FlushGameObject()
         {
-            short lastx = GameObj.X;
-            short lasty = GameObj.Y;
-            int lastarea = GameObj.Area;
-
             GameObj.Flush(PalHandle, PID, PALBaseAddr);
-
-            try
-            {
-                float speed = 0;
-                if (GameObj.Area == lastarea)
-                {
-                    DateTime now = DateTime.Now;
-                    if (now.Second % 5 == 0)
-                    {
-                        MoveSpeed = 0;
-                    }
-                    TimeSpan ts = now - LastFlushTime;
-                    LastFlushTime = now;
-                    short xslot = (short)(Math.Abs(GameObj.X - lastx) / 16);
-                    short yslot = (short)(Math.Abs(GameObj.Y - lasty) / 8);
-                    short scha = xslot;
-                    if (yslot > scha)
-                    {
-                        scha = yslot;
-                    }
-                    float muti = (float)(1000 / ts.TotalMilliseconds);
-                    speed = muti * scha;
-                }
-                else
-                {
-                    speed = 0;
-                }
-                if (speed > MoveSpeed)
-                {
-                    MoveSpeed = speed;
-                }
-            }
-            catch
-            { }
         }
         private Pal98SteamBattleItemWatch biw = new Pal98SteamBattleItemWatch();
         private string CurrentNamedBattle = "";
@@ -1877,9 +1842,10 @@ namespace Pal98Timer
         public const long BattleEnemySlotOffset = 0x4C6C38;//!
         public const long ItemSlotOffset = 0x486308;//!
         public const long BattleFlagOffset = 0x4C6BB8;//! 0为不在战斗 其他为在战斗
+        public const long GameTimerOffset = 0x48603E;
 
-        public short[] BossIDs = new short[] { 486, 546, 472, 473, 498, 542, 464, 463, 502, 468 };
-        //486:蛇男 546:拜月 472:骷髅将军 473:赤鬼王 498:大蜘蛛 542:火龙 464:凤凰 463:麒麟 502:蛇女灵儿 468:彩衣
+        public short[] BossIDs = new short[] { 486, 546, 472, 473, 435, 542, 464, 463, 502, 468 };
+        //486:蛇男 546:拜月 472:骷髅将军 473:赤鬼王 435:大蜘蛛 542:火龙 464:凤凰 463:麒麟 502:蛇女灵儿 468:彩衣
 
         public int Money = 0;
         public short X = 0;
@@ -1888,7 +1854,7 @@ namespace Pal98Timer
         public short CurrentBGM = 0;//0x3胜利 0x1失败 0x4葫芦界面
         public short AreaBGM = 0;
         public bool BattleFlag = false;
-
+        
         private IntPtr handle;
         private int PID;
         public long BaseAddr = 0x0;
@@ -1912,6 +1878,7 @@ namespace Pal98Timer
             tmp += "money:" + this.Money + "\r\n";
             tmp += "BGM:" + this.CurrentBGM + "\r\n";
             tmp += "AreaBGM:" + this.AreaBGM + "\r\n";
+            tmp += "MaxGameSpeed:" + this.MaxGameSpeed + "\r\n";
             tmp += "\r\n";
             tmp += "是否有破天锤:" + ((this.GetItemCount(0x117) > 0) ? "是" : "否") + "\r\n";
             tmp += "是否有香蕉:" + ((this.GetItemCount(0x123) > 0) ? "是" : "否") + "\r\n";
@@ -1931,6 +1898,7 @@ namespace Pal98Timer
         public Pal98SteamGameObject()
         {
             this.InitNamedBattles();
+            ssw.Start();
         }
 
         public void InitNamedBattles()
@@ -2351,15 +2319,65 @@ namespace Pal98Timer
             BattleEnemySlotAddr = BaseAddr + BattleEnemySlotOffset;
             ItemSlotAddr = BaseAddr + ItemSlotOffset;
             Money = Readm<int>(this.handle, BaseAddr + MoneyOffset);
-            X = Readm<short>(this.handle, BaseAddr + XOffset);
-            Y = Readm<short>(this.handle, BaseAddr + YOffset);
-            Area = Readm<int>(this.handle, BaseAddr + AreaOffset);
+
+            int area = Readm<int>(this.handle, BaseAddr + AreaOffset);
+            short x= Readm<short>(this.handle, BaseAddr + XOffset);
+            short y= Readm<short>(this.handle, BaseAddr + YOffset);
+            bool IsInMapMove = (Area == area && (x != X || y != Y));
+            X = x;
+            Y = y;
+            Area = area;
             CurrentBGM = Readm<short>(this.handle, BaseAddr+ CurrentBGMOffset);
             AreaBGM = Readm<short>(this.handle, BaseAddr + AreaBGMOffset);
             BattleFlag = (Readm<int>(this.handle, BaseAddr + BattleFlagOffset) != 0);
 
             FlushItems();
             FlushBattleEnemies();
+            try
+            {
+                FlushGameSpeed(IsInMapMove);
+            }
+            catch {
+            }
+        }
+
+        private Stopwatch ssw = new Stopwatch();
+        private ushort LastGameTimer = 0;
+        private long LastTimerTick = 0;
+        public double MaxGameSpeed = 0;
+        private long GameSpeedValCount = 0;
+        public bool CalcGameSpeed = false;
+        private void FlushGameSpeed(bool IsInMapMove)
+        {
+            if (!CalcGameSpeed) return;
+            if (!IsInMapMove) return;
+            //获取游戏流逝时间
+            ushort curtimer = Readm<ushort>(this.handle, BaseAddr + GameTimerOffset);
+            long nowtick = ssw.ElapsedTicks;
+            if (LastTimerTick > 0)
+            {
+                if (curtimer < LastGameTimer)
+                {
+                    double tickcha = (nowtick - LastTimerTick) / 10000;
+                    double timercha = (LastGameTimer - curtimer) * 100;
+                    double speed = timercha / tickcha;
+                    //if (speed > MaxGameSpeed) MaxGameSpeed = speed;
+                    //MaxGameSpeed = speed;
+                    MaxGameSpeed = (MaxGameSpeed * GameSpeedValCount + speed) / (GameSpeedValCount + 1);
+                    GameSpeedValCount++;
+                }
+            }
+            LastTimerTick = nowtick;
+            LastGameTimer = curtimer;
+        }
+        public void ResetGameSpeed() {
+            bool sw = CalcGameSpeed;
+            CalcGameSpeed = false;
+            LastGameTimer = 0;
+            LastTimerTick = 0;
+            GameSpeedValCount = 0;
+            MaxGameSpeed = 0;
+            CalcGameSpeed = sw;
         }
 
         private void FlushItems()
@@ -2454,6 +2472,11 @@ namespace Pal98Timer
                 if (t == typeof(short))
                 {
                     short tmp = BitConverter.ToInt16(buffer, 0);
+                    res = (T)Convert.ChangeType(tmp, t);
+                }
+                else if (t == typeof(ushort))
+                {
+                    ushort tmp = BitConverter.ToUInt16(buffer, 0);
                     res = (T)Convert.ChangeType(tmp, t);
                 }
                 else if (t == typeof(int))
