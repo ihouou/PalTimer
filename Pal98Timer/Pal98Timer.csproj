@@ -95,6 +95,8 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="仙剑98官方Steam.cs" />
+    <Compile Include="仙剑二官方Steam.cs" />
+    <Compile Include="梦幻22.cs" />
     <Compile Include="简版.cs" />
     <Compile Include="DataServer.cs" />
     <Compile Include="DebugForm.cs">

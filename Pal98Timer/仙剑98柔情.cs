@@ -2418,6 +2418,7 @@ namespace Pal98Timer
                 if (id <= 0) continue;
 
                 short count = Readm<short>(this.handle, currentaddr + 0x2);
+                if (count <= 0) continue;
 
                 if (tmp.ContainsKey(id))
                 {

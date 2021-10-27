@@ -14,7 +14,7 @@ namespace Pal98Timer
 {
     public partial class NewForm : NoneBoardFormEx
     {
-        public const string CurrentVersion = "1.33";
+        public const string CurrentVersion = "BETA";
         private TimerCore core;
         private KeyboardLib _keyboardHook = null;
         private bool IsKeyInEdit = false;
