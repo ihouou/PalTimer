@@ -90,6 +90,10 @@ namespace Pal98Timer
                 return res;
             }
         }
+        public override bool IsShowC()
+        {
+            return false;
+        }
 
         public override string GetCriticalError()
         {
@@ -992,7 +996,7 @@ namespace Pal98Timer
             {
                 BattleObj bo = new BattleObj();
                 bo.ID = Readm<int>(this.handle, BaseAddr, BOSlotsIDOffset[i]);
-                if (bo.ID > 2300 && bo.ID < 2334)
+                if (bo.ID > 2300 && bo.ID < 2340)
                 {
                     bo.Status = Readm<ushort>(this.handle, BaseAddr, BOSlotsStatusOffset[i]);
                     all.Add(bo);

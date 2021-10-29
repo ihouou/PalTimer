@@ -17,6 +17,15 @@ namespace Pal98Timer
 
     public class 仙剑98柔情 : TimerCore
     {
+        public override bool IsShowC()
+        {
+            Process[] res = Process.GetProcessesByName("Pal98Robot");
+            if (res.Length > 0)
+            {
+                return true;
+            }
+            return false;
+        }
         public PCloud cloud;
         private bool IsAllRun = true;
         private string GMD5 = "none";

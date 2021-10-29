@@ -265,6 +265,7 @@ namespace Pal98Timer
         public abstract void SetTS(TimeSpan ts);
         public abstract void OnFunctionKey(int FunNo, NewForm form);
         public abstract string GetAAction();
+        public abstract bool IsShowC();
 
         protected List<Control> CustomUIC = new List<Control>();
         protected List<ToolStripMenuItem> CustomUIT = new List<ToolStripMenuItem>();

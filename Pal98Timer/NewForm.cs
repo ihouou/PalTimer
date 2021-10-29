@@ -509,6 +509,8 @@ namespace Pal98Timer
         {
             if (core != null)
             {
+                bool isc = core.IsShowC();
+                if (isc != lblB.Visible) lblB.Visible = isc;
                 string cryerr = core.GetCriticalError();
                 if (cryerr != "")
                 {
@@ -556,6 +558,10 @@ namespace Pal98Timer
                         pnPS.VerticalScroll.Value = h;
                     }
                 }
+            }
+            else
+            {
+                if (lblB.Visible) lblB.Visible = false;
             }
         }
 

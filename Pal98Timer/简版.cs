@@ -47,6 +47,10 @@ namespace Pal98Timer
         public override void InitCheckPoints()
         {
         }
+        public override bool IsShowC()
+        {
+            return false;
+        }
 
         public override void OnFunctionKey(int FunNo, NewForm form)
         {

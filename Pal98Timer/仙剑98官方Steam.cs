@@ -947,6 +947,10 @@ namespace Pal98Timer
             SI.ins.ColorEgg = MConfig.ins.ColorEgg;
         }
         private bool HasAlertMutiPal = false;
+        public override bool IsShowC()
+        {
+            return false;
+        }
         private bool GetPalHandle()
         {
             Process[] res = Process.GetProcessesByName("PAL");

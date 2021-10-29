@@ -80,7 +80,10 @@ namespace Pal98Timer
             catch
             { }
         }
-
+        public override bool IsShowC()
+        {
+            return false;
+        }
         public override void InitCheckPoints()
         {
             LoadBest();

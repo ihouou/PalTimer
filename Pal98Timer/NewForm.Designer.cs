@@ -63,6 +63,7 @@
             this.lblMore = new System.Windows.Forms.Label();
             this.pnTimers = new System.Windows.Forms.Panel();
             this.pnMT = new System.Windows.Forms.Panel();
+            this.lblB = new System.Windows.Forms.Label();
             this.lblMTFront = new System.Windows.Forms.Label();
             this.lblMTBack = new System.Windows.Forms.Label();
             this.lblT2 = new System.Windows.Forms.Label();
@@ -195,28 +196,28 @@
             // btnBGOPG25
             // 
             this.btnBGOPG25.Name = "btnBGOPG25";
-            this.btnBGOPG25.Size = new System.Drawing.Size(180, 22);
+            this.btnBGOPG25.Size = new System.Drawing.Size(112, 22);
             this.btnBGOPG25.Text = "25%";
             this.btnBGOPG25.Click += new System.EventHandler(this.btnBGOPG25_Click);
             // 
             // btnBGOPG50
             // 
             this.btnBGOPG50.Name = "btnBGOPG50";
-            this.btnBGOPG50.Size = new System.Drawing.Size(180, 22);
+            this.btnBGOPG50.Size = new System.Drawing.Size(112, 22);
             this.btnBGOPG50.Text = "50%";
             this.btnBGOPG50.Click += new System.EventHandler(this.btnBGOPG50_Click);
             // 
             // btnBGOPG75
             // 
             this.btnBGOPG75.Name = "btnBGOPG75";
-            this.btnBGOPG75.Size = new System.Drawing.Size(180, 22);
+            this.btnBGOPG75.Size = new System.Drawing.Size(112, 22);
             this.btnBGOPG75.Text = "75%";
             this.btnBGOPG75.Click += new System.EventHandler(this.btnBGOPG75_Click);
             // 
             // btnBGOPG100
             // 
             this.btnBGOPG100.Name = "btnBGOPG100";
-            this.btnBGOPG100.Size = new System.Drawing.Size(180, 22);
+            this.btnBGOPG100.Size = new System.Drawing.Size(112, 22);
             this.btnBGOPG100.Text = "不透明";
             this.btnBGOPG100.Click += new System.EventHandler(this.btnBGOPG100_Click);
             // 
@@ -433,12 +434,26 @@
             this.pnMT.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnMT.Controls.Add(this.lblB);
             this.pnMT.Controls.Add(this.lblMTFront);
             this.pnMT.Controls.Add(this.lblMTBack);
             this.pnMT.Location = new System.Drawing.Point(1, 16);
             this.pnMT.Name = "pnMT";
             this.pnMT.Size = new System.Drawing.Size(268, 33);
             this.pnMT.TabIndex = 3;
+            // 
+            // lblB
+            // 
+            this.lblB.BackColor = System.Drawing.Color.Red;
+            this.lblB.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblB.Dock = System.Windows.Forms.DockStyle.Left;
+            this.lblB.Location = new System.Drawing.Point(0, 0);
+            this.lblB.Name = "lblB";
+            this.lblB.Size = new System.Drawing.Size(21, 33);
+            this.lblB.TabIndex = 3;
+            this.lblB.Text = "C";
+            this.lblB.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblB.Visible = false;
             // 
             // lblMTFront
             // 
@@ -607,5 +622,6 @@
         private System.Windows.Forms.Panel pnMT;
         private System.Windows.Forms.ToolStripMenuItem btnAutoLuck;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.Label lblB;
     }
 }

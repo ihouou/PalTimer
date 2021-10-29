@@ -859,6 +859,11 @@ namespace Pal98Timer
         {
             IsAllRun = false;
         }
+
+        public override bool IsShowC()
+        {
+            return false;
+        }
     }
     public class Pal3Object
     {
