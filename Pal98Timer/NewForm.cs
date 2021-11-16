@@ -14,7 +14,7 @@ namespace Pal98Timer
 {
     public partial class NewForm : NoneBoardFormEx
     {
-        public const string CurrentVersion = "BETA";
+        public const string CurrentVersion = "2.33";
         private TimerCore core;
         private KeyboardLib _keyboardHook = null;
         private bool IsKeyInEdit = false;
@@ -342,6 +342,7 @@ namespace Pal98Timer
         }
 
         public bool OnCtrlDown = false;
+        public bool OnCtrlDown2 = false;
         private void ApplyKeyChange()
         {
             try
@@ -375,7 +376,21 @@ namespace Pal98Timer
                         int flag = 0;
                         if (hookStruct.flags >= 128) flag = 2;
                         int v = kc.KeyMap[hookStruct.vkCode];
+                        handle = true;
                         KeyboardLib.keybd_event(v, KeyboardLib.MapVirtualKey((uint)v, 0), flag, 0);
+                    }
+                    else
+                    {
+                        if (((Keys)(hookStruct.vkCode)) == Keys.Enter && (OnCtrlDown || OnCtrlDown2) && this.core!=null && this.core.NeedBlockCtrlEnter())
+                        {
+                            handle = true;
+                        }
+                    }
+                }
+                else
+                {
+                    if (((Keys)(hookStruct.vkCode)) == Keys.Enter && (OnCtrlDown || OnCtrlDown2) && this.core != null && this.core.NeedBlockCtrlEnter())
+                    {
                         handle = true;
                     }
                 }
@@ -389,6 +404,16 @@ namespace Pal98Timer
                 /*case Keys.F12:
                     df.Visible = true;
                     break;*/
+                case Keys.RControlKey:
+                    if (hookStruct.flags >= 128)
+                    {
+                        OnCtrlDown2 = false;
+                    }
+                    else
+                    {
+                        OnCtrlDown2 = true;
+                    }
+                    break;
                 case Keys.LControlKey:
                     if (hookStruct.flags >= 128)
                     {

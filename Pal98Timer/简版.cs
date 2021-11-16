@@ -9,6 +9,10 @@ namespace Pal98Timer
     public class 简版 : TimerCore
     {
         private PTimer MT = new PTimer();
+        public override bool NeedBlockCtrlEnter()
+        {
+            return false;
+        }
         public override string GetAAction()
         {
             return "";

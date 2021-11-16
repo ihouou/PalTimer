@@ -84,6 +84,10 @@ namespace Pal98Timer
         {
             return false;
         }
+        public override bool NeedBlockCtrlEnter()
+        {
+            return false;
+        }
         public override void InitCheckPoints()
         {
             LoadBest();

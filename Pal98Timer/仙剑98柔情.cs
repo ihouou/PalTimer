@@ -59,6 +59,8 @@ namespace Pal98Timer
         private short MaxXLL = 0;
         private short MaxLQJ = 0;
         private short MaxYXY = 0;
+        private short MaxTLF = 0;
+        private short MaxQTJ = 0;
         private bool IsInBattle = false;
 
         private bool IsDoMoreEndBattle = true;
@@ -469,16 +471,22 @@ namespace Pal98Timer
             return false;
         }
 
+        public override bool NeedBlockCtrlEnter()
+        {
+            return false;
+        }
         public override string GetMoreInfo()
         {
+            //MaxTLF = 9;
+            //MaxQTJ = 9;
             //return "蜂" + MaxFC + " 蜜" + MaxFM + " 火" + MaxHCG + " 血" + MaxXLL + " 夜" + MaxYXY + " 剑" + MaxLQJ;
             if (IsShowSpeed)
             {
-                return MoveSpeed.ToString("F2") + "   " + "蜂" + MaxFC + " 蜜" + MaxFM + " 火" + MaxHCG + " 血" + MaxXLL + " 夜" + MaxYXY + " 剑" + MaxLQJ;
+                return MoveSpeed.ToString("F2") + "   " + "蜂" + MaxFC + " 蜜" + MaxFM + " 火" + MaxHCG + " 血" + MaxXLL + " 夜" + MaxYXY + " 剑" + MaxLQJ + ((MaxTLF > 0) ? (" 土" + MaxTLF) : "") + ((MaxQTJ > 0) ? (" 甲" + MaxQTJ) : "");
             }
             else
             {
-                return "蜂" + MaxFC + " 蜜" + MaxFM + " 火" + MaxHCG + " 血" + MaxXLL + " 夜" + MaxYXY + " 剑" + MaxLQJ;
+                return "蜂" + MaxFC + " 蜜" + MaxFM + " 火" + MaxHCG + " 血" + MaxXLL + " 夜" + MaxYXY + " 剑" + MaxLQJ + ((MaxTLF > 0) ? (" 土" + MaxTLF) : "") + ((MaxQTJ > 0) ? (" 甲" + MaxQTJ) : "");
             }
         }
 
@@ -540,6 +548,8 @@ namespace Pal98Timer
             MaxLQJ = 0;
             MaxXLL = 0;
             MaxYXY = 0;
+            MaxQTJ = 0;
+            MaxTLF = 0;
             BattleLong = new TimeSpan(0);
             InitCheckPoints();
             MT.Reset();
@@ -1157,6 +1167,9 @@ namespace Pal98Timer
             biw.Insert(0xB8, GameObj.GetItemCount(0xB8));//龙泉剑
             biw.Insert(0xA2, GameObj.GetItemCount(0xA2));//血玲珑
             biw.Insert(0xD4, GameObj.GetItemCount(0xD4));//夜行衣
+
+            biw.Insert(0x47, GameObj.GetItemCount(0x47));//土灵符
+            biw.Insert(0xD5, GameObj.GetItemCount(0xD5));//青铜甲
             CurrentNamedBattle = GameObj.GetNamedBattle();
         }
         private void Battling()
@@ -1200,6 +1213,9 @@ namespace Pal98Timer
             MaxLQJ += biw.GettedCount(0xB8);
             MaxXLL += biw.GettedCount(0xA2);
             MaxYXY += biw.GettedCount(0xD4);
+
+            MaxTLF += biw.GettedCount(0x47);
+            MaxQTJ += biw.GettedCount(0xD5);
         }
         private bool HasStartGame()
         {
@@ -1356,6 +1372,8 @@ namespace Pal98Timer
             exdata["DragonSword"] = MaxLQJ;
             exdata["BloodLink"] = MaxXLL;
             exdata["NightCloth"] = MaxYXY;
+            exdata["EarthPaper"] = MaxTLF;
+            exdata["CuArmor"] = MaxQTJ;
             exdata["OSTime"] = DateTime.Now.Ticks.ToString();
             exdata["GMD5"] = GMD5;
             HObj cps = new HObj();
@@ -1713,6 +1731,8 @@ namespace Pal98Timer
                 MaxLQJ = ho.GetValue<short>("DragonSword");
                 MaxXLL = ho.GetValue<short>("BloodLink");
                 MaxYXY = ho.GetValue<short>("NightCloth");
+                MaxTLF = ho.GetValue<short>("EarthPaper");
+                MaxQTJ = ho.GetValue<short>("CuArmor");
                 MT.SetTS(ConvertTimeSpan(ho.GetValue<string>("Current")));
                 ST.SetTS(ConvertTimeSpan(ho.GetValue<string>("Idle")));
                 HObj cps = ho.GetValue<HObj>("CheckPoints");

@@ -156,7 +156,7 @@ namespace Pal98Timer
             _CurrentStep = -1;
             Data = new HObj();
             CheckPoints = new List<CheckPoint>();
-            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("协查", new TimeSpan(0, 9, 35)))
+            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("协查", new TimeSpan(0, 6, 59)))
             {
                 Check = delegate ()
                 {
@@ -168,7 +168,7 @@ namespace Pal98Timer
                     return false;
                 }
             });
-            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("石版四", new TimeSpan(0, 9, 35)))
+            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("石版四", new TimeSpan(0, 19, 20)))
             {
                 Check = delegate ()
                 {
@@ -180,7 +180,7 @@ namespace Pal98Timer
                     return false;
                 }
             });
-            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("沈齐", new TimeSpan(0, 9, 35)))
+            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("沈齐", new TimeSpan(0, 36, 02)))
             {
                 Check = delegate ()
                 {
@@ -192,7 +192,7 @@ namespace Pal98Timer
                     return false;
                 }
             });
-            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("杨枭", new TimeSpan(0, 9, 35)))
+            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("飏枭", new TimeSpan(0, 43, 51)))
             {
                 Check = delegate ()
                 {
@@ -204,7 +204,7 @@ namespace Pal98Timer
                     return false;
                 }
             });
-            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("江都王", new TimeSpan(0, 9, 35)))
+            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("江都王", new TimeSpan(0, 49, 09)))
             {
                 Check = delegate ()
                 {
@@ -216,7 +216,7 @@ namespace Pal98Timer
                     return false;
                 }
             });
-            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("虞蛇", new TimeSpan(0, 9, 35)))
+            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("虞蛇", new TimeSpan(0, 59, 06)))
             {
                 Check = delegate ()
                 {
@@ -228,7 +228,7 @@ namespace Pal98Timer
                     return false;
                 }
             });
-            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("武林人士", new TimeSpan(0, 9, 35)))
+            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("武林人士", new TimeSpan(1, 2, 16)))
             {
                 Check = delegate ()
                 {
@@ -239,7 +239,7 @@ namespace Pal98Timer
                     return false;
                 }
             });
-            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("蜈王", new TimeSpan(0, 9, 35)))
+            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("蜈王", new TimeSpan(1, 4, 20)))
             {
                 Check = delegate ()
                 {
@@ -251,7 +251,7 @@ namespace Pal98Timer
                     return false;
                 }
             });
-            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("鹿妖", new TimeSpan(0, 9, 35)))
+            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("鹿妖", new TimeSpan(1, 7, 30)))
             {
                 Check = delegate ()
                 {
@@ -263,7 +263,7 @@ namespace Pal98Timer
                     return false;
                 }
             });
-            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("石头人", new TimeSpan(0, 9, 35)))
+            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("石头人", new TimeSpan(1, 14, 48)))
             {
                 Check = delegate ()
                 {
@@ -275,7 +275,7 @@ namespace Pal98Timer
                     return false;
                 }
             });
-            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("天鬼兄妹", new TimeSpan(0, 9, 35)))
+            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("天鬼兄妹", new TimeSpan(1, 18, 24)))
             {
                 Check = delegate ()
                 {
@@ -287,7 +287,7 @@ namespace Pal98Timer
                     return false;
                 }
             });
-            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("秦儒", new TimeSpan(0, 9, 35)))
+            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("秦儒", new TimeSpan(1, 22, 17)))
             {
                 Check = delegate ()
                 {
@@ -299,7 +299,7 @@ namespace Pal98Timer
                     return false;
                 }
             });
-            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("火画妖", new TimeSpan(0, 9, 35)))
+            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("火画妖", new TimeSpan(1, 27, 45)))
             {
                 Check = delegate ()
                 {
@@ -311,7 +311,7 @@ namespace Pal98Timer
                     return false;
                 }
             });
-            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("四画妖", new TimeSpan(0, 9, 35)))
+            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("四画妖", new TimeSpan(1, 32, 00)))
             {
                 Check = delegate ()
                 {
@@ -323,7 +323,7 @@ namespace Pal98Timer
                     return false;
                 }
             });
-            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("大画妖", new TimeSpan(0, 9, 35)))
+            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("大画妖", new TimeSpan(1, 35, 24)))
             {
                 Check = delegate ()
                 {
@@ -335,7 +335,7 @@ namespace Pal98Timer
                     return false;
                 }
             });
-            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("孔磷", new TimeSpan(0, 9, 35)))
+            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("孔磷", new TimeSpan(1, 36, 37)))
             {
                 Check = delegate ()
                 {
@@ -347,7 +347,7 @@ namespace Pal98Timer
                     return false;
                 }
             });
-            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("山猪婆", new TimeSpan(0, 9, 35)))
+            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("山猪婆", new TimeSpan(1, 42, 22)))
             {
                 Check = delegate ()
                 {
@@ -359,7 +359,7 @@ namespace Pal98Timer
                     return false;
                 }
             });
-            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("猫妖", new TimeSpan(0, 9, 35)))
+            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("猫妖", new TimeSpan(1, 48, 36)))
             {
                 Check = delegate ()
                 {
@@ -371,7 +371,7 @@ namespace Pal98Timer
                     return false;
                 }
             });
-            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("喻南松", new TimeSpan(0, 9, 35)))
+            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("喻南松", new TimeSpan(1, 50, 04)))
             {
                 Check = delegate ()
                 {
@@ -383,7 +383,7 @@ namespace Pal98Timer
                     return false;
                 }
             });
-            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("千叶", new TimeSpan(5, 8, 29)))
+            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("千叶", new TimeSpan(2, 0, 38)))
             {
                 Check = delegate ()
                 {
@@ -396,8 +396,8 @@ namespace Pal98Timer
                 }
             });
 
-            WillClear = GetBest("千叶", new TimeSpan(5, 8, 29)).BestTS;
-            BestClear = GetBest("千叶", new TimeSpan(5, 8, 29)).BestTS;
+            WillClear = GetBest("千叶", new TimeSpan(2, 0, 38)).BestTS;
+            BestClear = GetBest("千叶", new TimeSpan(2, 0, 38)).BestTS;
         }
 
         private Button btnPause;
@@ -590,20 +590,59 @@ namespace Pal98Timer
                 IsPause = true;
                 return;
             }
+            IsPause = !this.IsGameWindowFocus();
+        }
+        private bool IsGameWindowFocus()
+        {
             IntPtr hWnd = User32.GetForegroundWindow();    //获取活动窗口句柄  
             int calcID = 0;    //进程ID  
             int calcTD = 0;    //线程ID  
             calcTD = User32.GetWindowThreadProcessId(hWnd, out calcID);
             if (calcID == PID)
             {
-                IsPause = false;
+                return true;
             }
             else
             {
-                IsPause = true;
+                return false;
             }
         }
-        private bool GetPalHandle()
+        private bool GetPalHandle() {
+            Process[] res = Process.GetProcessesByName("Pal2_x64");
+            if (res.Length > 1)
+            {
+                if (!HasAlertMutiPal)
+                {
+                    cryerror = "检测到多个Pal2_x64.exe进程，请关闭其他的，只保留一个！";
+                    HasAlertMutiPal = true;
+                }
+                return false;
+            }
+
+            HasAlertMutiPal = false;
+            if (res.Length > 0)
+            {
+                PalProcess = res[0];
+                GameWindowHandle = res[0].MainWindowHandle;
+                PID = PalProcess.Id;
+                PalHandle = new IntPtr(Kernel32.OpenProcess(0x1F0FFF, false, PID));
+                PALBaseAddr = PalProcess.MainModule.BaseAddress.ToInt64();
+                CalcPalMD5();
+
+                return true;
+            }
+            else
+            {
+                PalHandle = IntPtr.Zero;
+                GameWindowHandle = IntPtr.Zero;
+                PalProcess = null;
+                PID = -1;
+                GMD5 = "none";
+                PALBaseAddr = -1;
+                return false;
+            }
+        }
+        private bool GetPalHandle_old()
         {
             Process[] res = Process.GetProcessesByName("Pal2_x64");
             if (res.Length > 1)
@@ -829,6 +868,10 @@ namespace Pal98Timer
         {
             GameObj.Flush(PalHandle, PID, PALBaseAddr);
         }
+        public override bool NeedBlockCtrlEnter()
+        {
+            return this.IsGameWindowFocus();
+        }
     }
 
     public class Pal2SteamObject
@@ -903,8 +946,8 @@ namespace Pal98Timer
             if (PID != this.PID)
             {
                 this.PID = PID;
-                this.handle = handle;
             }
+            this.handle = handle;
 
             BaseAddr = PALBaseAddr;
             Money = Readm<int>(this.handle, BaseAddr + MoneyOffset);
@@ -936,6 +979,7 @@ namespace Pal98Timer
                 this.BattleName = "";
                 this.BattleID = EBattle.none;
             }
+            this.SetFastSpeakIfCan();
         }
         private void _flushOur() {
             List<BattleObj> tmp = new List<BattleObj>();
@@ -996,7 +1040,7 @@ namespace Pal98Timer
             {
                 BattleObj bo = new BattleObj();
                 bo.ID = Readm<int>(this.handle, BaseAddr, BOSlotsIDOffset[i]);
-                if (bo.ID > 2300 && bo.ID < 2340)
+                if (bo.ID > 2010 && bo.ID < 2346)
                 {
                     bo.Status = Readm<ushort>(this.handle, BaseAddr, BOSlotsStatusOffset[i]);
                     all.Add(bo);
@@ -1007,11 +1051,16 @@ namespace Pal98Timer
                 }
             }
             EnemyObjs = alive;
-            this._anabattle(all);
+            if (this.BattleID == EBattle.none || this.BattleID == EBattle.konglin)
+            {
+                if (alive.Count > 0 && all.Count > 0)
+                {
+                    this._anabattle(all);
+                }
+            }
         }
         private void _anabattle(List<BattleObj> all)
         {
-            //if (this.BattleID != EBattle.none) return;
             if (GetEnemyCount(all, 2301) == 1)
             {
                 this.BattleID = EBattle.xiecha;
@@ -1300,6 +1349,24 @@ namespace Pal98Timer
             return res;
         }
 
+        public void SetFastSpeakIfCan()
+        {
+            byte[] readbuf = new byte[3];
+            int sizeofRead;
+            try
+            {
+                if (Kernel32.ReadProcessMemory(handle, new IntPtr(BaseAddr + 0x99AEA), readbuf, 3, out sizeofRead))
+                {
+                    if (readbuf[0] == 0x8B && readbuf[1] == 0x45 && readbuf[2] == 0xA8)
+                    {
+                        byte[] writebuf = new byte[3] { 0x33, 0xC0, 0x90 };
+                        int sizeofWrite;
+                        Kernel32.WriteProcessMemory(handle, new IntPtr(BaseAddr + 0x99AEA), writebuf, 3, out sizeofWrite);
+                    }
+                }
+            }
+            catch { }
+        }
         public class BattleObj
         {
             public int ID;

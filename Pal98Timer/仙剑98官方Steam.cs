@@ -14,7 +14,6 @@ using System.Windows.Forms;
 
 namespace Pal98Timer
 {
-
     public class 仙剑98官方Steam : TimerCore
     {
         public PCloud cloud;
@@ -206,7 +205,7 @@ namespace Pal98Timer
                 Check = delegate ()
                 {
                     //if (PositionCheck(new int[3] { 83, 320, 1056 }))
-                    if (PositionAroundCheck(83, 472, 1172, 5))
+                    if (PositionAroundCheck(80, 416, 1456, 5))
                     {
                         return true;
                     }
@@ -1833,6 +1832,10 @@ namespace Pal98Timer
                 return tmp;
             }
         }
+        public override bool NeedBlockCtrlEnter()
+        {
+            return false;
+        }
     }
 
     public class Pal98SteamGameObject
@@ -2345,6 +2348,7 @@ namespace Pal98Timer
             }
             catch {
             }
+            this.SetFastSpeakIfCan();
         }
 
         private Stopwatch ssw = new Stopwatch();
@@ -2509,6 +2513,24 @@ namespace Pal98Timer
             }
 
             return res;
+        }
+
+        public void SetFastSpeakIfCan() {
+            byte[] readbuf = new byte[3];
+            int sizeofRead;
+            try
+            {
+                if (Kernel32.ReadProcessMemory(handle, new IntPtr(BaseAddr + 0x650FE), readbuf, 3, out sizeofRead))
+                {
+                    if (readbuf[0] == 0x41 && readbuf[1] == 0x0F && readbuf[2] == 0x45)
+                    {
+                        byte[] writebuf = new byte[3] { 0x90, 0x41, 0x8B };
+                        int sizeofWrite;
+                        Kernel32.WriteProcessMemory(handle, new IntPtr(BaseAddr + 0x650FE), writebuf, 3, out sizeofWrite);
+                    }
+                }
+            }
+            catch { }
         }
     }
 

@@ -266,6 +266,7 @@ namespace Pal98Timer
         public abstract void OnFunctionKey(int FunNo, NewForm form);
         public abstract string GetAAction();
         public abstract bool IsShowC();
+        public abstract bool NeedBlockCtrlEnter();
 
         protected List<Control> CustomUIC = new List<Control>();
         protected List<ToolStripMenuItem> CustomUIT = new List<ToolStripMenuItem>();
