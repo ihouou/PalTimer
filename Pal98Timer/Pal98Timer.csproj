@@ -94,6 +94,7 @@
     <Compile Include="ColorDialogEx.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="仙剑5前传.cs" />
     <Compile Include="仙剑98官方Steam.cs" />
     <Compile Include="仙剑二官方Steam.cs" />
     <Compile Include="梦幻22.cs" />

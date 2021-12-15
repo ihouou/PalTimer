@@ -518,9 +518,9 @@ namespace Pal98Timer
                     BtnPause_Click(null, null);
                     break;
                 case 12:
-                    DebugForm df = new DebugForm();
+                    /*DebugForm df = new DebugForm();
                     df.ShowData(GameObj);
-                    df.Show();
+                    df.Show();*/
                     break;
             }
         }

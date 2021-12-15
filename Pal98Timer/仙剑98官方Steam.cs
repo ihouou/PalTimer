@@ -1419,9 +1419,9 @@ namespace Pal98Timer
                     };
                     break;
                     case 12:
-                        DebugForm df = new DebugForm();
-                        df.ShowData(GameObj/*, BattleLong*/);
-                        df.Show();
+                        /*DebugForm df = new DebugForm();
+                        df.ShowData(GameObj);
+                        df.Show();*/
                         break;
             }
         }
