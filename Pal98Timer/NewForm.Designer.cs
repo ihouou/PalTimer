@@ -40,6 +40,7 @@
             this.btnSetBGImage = new System.Windows.Forms.ToolStripMenuItem();
             this.btnRemoveBGImage = new System.Windows.Forms.ToolStripMenuItem();
             this.btnBGOPG = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnBGOPG0 = new System.Windows.Forms.ToolStripMenuItem();
             this.btnBGOPG25 = new System.Windows.Forms.ToolStripMenuItem();
             this.btnBGOPG50 = new System.Windows.Forms.ToolStripMenuItem();
             this.btnBGOPG75 = new System.Windows.Forms.ToolStripMenuItem();
@@ -185,6 +186,7 @@
             // btnBGOPG
             // 
             this.btnBGOPG.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.btnBGOPG0,
             this.btnBGOPG25,
             this.btnBGOPG50,
             this.btnBGOPG75,
@@ -193,31 +195,38 @@
             this.btnBGOPG.Size = new System.Drawing.Size(148, 22);
             this.btnBGOPG.Text = "背景不透明度";
             // 
+            // btnBGOPG0
+            // 
+            this.btnBGOPG0.Name = "btnBGOPG0";
+            this.btnBGOPG0.Size = new System.Drawing.Size(180, 22);
+            this.btnBGOPG0.Text = "全透明";
+            this.btnBGOPG0.Click += new System.EventHandler(this.btnBGOPG0_Click);
+            // 
             // btnBGOPG25
             // 
             this.btnBGOPG25.Name = "btnBGOPG25";
-            this.btnBGOPG25.Size = new System.Drawing.Size(112, 22);
+            this.btnBGOPG25.Size = new System.Drawing.Size(180, 22);
             this.btnBGOPG25.Text = "25%";
             this.btnBGOPG25.Click += new System.EventHandler(this.btnBGOPG25_Click);
             // 
             // btnBGOPG50
             // 
             this.btnBGOPG50.Name = "btnBGOPG50";
-            this.btnBGOPG50.Size = new System.Drawing.Size(112, 22);
+            this.btnBGOPG50.Size = new System.Drawing.Size(180, 22);
             this.btnBGOPG50.Text = "50%";
             this.btnBGOPG50.Click += new System.EventHandler(this.btnBGOPG50_Click);
             // 
             // btnBGOPG75
             // 
             this.btnBGOPG75.Name = "btnBGOPG75";
-            this.btnBGOPG75.Size = new System.Drawing.Size(112, 22);
+            this.btnBGOPG75.Size = new System.Drawing.Size(180, 22);
             this.btnBGOPG75.Text = "75%";
             this.btnBGOPG75.Click += new System.EventHandler(this.btnBGOPG75_Click);
             // 
             // btnBGOPG100
             // 
             this.btnBGOPG100.Name = "btnBGOPG100";
-            this.btnBGOPG100.Size = new System.Drawing.Size(112, 22);
+            this.btnBGOPG100.Size = new System.Drawing.Size(180, 22);
             this.btnBGOPG100.Text = "不透明";
             this.btnBGOPG100.Click += new System.EventHandler(this.btnBGOPG100_Click);
             // 
@@ -623,5 +632,6 @@
         private System.Windows.Forms.ToolStripMenuItem btnAutoLuck;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.Label lblB;
+        private System.Windows.Forms.ToolStripMenuItem btnBGOPG0;
     }
 }

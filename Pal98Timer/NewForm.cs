@@ -76,6 +76,7 @@ namespace Pal98Timer
             BindFontChange(lblLuck, true, lblLuck);
             BindFontChange(lblColorEgg, true, lblColorEgg);
 
+            this.BackgroundImageLayout = ImageLayout.Stretch;
 
             if (File.Exists("size"))
             {
@@ -836,7 +837,7 @@ namespace Pal98Timer
         {
             OpenFileDialog ofd = new OpenFileDialog();
             ofd.Multiselect = false;
-            ofd.Filter = "图片文件(*.jpg,*.png,*.jpeg,*.gif)|*.jgp;*.png;*.jpeg;*.gif";
+            ofd.Filter = "图片文件(*.jpg,*.png,*.jpeg,*.gif,*.jiff,*.tif)|*.jgp;*.png;*.jpeg;*.gif;*.jiff;*.tif";
             if (ofd.ShowDialog(this) == DialogResult.OK)
             {
                 try
@@ -922,6 +923,12 @@ namespace Pal98Timer
         {
             btnAutoLuck.Checked = !btnAutoLuck.Checked;
             IsAutoLuck = btnAutoLuck.Checked;
+        }
+
+        private void btnBGOPG0_Click(object sender, EventArgs e)
+        {
+            ColorBoard.ins.OPQ = 0;
+            OnPointOPTChanged();
         }
     }
 

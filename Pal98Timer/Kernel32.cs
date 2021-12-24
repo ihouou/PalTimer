@@ -33,5 +33,6 @@ namespace HFrame.OS
 
         [DllImport("kernel32.dll ")]
         public static extern bool CloseHandle(int hProcess);
+
     }
 }
