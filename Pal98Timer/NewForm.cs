@@ -441,7 +441,7 @@ namespace Pal98Timer
                 case Keys.F3:
                     if (hookStruct.flags >= 128)
                     {
-                        btnReset_Click(null, null);
+                        core.OnFunctionKey(3, this);
                     }
                     break;
                 case Keys.F4:
@@ -483,7 +483,7 @@ namespace Pal98Timer
                 case Keys.F10:
                     if (hookStruct.flags >= 128)
                     {
-                        core.OnFunctionKey(10, this);
+                        btnReset_Click(null, null);
                     }
                     break;
                 case Keys.F11:
