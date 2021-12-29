@@ -93,9 +93,6 @@ namespace Pal98Timer
             LoadBest();
             _CurrentStep = -1;
             Data = new HObj();
-            Data["caiyi"] = false;
-            Data["wsl"] = false;
-            Data["xjql"] = false;
             CheckPoints = new List<CheckPoint>();
             CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("上船", new TimeSpan(0, 14, 30)))
             {
@@ -119,35 +116,86 @@ namespace Pal98Timer
                     return false;
                 }
             });
+            Data["zhixiu"] = false;
             CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("过智修", new TimeSpan(0, 43, 30)))
             {
                 Check = delegate ()
                 {
-                    if (GameObj.BossID == 524 && GameObj.BattleTotalBlood <= 0)
+                    if (!Data.GetValue<bool>("zhixiu"))
                     {
-                        return true;
+                        if (GameObj.BossID == 524)
+                        {
+                            Data["zhixiu"] = true;
+                        }
+                    }
+                    else
+                    {
+                        if (GameObj.CurrentBGM == 1)
+                        {
+                            Data["zhixiu"] = false;
+                            return false;
+                        }
+                        if (GameObj.BattleTotalBlood <= 0)
+                        {
+                            Data["zhixiu"] = false;
+                            return true;
+                        }
                     }
                     return false;
                 }
             });
+            Data["gjj"] = false;
             CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("过鬼将军", new TimeSpan(0, 58, 00)))
             {
                 Check = delegate ()
                 {
-                    if (GameObj.BossID == 472 && GameObj.BattleTotalBlood <= 0)
+                    if (!Data.GetValue<bool>("gjj"))
                     {
-                        return true;
+                        if (GameObj.BossID == 472)
+                        {
+                            Data["gjj"] = true;
+                        }
+                    }
+                    else
+                    {
+                        if (GameObj.CurrentBGM == 1)
+                        {
+                            Data["gjj"] = false;
+                            return false;
+                        }
+                        if (GameObj.BattleTotalBlood <= 0)
+                        {
+                            Data["gjj"] = false;
+                            return true;
+                        }
                     }
                     return false;
                 }
             });
+            Data["cgw"] = false;
             CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("过赤鬼王", new TimeSpan(1, 12, 30)))
             {
                 Check = delegate ()
                 {
-                    if (GameObj.BossID == 473 && GameObj.BattleTotalBlood <= 0)
+                    if (!Data.GetValue<bool>("cgw"))
                     {
-                        return true;
+                        if (GameObj.BossID == 473)
+                        {
+                            Data["cgw"] = true;
+                        }
+                    }
+                    else
+                    {
+                        if (GameObj.CurrentBGM == 1)
+                        {
+                            Data["cgw"] = false;
+                            return false;
+                        }
+                        if (GameObj.BattleTotalBlood <= 0)
+                        {
+                            Data["cgw"] = false;
+                            return true;
+                        }
                     }
                     return false;
                 }
@@ -174,17 +222,35 @@ namespace Pal98Timer
                     return false;
                 }
             });
+            Data["jcgm"] = false;
             CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("过鬼母", new TimeSpan(1, 55, 00)))
             {
                 Check = delegate ()
                 {
-                    if (GameObj.BossID == 500 && GameObj.BattleTotalBlood <= 0)
+                    if (!Data.GetValue<bool>("jcgm"))
                     {
-                        return true;
+                        if (GameObj.BossID == 500)
+                        {
+                            Data["jcgm"] = true;
+                        }
+                    }
+                    else
+                    {
+                        if (GameObj.CurrentBGM == 1)
+                        {
+                            Data["jcgm"] = false;
+                            return false;
+                        }
+                        if (GameObj.BattleTotalBlood <= 0)
+                        {
+                            Data["jcgm"] = false;
+                            return true;
+                        }
                     }
                     return false;
                 }
             });
+            Data["caiyi"] = false;
             CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("过彩依", new TimeSpan(2, 09, 30)))
             {
                 Check = delegate ()
@@ -198,7 +264,7 @@ namespace Pal98Timer
                     }
                     else
                     {
-                        if (GameObj.BossID != 468 || (GameObj.BossID == 468 && GameObj.BattleTotalBlood <= 0))
+                        if (GameObj.BossID != 468 || (GameObj.BossID == 468 && GameObj.BattleTotalBlood <= 0) || GameObj.Enemies.Count <= 0)
                         {
                             Data["caiyi"] = false;
                             return true;
@@ -295,6 +361,7 @@ namespace Pal98Timer
                     return false;
                 }
             });
+            Data["xjql"] = false;
             CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("过血角青龙", new TimeSpan(4, 20, 00)))
             {
                 Check = delegate ()
@@ -308,6 +375,11 @@ namespace Pal98Timer
                     }
                     else
                     {
+                        if (GameObj.CurrentBGM == 1)
+                        {
+                            Data["xjql"] = false;
+                            return false;
+                        }
                         if (GameObj.BattleTotalBlood <= 0)
                         {
                             Data["xjql"] = false;
@@ -317,6 +389,7 @@ namespace Pal98Timer
                     return false;
                 }
             });
+            Data["wsl"] = false;
             CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("过五神龙", new TimeSpan(4, 34, 30)))
             {
                 Check = delegate ()
@@ -330,6 +403,11 @@ namespace Pal98Timer
                     }
                     else
                     {
+                        if (GameObj.CurrentBGM == 1)
+                        {
+                            Data["wsl"] = false;
+                            return false;
+                        }
                         if (GameObj.BattleTotalBlood <= 0)
                         {
                             Data["wsl"] = false;
@@ -339,13 +417,30 @@ namespace Pal98Timer
                     return false;
                 }
             });
+            Data["qtby"] = false;
             CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("过桥头拜月", new TimeSpan(4, 49, 00)))
             {
                 Check = delegate ()
                 {
-                    if (GameObj.BossID == 546 && GameObj.BattleTotalBlood <= 0)
+                    if (!Data.GetValue<bool>("qtby"))
                     {
-                        return true;
+                        if (GameObj.BossID == 546)
+                        {
+                            Data["qtby"] = true;
+                        }
+                    }
+                    else
+                    {
+                        if (GameObj.CurrentBGM == 1)
+                        {
+                            Data["qtby"] = false;
+                            return false;
+                        }
+                        if (GameObj.BattleTotalBlood <= 0)
+                        {
+                            Data["qtby"] = false;
+                            return true;
+                        }
                     }
                     return false;
                 }
@@ -1311,10 +1406,11 @@ namespace Pal98Timer
             tmp += "是否有破天锤:" + ((this.GetItemCount(0x117) > 0) ? "是" : "否") + "\r\n";
             tmp += "是否有香蕉:" + ((this.GetItemCount(0x123) > 0) ? "是" : "否") + "\r\n";
             tmp += "\r\n";
-            tmp += "Enemy:" + Convert.ToString(this.BattleEnemySlotAddr, 16).PadLeft(8, '0') + "\r\n";
+            tmp += "IsBattle:" + this.IsBattleFlag + "\r\n";
+            tmp += "Enemy(" + this.Enemies.Count + "):" + this.BattleTotalBlood + "\r\n";
             if (this.BossID > 0)
             {
-                tmp += "Boss:" + this.BossID + " TotalBlood:" + this.BattleTotalBlood + "\r\n";
+                tmp += "Boss:" + this.BossID + "\r\n";
             }
             for (int i = 0; i < this.Enemies.Count; ++i)
             {

@@ -616,7 +616,11 @@ namespace Pal98Timer
         private void SetTime()
         {
             TSSet tss = new TSSet(delegate (TimeSpan ts) {
-                core.SetTS(ts);
+                try
+                {
+                    core.SetTS(ts);
+                }
+                catch { }
             });
             tss.ShowDialog(this);
             tss.Dispose();

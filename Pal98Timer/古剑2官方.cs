@@ -288,10 +288,14 @@ namespace Pal98Timer
             {
                 Check = delegate ()
                 {
-                    if (GameObj.BattleID == GameObjectGuJian2.EBattle.火龙伏英 && (GameObj.EnemyCount <= 0 || GameObj.TotalEnemyHP < 3000))
+                    if (GameObj.BattleID == GameObjectGuJian2.EBattle.火龙伏英)
                     {
-                        WillAppendNamedBattle = GameObj.BattleID.ToString() + ":" + BattleLong.TotalSeconds.ToString("F2");
-                        return true;
+                        int WinHP = (int)(((double)(GameObj.TotalEnemyMaxHP)) * 0.05);
+                        if (GameObj.EnemyCount <= 0 || GameObj.TotalEnemyHP <= WinHP)
+                        {
+                            WillAppendNamedBattle = GameObj.BattleID.ToString() + ":" + BattleLong.TotalSeconds.ToString("F2");
+                            return true;
+                        }
                     }
                     return false;
                 }
@@ -847,6 +851,13 @@ namespace Pal98Timer
             new int[]{ 0x700870, 0x118, 0xC, 0x6C4},
             new int[]{ 0x700870, 0x118, 0x10, 0x6C4},
         };
+        private static readonly int[][] EnemyMaxHPOffset = new int[][] {
+            new int[]{ 0x700870, 0x118, 0x0, 0x6C4+40},
+            new int[]{ 0x700870, 0x118, 0x4, 0x6C4+40},
+            new int[]{ 0x700870, 0x118, 0x8, 0x6C4+40},
+            new int[]{ 0x700870, 0x118, 0xC, 0x6C4+40},
+            new int[]{ 0x700870, 0x118, 0x10, 0x6C4+40},
+        };
 
         public bool CanControl = false;
         public bool IsInBattle = false;
@@ -883,6 +894,7 @@ namespace Pal98Timer
         }
         public EBattle BattleID = EBattle.none;
         public int TotalEnemyHP = 0;
+        public int TotalEnemyMaxHP = 0;
 
         public GameObjectGuJian2()
         {
@@ -892,11 +904,11 @@ namespace Pal98Timer
             string ret = "钱：" + Money + "\r\n"; ;
             ret += "读条中：" + (IsLoading ? "是" : "否") + "\r\n\r\n";
             ret += "可操作：" + (CanControl ? "可" : "不可") + "\r\n";
-            ret += "战斗中：" + (IsInBattle ? "是" : "否") + " (" + BattleID.ToString() + ")[" + TotalEnemyHP + "]" + "\r\n\r\n";
+            ret += "战斗中：" + (IsInBattle ? "是" : "否") + " (" + BattleID.ToString() + ")[" + TotalEnemyHP + "/" + TotalEnemyMaxHP + "]" + "\r\n\r\n";
             ret += "敌人数量：" + EnemyCount + "\r\n";
             foreach (var eo in Enemies)
             {
-                ret += "[" + eo.ID + "]" + eo.HP + "\r\n";
+                ret += "[" + eo.ID + "]" + eo.HP + "/" + eo.MaxHP + "\r\n";
             }
 
             return ret;
@@ -932,14 +944,17 @@ namespace Pal98Timer
             EnemyCount = tmpec;
             List<GuJian2EnemyObject> el = new List<GuJian2EnemyObject>();
             int tmphp = 0;
+            int tmpmaxhp = 0;
             for (int i = 0; i < EnemyIDOffset.Length && i < EnemyCount; ++i)
             {
                 GuJian2EnemyObject eo = new GuJian2EnemyObject();
                 eo.ID = Readm<int>(handle, ExeBaseAddr, EnemyIDOffset[i]);
                 eo.HP = Readm<int>(handle, ExeBaseAddr, EnemyHPOffset[i]);
+                eo.MaxHP = Readm<int>(handle, ExeBaseAddr, EnemyMaxHPOffset[i]);
                 if (eo.ID > 0 && eo.ID < 2000)
                 {
                     el.Add(eo);
+                    tmpmaxhp += eo.MaxHP;
                     if (eo.HP > 0 && eo.HP < 1000000)
                     {
                         tmphp += eo.HP;
@@ -948,6 +963,7 @@ namespace Pal98Timer
             }
             Enemies = el;
             TotalEnemyHP = tmphp;
+            TotalEnemyMaxHP = tmpmaxhp;
             if (IsInBattle)
             {
                 _anabattle();
@@ -1028,6 +1044,7 @@ namespace Pal98Timer
         {
             public int ID;
             public int HP;
+            public int MaxHP;
         }
         public static T Readm<T>(IntPtr handle, int baseaddr, int[] offset)
         {
