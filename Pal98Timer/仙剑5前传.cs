@@ -42,6 +42,7 @@ namespace Pal98Timer
         private string EndName = "";
 
         private string cryerror = "";
+        private bool IsShowSpeed = false;
 
         private TimeSpan WillClear;
         private TimeSpan BestClear;
@@ -128,7 +129,27 @@ namespace Pal98Timer
 
         public override string GetMoreInfo()
         {
-            return "元神：" + GameObj.OriGod + "  玄武甲：" + MaxXWJ;
+            string deff = "";
+            switch (GameObj.Deff)
+            {
+                case 1:
+                    deff = "简单";
+                    break;
+                case 2:
+                    deff = "普通";
+                    break;
+                case 3:
+                    deff = "困难";
+                    break;
+            }
+            if (IsShowSpeed)
+            {
+                return GameObj.MoveSpeed.ToString("F2") + "  " + deff + "  元神：" + GameObj.OriGod + "  玄武甲：" + MaxXWJ;
+            }
+            else
+            {
+                return deff + "  元神：" + GameObj.OriGod + "  玄武甲：" + MaxXWJ;
+            }
         }
 
         public override string GetPointEnd()
@@ -585,7 +606,14 @@ namespace Pal98Timer
             {
                 Check = delegate ()
                 {
-                    if (GameObj.IsInBattle && GameObj.BattleEndExp >= 3600) return true;
+                    if (GameObj.Deff == 3)
+                    {
+                        if (GameObj.IsInBattle && GameObj.BattleEndExp >= 3600) return true;
+                    }
+                    else
+                    {
+                        if (GameObj.IsInBattle && GameObj.BattleEndExp >= 2000 && GameObj.BattleEndMoney==2400) return true;
+                    }
                     return false;
                 }
             });
@@ -593,7 +621,7 @@ namespace Pal98Timer
             {
                 Check = delegate ()
                 {
-                    if (GameObj.IsInBattle && GameObj.BattleEndExp == 16000) return true;
+                    if (GameObj.IsInBattle && (GameObj.BattleEndExp == 16000 || GameObj.BattleEndExp == 22800)) return true;
                     return false;
                 }
             });
@@ -609,7 +637,14 @@ namespace Pal98Timer
             {
                 Check = delegate ()
                 {
-                    if (GameObj.IsInBattle && GameObj.BattleEndMoney == 160 && GameObj.BattleEndExp == 8000) return true;
+                    if (GameObj.Deff == 3)
+                    {
+                        if (GameObj.IsInBattle && GameObj.BattleEndMoney == 160 && GameObj.BattleEndExp == 8000) return true;
+                    }
+                    else
+                    {
+                        if (GameObj.IsInBattle && GameObj.BattleEndMoney == 240 && GameObj.BattleEndExp == 8000) return true;
+                    }
                     return false;
                 }
             });
@@ -729,6 +764,7 @@ namespace Pal98Timer
 
             return exdata.ToJson();
         }
+        private ToolStripMenuItem btnGameSpeedShow;
         public override void InitUI(NewForm form)
         {
             btnPause = form.NewMenuButton(0);
@@ -789,6 +825,16 @@ namespace Pal98Timer
                 {
                     form.Error("保存失败：" + ex.Message);
                 }
+            };
+
+            btnGameSpeedShow = form.NewMenuItem();
+            btnGameSpeedShow.Text = "显示移动速度";
+            btnGameSpeedShow.Checked = false;
+            btnGameSpeedShow.Click += delegate (object sender, EventArgs e) {
+                btnGameSpeedShow.Checked = !btnGameSpeedShow.Checked;
+            };
+            btnGameSpeedShow.CheckedChanged += delegate (object sender, EventArgs e) {
+                IsShowSpeed = btnGameSpeedShow.Checked;
             };
         }
 
@@ -1176,10 +1222,12 @@ namespace Pal98Timer
         //6004  雪女      E>=4700
         //6031  楼兰王    E=10400
         //6040  穹武      E=0
-        //6034  结萝      E>=3600
-        //6019  神鹰岚翼  E=22800
+        //6034  结萝（难）E>=3600
+        //6034  结萝（简）E>=2000 G=2400
+        //6019  神鹰岚翼  E=22800|16000
         //6011  三皇一体  E=32000
-        //6044  骨蛇      E=8000  G=160
+        //6044  骨蛇（难）E=8000  G=160
+        //6044  骨蛇（简）E=8000  G=240
         //6014  炎舞      E=63000
         //6015  小黑      E=90800
         //6021  噬珊鬼螯  E>=126000
@@ -1203,6 +1251,11 @@ namespace Pal98Timer
         public const int MoneyOffset = 0x668564;
         public const int BattleEndMoneyOffset= 0x668408;
         public const int BattleEndExpOffset = 0x66840C;
+        public const int DeffOffset0 = 0x65DDC0;
+        public const int DeffOffset1 = 0x1F0;
+        public const int MoveSpeedOffset0 = 0x668538;
+        public const int MoveSpeedOffset1 = 0x444;
+        public const int MoveSpeedOffset2 = 0x3C;
 
         //玄武甲ID：77
 
@@ -1226,15 +1279,18 @@ namespace Pal98Timer
         public int Money = 0;
         public int BattleEndMoney = 0;
         public int BattleEndExp = 0;
+        public int Deff = 1;//1简单 2普通 3困难
+        public float MoveSpeed = 0.0F;
 
         public override string ToString()
         {
-            string tmp = "";
+            string tmp = "难度"+Deff+"\r\n";
             tmp += "ys:" + OriGod + "\r\n";
             tmp += "map:" + MapID + "\r\n";
             tmp += "x:" + X + "\r\n";
             tmp += "y:" + Y + "\r\n";
             tmp += "z:" + Z + "\r\n";
+            tmp += "移动速度：" + MoveSpeed.ToString("F2") + "\r\n";
             tmp += "\r\n";
             tmp += "战斗中:" + IsInBattle + " (" + BattleResult + ")\r\n";
             tmp += "our:" + OurTotalHP + "\r\n";
@@ -1281,6 +1337,12 @@ namespace Pal98Timer
             {
                 MapID = 0;
             }
+            int tmpm = Readm<int>(this.handle, BaseAddr + DeffOffset0);
+            Deff = Readm<int>(this.handle, tmpm + DeffOffset1);
+            tmpm = Readm<int>(this.handle, BaseAddr + MoveSpeedOffset0);
+            tmpm = Readm<int>(this.handle, tmpm + MoveSpeedOffset1);
+            MoveSpeed = Readm<float>(this.handle, tmpm + MoveSpeedOffset2);
+
             Money = Readm<int>(this.handle, BaseAddr + MoneyOffset);
             BattleEndExp = Readm<int>(this.handle, BaseAddr + BattleEndExpOffset);
             BattleEndMoney = Readm<int>(this.handle, BaseAddr + BattleEndMoneyOffset);
