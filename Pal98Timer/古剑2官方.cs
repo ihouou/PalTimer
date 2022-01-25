@@ -136,7 +136,7 @@ namespace Pal98Timer
             int yin = m % 100;
             m = m / 100;
 
-            return m + "金 " + yin.ToString().PadLeft(2, '0') + "银 " + tong.ToString().PadLeft(2, '0') + "铜";
+            return m + "金  乐Lv." + GameObj.YWYLevel;
         }
 
         public override string GetPointEnd()
@@ -348,14 +348,26 @@ namespace Pal98Timer
                     return false;
                 }
             });
+            Data["ctj"] = false;
             CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("程廷钧", new TimeSpan(0, 6, 59)))
             {
                 Check = delegate ()
                 {
-                    if (GameObj.BattleID == GameObjectGuJian2.EBattle.程廷钧 && (GameObj.EnemyCount <= 0 || GameObj.TotalEnemyHP <= 0))
+                    if (!Data.GetValue<bool>("ctj"))
                     {
-                        WillAppendNamedBattle = GameObj.BattleID.ToString() + ":" + BattleLong.TotalSeconds.ToString("F2");
-                        return true;
+                        if (GameObj.BattleID == GameObjectGuJian2.EBattle.程廷钧)
+                        {
+                            Data["ctj"] = true;
+                        }
+                    }
+                    else
+                    {
+                        if (GameObj.EnemyCount <= 0 || GameObj.TotalEnemyHP <= 0 || !GameObj.IsInBattle)
+                        {
+                            Data["ctj"] = false;
+                            WillAppendNamedBattle = GameObj.BattleID.ToString() + ":" + BattleLong.TotalSeconds.ToString("F2");
+                            return true;
+                        }
                     }
                     return false;
                 }
@@ -813,6 +825,11 @@ namespace Pal98Timer
         {
             OutBattleTime = DateTime.Now;
             BattleLong = OutBattleTime - InBattleTime;
+
+            if (GameObj.BattleName != "")
+            {
+                WillAppendNamedBattle = GameObj.BattleName + ":" + BattleLong.TotalSeconds.ToString("F2");
+            }
         }
         private void BattleEndMore()
         {
@@ -835,6 +852,7 @@ namespace Pal98Timer
         private static readonly int[] InBattleOffset = new int[] { 0x700870, 0xAE8 };
         private static readonly int[] EnemyCountBeginOffset = new int[] { 0x700870, 0xC90 };
         private static readonly int[] EnemyCountCurrentOffset = new int[] { 0x700870, 0x16C };
+        private static readonly int[] YWYLevelOffset = new int[] { 0x7080A8, 0x28, 0x8, 0x560, 0x8EC };
         private static readonly int[] UITypeOffset = new int[] { 0x707C5C, 0x10 };
         private const int EnemyCountCurrentOffset2 = 0x910;
         private static readonly int[][] EnemyIDOffset = new int[][] {
@@ -895,6 +913,8 @@ namespace Pal98Timer
         public EBattle BattleID = EBattle.none;
         public int TotalEnemyHP = 0;
         public int TotalEnemyMaxHP = 0;
+        public int YWYLevel = 0;
+        public string BattleName = "";
 
         public GameObjectGuJian2()
         {
@@ -919,6 +939,7 @@ namespace Pal98Timer
             GameTime = Readm<float>(handle, ExeBaseAddr, GameTimeOffset);
             IsInBattle = (Readm<int>(handle, ExeBaseAddr, InBattleOffset) != 0);
             CanControl = (Readm<int>(handle, ExeBaseAddr + CanControlOffset) == 1);
+            YWYLevel = Readm<int>(handle, ExeBaseAddr, YWYLevelOffset);
             UIType = Readm<int>(handle, ExeBaseAddr, UITypeOffset);
             IsLoading = (UIType == 3);
             EnemyCountBegin = Readm<int>(handle, ExeBaseAddr, EnemyCountBeginOffset);
@@ -1035,6 +1056,42 @@ namespace Pal98Timer
                     case 732:
                         BattleID = EBattle.砺罂;
                         return;
+                }
+                switch (eo.ID)
+                {
+                    case 700:
+                        BattleName = "金刚力士";
+                        break;
+                    case 701:
+                        BattleName = "金刚力士合体";
+                        break;
+                    case 712:
+                        BattleName = "浑邪王";
+                        break;
+                    case 714:
+                        BattleName = "明川";
+                        break;
+                    case 715:
+                        BattleName = "华月";
+                        break;
+                    case 716:
+                        BattleName = "沈夜";
+                        break;
+                    case 720:
+                        BattleName = "风琊";
+                        break;
+                    case 725:
+                        BattleName = "初七";
+                        break;
+                    case 728:
+                        BattleName = "华月";
+                        break;
+                    case 730:
+                        BattleName = "沈夜";
+                        break;
+                    default:
+                        BattleName = "";
+                        break;
                 }
             }
             BattleID = EBattle.normal;
