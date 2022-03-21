@@ -43,6 +43,15 @@ namespace Pal98Timer
         {
             this.FormBorderStyle = FormBorderStyle.None;
         }
+        public NoneBoardFormEx(bool DoubleBuffered)
+        {
+            this.FormBorderStyle = FormBorderStyle.None;
+            if (DoubleBuffered)
+            {
+                this.DoubleBuffered = true;
+                this.SetStyle(ControlStyles.ResizeRedraw, true);
+            }
+        }
 
         public void SetFormCloseControl(Control c)
         {

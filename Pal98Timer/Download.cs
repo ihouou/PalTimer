@@ -12,13 +12,7 @@ namespace Pal98Timer
     public delegate void DownloadCallBackDel(string c, Download d);
     public partial class Download : FormEx
     {
-        private MainForm p;
         private DownloadCallBackDel cb = null;
-        public Download(MainForm p)
-        {
-            this.p = p;
-            InitializeComponent();
-        }
         public Download(DownloadCallBackDel c)
         {
             this.cb = c;
@@ -35,10 +29,10 @@ namespace Pal98Timer
             }
             txtCode.Enabled = false;
             btnOK.Enabled = false;
-            if (p != null)
+            /*if (p != null)
             {
                 p.LoadCloudSRPG(c, this);
-            }
+            }*/
             if (cb != null)
             {
                 cb(c, this);

@@ -13,17 +13,12 @@ namespace Pal98Timer
     public partial class KeysForm : Form
     {
         private KeyChanger kc;
-        private MainForm p=null;
-        private NewForm np = null;
+        private GForm np = null;
         public KeysForm(FormEx p)
         {
-            if (p is MainForm)
+            if (p is GForm)
             {
-                this.p = p as MainForm;
-            }
-            if (p is NewForm)
-            {
-                this.np = p as NewForm;
+                this.np = p as GForm;
             }
             InitializeComponent();
             kc = new KeyChanger("");
@@ -36,10 +31,6 @@ namespace Pal98Timer
         {
             get
             {
-                if (p != null)
-                {
-                    return p.CurrentKeyCode;
-                }
                 if (np != null)
                 {
                     return np.CurrentKeyCode;

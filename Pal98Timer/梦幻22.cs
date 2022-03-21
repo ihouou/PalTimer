@@ -15,16 +15,13 @@ namespace Pal98Timer
 {
     public class 梦幻22 : TimerCore
     {
-        private PTimer MT = new PTimer();
         private PTimer ST = new PTimer();
         private PTimer LT = new PTimer();
-        private bool IsAllRun = true;
         private string GMD5 = "none";
         public IntPtr PalHandle;
         private int PID = -1;
         private Process PalProcess;
         private int PALBaseAddr = -1;
-        private int CheckInterval = 70;
         private bool _HasGameStart = false;
         private bool _IsFirstStarted = false;
         private DateTime InBattleTime;
@@ -32,9 +29,7 @@ namespace Pal98Timer
         public TimeSpan BattleLong = new TimeSpan(0);
         private bool HasUnCheated = false;
         private bool IsInUnCheat = false;
-        private int HandPauseCount = 0;
         private bool IsPause = false;
-        private bool IsUIPause = false;
         private bool IsInBattle = false;
 
         private bool IsDoMoreEndBattle = true;
@@ -51,34 +46,9 @@ namespace Pal98Timer
         private GameObjectDream22 GameObj = new GameObjectDream22();
         private List<string> NamedBattleRes = new List<string>();
 
-        public 梦幻22() {
-            BestFile = "Dream22_best.txt";
-            try
-            {
-                this.OnCurrentStepChangedInner = delegate (int cstep)
-                {
-                    try
-                    {
-                        if (cstep > 0)
-                        {
-                            //CheckPoints[cstep].Current = MT.CurrentTSOnly;
-                            long cha = CheckPoints[cstep - 1].GetCHA() * 1000 * 10000;
-                            if ((BestClear.Ticks + cha) <= 0)
-                            {
-                                WillClear = BestClear.Add(new TimeSpan(0));
-                            }
-                            else
-                            {
-                                WillClear = BestClear.Add(new TimeSpan(cha));
-                            }
-                        }
-                    }
-                    catch
-                    { }
-                };
-            }
-            catch
-            { }
+        public 梦幻22(GForm form) : base(form)
+        {
+            CoreName = "DREAM22";
         }
         public override bool IsShowC()
         {
@@ -88,7 +58,7 @@ namespace Pal98Timer
         {
             return false;
         }
-        public override void InitCheckPoints()
+        protected override void InitCheckPoints()
         {
             LoadBest();
             _CurrentStep = -1;
@@ -456,10 +426,6 @@ namespace Pal98Timer
                     return false;
                 }
             });
-            
-
-            WillClear = GetBest("通关", new TimeSpan(5, 03, 30)).BestTS;
-            BestClear = GetBest("通关", new TimeSpan(5, 03, 30)).BestTS;
 
             /*CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("见石碑", new TimeSpan(0, 5, 54)))
             {
@@ -545,8 +511,6 @@ namespace Pal98Timer
             //return MoveSpeed.ToString("F1");
         }
 
-        private TimeSpan WillClear;
-        private TimeSpan BestClear;
         public override string GetPointEnd()
         {
             return "预计通关  " + TimeSpanToStringLite(WillClear);
@@ -561,13 +525,14 @@ namespace Pal98Timer
             return ST.ToString();
         }
 
-        public override string GetMainWatch()
+        public override TimeSpan GetMainWatch()
         {
-            if (IsInUnCheat)
-            {
-                return "* " + MT.ToString();
-            }
-            return MT.ToString();
+            return MT.CurrentTS;
+        }
+
+        public override bool IsMainWatchStar()
+        {
+            return IsInUnCheat;
         }
 
         public override string GetGameVersion()
@@ -584,7 +549,7 @@ namespace Pal98Timer
 
         public override void Reset()
         {
-            HandPauseCount = 0;
+            base.Reset();
             HasAlertMutiPal = false;
             HasUnCheated = false;
             IsInUnCheat = false;
@@ -597,216 +562,120 @@ namespace Pal98Timer
             MaxXLL = 0;
             MaxYXY = 0;
             BattleLong = new TimeSpan(0);
-            InitCheckPoints();
-            MT.Reset();
+            //InitCheckPoints();
             ST.Reset();
             WillAppendNamedBattle = "";
             NamedBattleRes = new List<string>();
-            btnPause.Text = "暂停";
         }
-
-        private Button btnPause;
         
-        private ToolStripMenuItem btnSwitch;
-        public override void InitUI(NewForm form)
+        public override void InitUI()
         {
-            btnPause = form.NewMenuButton(0);
-            btnPause.Text = "暂停";
-            btnPause.Click += BtnPause_Click;
-
             var btnExportCurrent = form.NewMenuItem();
             btnExportCurrent.Text = "导出本次成绩";
             btnExportCurrent.Click += delegate (object sender, EventArgs e) {
-                DateTime now = DateTime.Now;
-                string filename = "Dream22_" + now.ToString("yyyyMMddHHmmss");
-                string ext = GetRStr();
-
-                try
-                {
-                    using (FileStream fileStream = new FileStream(filename + ".txt", FileMode.Create))
-                    {
-                        using (StreamWriter streamWriter = new StreamWriter(fileStream, Encoding.Default))
-                        {
-                            streamWriter.Write(ext);
-                            //streamWriter.Flush();
-                        }
-                    }
-                    form.Success("已将此次成绩保存至" + filename + ".txt");
-                }
-                catch (Exception ex)
-                {
-                    form.Error("保存失败：" + ex.Message);
-                }
+                ExportCurrent(GetRStr());
             };
 
             var btnSetCurrentToBest = form.NewMenuItem();
             btnSetCurrentToBest.Text = "设置本次成绩为最佳";
             btnSetCurrentToBest.Click += delegate (object sender, EventArgs e) {
-                DateTime now = DateTime.Now;
-                string filename = now.ToString("yyyyMMddHHmmss");
-                string ext = GetRStr();
-                try
-                {
-                    if (File.Exists("Dream22_best.txt"))
-                    {
-                        File.Move("Dream22_best.txt", "Dream22_best" + filename + ".txt");
-                    }
-                    using (FileStream fileStream = new FileStream("Dream22_best.txt", FileMode.Create))
-                    {
-                        using (StreamWriter streamWriter = new StreamWriter(fileStream, Encoding.Default))
-                        {
-                            streamWriter.Write(ext);
-                            //streamWriter.Flush();
-                        }
-                    }
-                    if (form.Confirm("保存成功，确定要重置计时器么？"))
-                    {
-                        form._ResetAll();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    form.Error("保存失败：" + ex.Message);
-                }
+                SaveBest(GetRStr());
             };
-            
-
-            btnSwitch = form.NewMenuItem();
-            btnSwitch.Text = "切换至简版";
-            btnSwitch.Click += BtnSwitch_Click;
-            
         }
 
         private void BtnSwitch_Click(object sender, EventArgs e)
         {
-            LoadCore(new 简版());
+            LoadCore(new 简版(form));
         }
 
-        private void BtnPause_Click(object sender, EventArgs e)
+        protected override void OnTick()
         {
-            if (!IsUIPause)
+            if (GetPalHandle())
             {
-                HandPauseCount++;
-            }
-            SetUIPause(!IsUIPause);
-            if (HandPauseCount > 0)
-            {
-                btnPause.Text = "暂停 " + HandPauseCount;
-            }
-        }
-
-        private void SetUIPause(bool isp)
-        {
-            IsUIPause = isp;
-            if (IsUIPause)
-            {
-                btnPause.ForeColor = Color.Red;
-            }
-            else
-            {
-                btnPause.ForeColor = Color.White;
-            }
-        }
-
-        public override void Start()
-        {
-            FormEx.Run(delegate () {
-                while (IsAllRun)
+                JudgePause();
+                try
                 {
-                    try
+                    FlushGameObject();
+                }
+                catch (Exception ex)
+                {
+                }
+
+
+                try
+                {
+                    if (GameObj.Enemies.Count > 0)
                     {
-                        if (GetPalHandle())
+                        if (!IsInBattle)
                         {
-                            JudgePause();
-                            try
-                            {
-                                FlushGameObject();
-                            }
-                            catch (Exception ex)
-                            {
-                            }
+                            BattleBegin();
+                        }
+                        IsInBattle = true;
+                        IsDoMoreEndBattle = true;
+                        Battling();
+                    }
+                    else
+                    {
+                        if (!IsDoMoreEndBattle)
+                        {
+                            BattleEndMore();
+                            IsDoMoreEndBattle = true;
+                        }
+                        if (IsInBattle)
+                        {
+                            BattleEnd();
+                            IsDoMoreEndBattle = false;
+                        }
+                        IsInBattle = false;
+                    }
+                }
+                catch { }
 
-
-                            try
-                            {
-                                if (GameObj.Enemies.Count > 0)
-                                {
-                                    if (!IsInBattle)
-                                    {
-                                        BattleBegin();
-                                    }
-                                    IsInBattle = true;
-                                    IsDoMoreEndBattle = true;
-                                    Battling();
-                                }
-                                else
-                                {
-                                    if (!IsDoMoreEndBattle)
-                                    {
-                                        BattleEndMore();
-                                        IsDoMoreEndBattle = true;
-                                    }
-                                    if (IsInBattle)
-                                    {
-                                        BattleEnd();
-                                        IsDoMoreEndBattle = false;
-                                    }
-                                    IsInBattle = false;
-                                }
-                            }
-                            catch { }
-
-                            if (HasStartGame())
-                            {
-                                ST.Stop();
-                                if (!_IsFirstStarted)
-                                {
-                                    _IsFirstStarted = true;
-                                }
-                                if (!HasUnCheated)
-                                {
-                                    if (!IsInUnCheat)
-                                    {
-                                        CheckCheatBegin();
-                                        CheckCheatEnd();
-                                    }
-                                    else
-                                    {
-                                        CheckCheatEnd();
-                                    }
-                                }
-
-                                if (IsInUnCheat)
-                                {
-                                    MT.Stop();
-                                }
-                                else
-                                {
-                                    MT.Start();
-                                    Checking();
-                                }
-                            }
-                            else
-                            {
-                                MT.Stop();
-                            }
+                if (HasStartGame())
+                {
+                    ST.Stop();
+                    if (!_IsFirstStarted)
+                    {
+                        _IsFirstStarted = true;
+                    }
+                    if (!HasUnCheated)
+                    {
+                        if (!IsInUnCheat)
+                        {
+                            CheckCheatBegin();
+                            CheckCheatEnd();
                         }
                         else
                         {
-                            _HasGameStart = false;
-                            MT.Stop();
-
-                            if (_IsFirstStarted)
-                            {
-                                ST.Start();
-                            }
+                            CheckCheatEnd();
                         }
                     }
-                    catch
-                    { }
-                    Thread.Sleep(CheckInterval);
+
+                    if (IsInUnCheat)
+                    {
+                        MT.Stop();
+                    }
+                    else
+                    {
+                        MT.Start();
+                        Checking();
+                    }
                 }
-            });
+                else
+                {
+                    MT.Stop();
+                }
+            }
+            else
+            {
+                _HasGameStart = false;
+                MT.Stop();
+
+                if (_IsFirstStarted)
+                {
+                    ST.Start();
+                }
+            }
         }
         private bool HasAlertMutiPal = false;
         private bool GetPalHandle()
@@ -1064,54 +933,12 @@ namespace Pal98Timer
                 HasUnCheated = true;
             }
         }
-        private void Checking()
-        {
-            if (CurrentStep < 0 && CheckPoints.Count > 0)
-            {
-                CheckPoints[0].IsBegin = true;
-                CurrentStep = 0;
-            }
-
-            if (CurrentStep < CheckPoints.Count)
-            {
-                CheckPoints[CurrentStep].Current = MT.CurrentTSOnly;
-                if (CheckPoints[CurrentStep].Check())
-                {
-                    CheckPoints[CurrentStep].Current = new TimeSpan(MT.CurrentTSOnly.Ticks);
-                    CheckPoints[CurrentStep].IsEnd = true;
-                    //CurrentStep++;
-                    int nextstep = CurrentStep + 1;
-                    if (nextstep >= CheckPoints.Count)
-                    {
-                        OnLastCheckPointEnd();
-                    }
-                    else
-                    {
-                        CheckPoints[nextstep].IsBegin = true;
-                    }
-                    CurrentStep = nextstep;
-                }
-            }
-            else
-            {
-                OnLastCheckPointEnd();
-            }
-        }
-        private void OnLastCheckPointEnd()
-        {
-            MT.Stop();
-        }
-        public override void SetTS(TimeSpan ts)
-        {
-            MT.SetTS(ts);
-            CheckPoints[CurrentStep].Current = ts;
-        }
-        public override void OnFunctionKey(int FunNo, NewForm form)
+        public override void OnFunctionKey(int FunNo)
         {
             switch (FunNo)
             {
                 case 8:
-                    BtnPause_Click(null, null);
+                    HandPause();
                     break;
                 case 6:
                     if (form.Confirm("更换内核将会重置计时器，确认么？"))
@@ -1332,11 +1159,6 @@ namespace Pal98Timer
                 WillAppendNamedBattle = "";
                 return res;
             }
-        }
-
-        public override void Unload()
-        {
-            IsAllRun = false;
         }
         public override string GetCriticalError()
         {

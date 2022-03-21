@@ -15,7 +15,7 @@ namespace Pal98Timer
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new NewForm());
+            Application.Run(new GForm());
         }
     }
 }

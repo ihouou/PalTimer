@@ -8,7 +8,10 @@ namespace Pal98Timer
 {
     public class 简版 : TimerCore
     {
-        private PTimer MT = new PTimer();
+        public 简版(GForm form) : base(form)
+        {
+            CoreName = "S";
+        }
         public override bool NeedBlockCtrlEnter()
         {
             return false;
@@ -23,9 +26,13 @@ namespace Pal98Timer
             return "";
         }
 
-        public override string GetMainWatch()
+        public override TimeSpan GetMainWatch()
         {
-            return MT.ToString();
+            return MT.CurrentTS;
+        }
+        public override bool IsMainWatchStar()
+        {
+            return false;
         }
 
         public override string GetMoreInfo()
@@ -48,7 +55,7 @@ namespace Pal98Timer
             return "";
         }
 
-        public override void InitCheckPoints()
+        protected override void InitCheckPoints()
         {
         }
         public override bool IsShowC()
@@ -56,7 +63,7 @@ namespace Pal98Timer
             return false;
         }
 
-        public override void OnFunctionKey(int FunNo, NewForm form)
+        public override void OnFunctionKey(int FunNo)
         {
             switch (FunNo)
             {
@@ -74,47 +81,55 @@ namespace Pal98Timer
 
         public override void Reset()
         {
-            MT.Reset();
+            base.Reset();
+            form.rr.IsForceRefreshAll = true;
+            if (IsBegin)
+            {
+                BtnLiteCtrl_Click(null,null);
+            }
         }
 
-        public override void SetTS(TimeSpan ts)
-        {
-            MT.SetTS(ts);
-        }
-
-        public override void Start()
-        {
-        }
-
-        public override void Unload()
+        protected override void OnTick()
         {
         }
-
-        private Button btnLiteCtrl;
+        
+        private GRender.GBtn btnLiteCtrl;
         private ToolStripMenuItem btnSwitch;
         private Size orisize;
-        public override void InitUI(NewForm form)
+        public override void InitUI()
         {
+            form.rr.VisibleBtn(0, false);
             btnLiteCtrl = form.NewMenuButton(0);
             btnLiteCtrl.Text = "开始";
-            btnLiteCtrl.Click += BtnLiteCtrl_Click;
+            //btnLiteCtrl.Click += BtnLiteCtrl_Click;
+            btnLiteCtrl.OnClicked = delegate (int x, int y, GRender.GBtn ctl)
+              {
+                  BtnLiteCtrl_Click(null, null);
+              };
 
             btnSwitch = form.NewMenuItem();
             btnSwitch.Text = "切换至98速通版";
             btnSwitch.Click += BtnSwitch_Click;
 
-            form.pnMid.Visible = false;
+            /*form.pnMid.Visible = false;
             form.pnPointEnd.Visible = false;
             form.lblST.Visible = false;
-            form.lblT2.Visible = false;
+            form.lblT2.Visible = false;*/
             //form.lblMore.Visible = false;
             orisize = form.Size;
-            form.Size = new Size(270, 165);
+            form.Size = new Size(270, 200);
+        }
+
+        public override void UnloadUI()
+        {
+            base.UnloadUI();
+            form.Size = orisize;
+            form.rr.VisibleBtn(0, true);
         }
 
         private void BtnSwitch_Click(object sender, EventArgs e)
         {
-            LoadCore(new 仙剑98柔情());
+            LoadCore(new 仙剑98柔情(form));
         }
 
         private bool IsBegin = false;
@@ -132,17 +147,6 @@ namespace Pal98Timer
                 MT.Stop();
                 btnLiteCtrl.Text = "开始";
             }
-        }
-
-        public override void UnloadUI(NewForm form)
-        {
-            base.UnloadUI(form);
-            form.pnMid.Visible = true;
-            form.pnPointEnd.Visible = true;
-            form.lblST.Visible = true;
-            form.lblT2.Visible = true;
-            form.lblMore.Visible = true;
-            form.Size = orisize;
         }
 
         public override string GetCriticalError()

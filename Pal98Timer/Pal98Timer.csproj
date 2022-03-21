@@ -130,6 +130,19 @@
     <Compile Include="ColorDialogEx.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="GEditForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GEditForm.Designer.cs">
+      <DependentUpon>GEditForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GEX.cs" />
+    <Compile Include="GForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GForm.Designer.cs">
+      <DependentUpon>GForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="仙剑5前传.cs" />
     <Compile Include="仙剑98官方Steam.cs" />
     <Compile Include="仙剑二官方Steam.cs" />
@@ -180,26 +193,8 @@
     <Compile Include="LiveWindow.Designer.cs">
       <DependentUpon>LiveWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="MainForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MainForm.Designer.cs">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="MemoryUtils.cs" />
     <Compile Include="MessageBoxEx.cs" />
-    <Compile Include="NewForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="NewForm.Designer.cs">
-      <DependentUpon>NewForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="NewPointItem.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="NewPointItem.Designer.cs">
-      <DependentUpon>NewPointItem.cs</DependentUpon>
-    </Compile>
     <Compile Include="NoneBoardFormEx.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -216,12 +211,6 @@
       <DependentUpon>SetRTMP.cs</DependentUpon>
     </Compile>
     <Compile Include="TimerCore.cs" />
-    <Compile Include="TItem.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="TItem.Designer.cs">
-      <DependentUpon>TItem.cs</DependentUpon>
-    </Compile>
     <Compile Include="TSSet.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -244,6 +233,12 @@
     <EmbeddedResource Include="Download.resx">
       <DependentUpon>Download.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="GEditForm.resx">
+      <DependentUpon>GEditForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GForm.resx">
+      <DependentUpon>GForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="InfoShow.resx">
       <DependentUpon>InfoShow.cs</DependentUpon>
     </EmbeddedResource>
@@ -255,15 +250,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="LiveWindow.resx">
       <DependentUpon>LiveWindow.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MainForm.resx">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="NewForm.resx">
-      <DependentUpon>NewForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="NewPointItem.resx">
-      <DependentUpon>NewPointItem.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -277,9 +263,6 @@
     </Compile>
     <EmbeddedResource Include="SetRTMP.resx">
       <DependentUpon>SetRTMP.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TItem.resx">
-      <DependentUpon>TItem.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TSSet.resx">
       <DependentUpon>TSSet.cs</DependentUpon>

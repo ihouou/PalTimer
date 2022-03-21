@@ -123,8 +123,7 @@ namespace Pal98Timer
             SetWindowPos(hWndCache, HWND_TOP, _x, _y, 0, 0, UFLAGS);
         }
     }
-
-
+    
     public class FontDialogEx : FontDialog
     {
         #region private const

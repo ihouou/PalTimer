@@ -11,23 +11,11 @@ namespace Pal98Timer
     public delegate void SetTSDel(TimeSpan ts);
     public partial class TSSet : Form
     {
-        private MainForm parent;
-        public TSSet(MainForm parent)
-        {
-            InitializeComponent();
-            this.cb = null;
-            this.parent = parent;
-            txtHour.GotFocus += txtHour_GotFocus;
-            txtMin.GotFocus += txtMin_GotFocus;
-            txtSec.GotFocus += txtSec_GotFocus;
-            txtMs.GotFocus += txtMs_GotFocus;
-        }
         private SetTSDel cb;
         public TSSet(SetTSDel callback)
         {
             InitializeComponent();
             this.cb = callback;
-            this.parent = null;
             txtHour.GotFocus += txtHour_GotFocus;
             txtMin.GotFocus += txtMin_GotFocus;
             txtSec.GotFocus += txtSec_GotFocus;
@@ -65,10 +53,6 @@ namespace Pal98Timer
             int.TryParse(txtSec.Text, out s);
             int.TryParse(txtMs.Text, out ms);
             TimeSpan ts = new TimeSpan(0, h, m, s, ms);
-            if (parent != null)
-            {
-                parent.SetMainClock(ts);
-            }
             if (cb != null)
             {
                 cb(ts);

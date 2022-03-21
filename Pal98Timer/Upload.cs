@@ -11,13 +11,7 @@ namespace Pal98Timer
 {
     public partial class Upload : FormEx
     {
-        private MainForm p;
         private ToolStripMenuItem btnCS;
-        public Upload(MainForm p)
-        {
-            this.p = p;
-            InitializeComponent();
-        }
         public Upload(ToolStripMenuItem b)
         {
             this.btnCS = b;
@@ -26,10 +20,6 @@ namespace Pal98Timer
 
         private void btnOK_Click(object sender, EventArgs e)
         {
-            if (p != null)
-            {
-                p.btnCloudSave.Enabled = true;
-            }
             if (btnCS != null)
             {
                 btnCS.Enabled = true;

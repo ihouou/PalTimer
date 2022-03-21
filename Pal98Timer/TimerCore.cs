@@ -9,8 +9,19 @@ using System.Windows.Forms;
 namespace Pal98Timer
 {
     public delegate void LoadCoreDel(TimerCore core);
+    /// <summary>
+    /// 计时内核
+    /// </summary>
     public abstract class TimerCore
     {
+        /// <summary>
+        /// 主计时器
+        /// </summary>
+        protected PTimer MT = new PTimer();
+        /// <summary>
+        /// 枚举出所有继承于TimerCore的类的短名
+        /// </summary>
+        /// <returns></returns>
         public static List<string> GetAllCores()
         {
             List<string> res = new List<string>();
@@ -33,9 +44,15 @@ namespace Pal98Timer
 
             return res;
         }
-        public static TimerCore GetCoreIns(string name)
+        /// <summary>
+        /// 通过继承于TimerCore的类短名实例化TimerCore
+        /// </summary>
+        /// <param name="name">短类名</param>
+        /// <param name="fm">主界面实例</param>
+        /// <returns></returns>
+        public static TimerCore GetCoreIns(string name,GForm fm)
         {
-            return CreateInstance<TimerCore>("Pal98Timer." + name, "Pal98Timer");
+            return CreateInstance<TimerCore>("Pal98Timer." + name, "Pal98Timer", fm);
         }
         /// <summary>
         /// 创建对象实例
@@ -43,22 +60,46 @@ namespace Pal98Timer
         /// <typeparam name="T"></typeparam>
         /// <param name="fullName">命名空间.类型名</param>
         /// <param name="assemblyName">程序集</param>
+        /// <param name="fm">主界面实例</param>
         /// <returns></returns>
-        public static T CreateInstance<T>(string fullName, string assemblyName)
+        public static T CreateInstance<T>(string fullName, string assemblyName, GForm fm)
         {
             string path = fullName + "," + assemblyName;//命名空间.类型名,程序集
             Type o = Type.GetType(path);//加载类型
-            object obj = Activator.CreateInstance(o, true);//根据类型创建实例
+            object obj = Activator.CreateInstance(o,  fm);//根据类型创建实例
             return (T)obj;//类型转换并返回
         }
 
+        /// <summary>
+        /// 用于给其他地方方便调用加载内核的委托
+        /// </summary>
         public LoadCoreDel LoadCore = null;
+        /// <summary>
+        /// 是否让当前节点处于视野内（即将废弃）
+        /// </summary>
         public bool IsMakeSureCurPointView = true;
+        /// <summary>
+        /// 本程序的MD5
+        /// </summary>
         public string CMD5 = "none";
-        public TimerCore()
+        /// <summary>
+        /// 主界面
+        /// </summary>
+        protected GForm form = null;
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="form"></param>
+        public TimerCore(GForm form)
         {
+            this.form = form;
             CMD5 = GetFileMD5(this.GetType().Assembly.Location);
         }
+        /// <summary>
+        /// 计算文件的MD5
+        /// </summary>
+        /// <param name="fileName">文件的路径</param>
+        /// <returns></returns>
         public static string GetFileMD5(string fileName)
         {
             string res = "none";
@@ -82,16 +123,29 @@ namespace Pal98Timer
             }
             return res;
         }
+        /// <summary>
+        /// TimeSpan友好化字符串
+        /// </summary>
+        /// <param name="ts"></param>
+        /// <returns>HH:mm:ss.ff</returns>
         public static string TimeSpanToString(TimeSpan ts)
         {
             return ts.Hours.ToString().PadLeft(2, '0') + ":" + ts.Minutes.ToString().PadLeft(2, '0') + ":" + ts.Seconds.ToString().PadLeft(2, '0') + "." + (ts.Milliseconds / 10).ToString().PadLeft(2, '0');
         }
-
+        /// <summary>
+        /// TimeSpan友好化字符串（简）
+        /// </summary>
+        /// <param name="ts"></param>
+        /// <returns>HH:mm:ss</returns>
         public static string TimeSpanToStringLite(TimeSpan ts)
         {
             return ts.Hours.ToString().PadLeft(2, '0') + ":" + ts.Minutes.ToString().PadLeft(2, '0') + ":" + ts.Seconds.ToString().PadLeft(2, '0');
         }
-
+        /// <summary>
+        /// 秒数友好化字符串
+        /// </summary>
+        /// <param name="cha">秒</param>
+        /// <returns>+m:ss</returns>
         public static string GetChaStr(long cha)
         {
             string res = "";
@@ -116,7 +170,11 @@ namespace Pal98Timer
             }
             return res;
         }
-
+        /// <summary>
+        /// 把友好化的字符串转成TimeSpan
+        /// </summary>
+        /// <param name="str">HH:mm:ss[.ff]</param>
+        /// <returns></returns>
         public static TimeSpan ConvertTimeSpan(string str)
         {
             try
@@ -129,7 +187,10 @@ namespace Pal98Timer
                 return new TimeSpan(0, 0, 0, 0, 0);
             }
         }
-
+        /// <summary>
+        /// 跳转到第n个时间节点
+        /// </summary>
+        /// <param name="index"></param>
         public void Jump(int index)
         {
             for (int i = 0; i < CheckPoints.Count; ++i)
@@ -153,16 +214,27 @@ namespace Pal98Timer
             CurrentStep = index;
         }
 
-        protected string BestFile = "best.txt";
+        /// <summary>
+        /// 用于保存文件的内核名
+        /// </summary>
+        protected string CoreName = "";
+        /// <summary>
+        /// 从最佳里加载的时间线
+        /// </summary>
         protected Dictionary<string, CheckPointNewer> Best = null;
+        /// <summary>
+        /// 从文件里加载最佳时间线
+        /// </summary>
         protected void LoadBest()
         {
+            string BestFile = "best" + CoreName + ".txt";
             if (File.Exists(BestFile))
             {
                 string beststr = "";
+                Encoding charset = GetFileEncodeType(BestFile);
                 using (FileStream fileStream = new FileStream(BestFile, FileMode.Open))
                 {
-                    using (StreamReader streamReader = new StreamReader(fileStream, Encoding.Default))
+                    using (StreamReader streamReader = new StreamReader(fileStream, charset))
                     {
                         beststr = streamReader.ReadToEnd();
                     }
@@ -203,6 +275,12 @@ namespace Pal98Timer
                 Best = null;
             }
         }
+        /// <summary>
+        /// 通过节点名称获取对应的最佳时间
+        /// </summary>
+        /// <param name="Name">节点name</param>
+        /// <param name="def">如无该节点则使用这个最佳时间</param>
+        /// <returns></returns>
         protected CheckPointNewer GetBest(string Name,TimeSpan def=default(TimeSpan))
         {
             if (Best == null) return new CheckPointNewer()
@@ -225,10 +303,117 @@ namespace Pal98Timer
                 };
             }
         }
+        /*
+         老的best文件：
+
+            bestGuJian2.txt
+            Dream22_best.txt
+            best5q.txt
+            Pal98Steam_best.txt
+            best.txt
+            best2.txt
+            best3.txt
+             
+             */
+        
+        /// <summary>
+        /// 保存最佳文件
+        /// </summary>
+        /// <param name="str"></param>
+        protected void SaveBest(string str)
+        {
+            DateTime now = DateTime.Now;
+            string filename = "best" + CoreName + ".txt";
+            string snow= now.ToString("yyyyMMddHHmmss");
+            try
+            {
+                if (File.Exists(filename))
+                {
+                    File.Move(filename, "best" + CoreName + snow + ".txt");
+                }
+                using (FileStream fileStream = new FileStream(filename, FileMode.Create))
+                {
+                    using (StreamWriter streamWriter = new StreamWriter(fileStream, Encoding.UTF8))
+                    {
+                        streamWriter.Write(str);
+                        //streamWriter.Flush();
+                    }
+                }
+                if (form.Confirm("保存成功，确定要重置计时器么？"))
+                {
+                    form._ResetAll();
+                }
+            }
+            catch (Exception ex)
+            {
+                form.Error("保存失败：" + ex.Message);
+            }
+        }
+        /// <summary>
+        /// 导出当前成绩
+        /// </summary>
+        /// <param name="str"></param>
+        protected void ExportCurrent(string str)
+        {
+            DateTime now = DateTime.Now;
+            string filename = now.ToString("yyyyMMddHHmmss");
+
+            try
+            {
+                using (FileStream fileStream = new FileStream(CoreName + filename + ".txt", FileMode.Create))
+                {
+                    using (StreamWriter streamWriter = new StreamWriter(fileStream, Encoding.UTF8))
+                    {
+                        streamWriter.Write(str);
+                        //streamWriter.Flush();
+                    }
+                }
+                form.Success("已将此次成绩保存至" + CoreName + filename + ".txt");
+            }
+            catch (Exception ex)
+            {
+                form.Error("保存失败：" + ex.Message);
+            }
+        }
+        /// <summary>
+        /// 临时数据
+        /// </summary>
         protected HObj Data = new HObj();
+        /// <summary>
+        /// 时间节点
+        /// </summary>
         public List<CheckPoint> CheckPoints = null;
-        public abstract void InitCheckPoints();
+        /// <summary>
+        /// 初始化时间节点
+        /// </summary>
+        protected abstract void InitCheckPoints();
+        /// <summary>
+        /// 即将通关时间
+        /// </summary>
+        protected TimeSpan WillClear = new TimeSpan(0);
+        /// <summary>
+        /// 最佳通关时间
+        /// </summary>
+        protected TimeSpan BestClear = new TimeSpan(0);
+        /// <summary>
+        /// 供主界面调用的节点初始化
+        /// </summary>
+        public void InitCheckPointsEx()
+        {
+            InitCheckPoints();
+            if (CheckPoints!=null && CheckPoints.Count > 0)
+            {
+                BestClear = new TimeSpan(CheckPoints[CheckPoints.Count - 1].Best.Ticks);
+                WillClear = new TimeSpan(BestClear.Ticks);
+            }
+        }
+        /// <summary>
+        /// 当前节点序号（别乱改）
+        /// </summary>
         protected int _CurrentStep = -1;
+        /// <summary>
+        /// 当前节点序号
+        /// </summary>
         public int CurrentStep
         {
             get
@@ -239,38 +424,223 @@ namespace Pal98Timer
             {
                 //SI.ins.CurrentStep = value;
                 _CurrentStep = value;
-                if (OnCurrentStepChangedInner != null)
+
+                if (_CurrentStep > 0 && _CurrentStep <= CheckPoints.Count)
                 {
-                    OnCurrentStepChangedInner(value);
+                    long cha=CheckPoints[_CurrentStep-1].GetCHA() * 1000 * 10000;
+                    if ((BestClear.Ticks + cha) <= 0)
+                    {
+                        WillClear = new TimeSpan(BestClear.Ticks);
+                    }
+                    else
+                    {
+                        WillClear = new TimeSpan(BestClear.Ticks + cha);
+                    }
                 }
-                if (OnCurrentStepChanged != null)
-                {
-                    OnCurrentStepChanged(value);
-                }
+
+                OnCurrentStepChangedInner?.Invoke(value);
+                OnCurrentStepChanged?.Invoke(value);
             }
         }
+        /// <summary>
+        /// 检测节点是否触发的逻辑
+        /// </summary>
+        protected void Checking()
+        {
+            if (CurrentStep < 0 && CheckPoints.Count > 0)
+            {
+                CheckPoints[0].IsBegin = true;
+                CurrentStep = 0;
+            }
+
+            if (CurrentStep < CheckPoints.Count)
+            {
+                CheckPoints[CurrentStep].Current = MT.CurrentTSOnly;
+                if (CheckPoints[CurrentStep].Check())
+                {
+                    CheckPoints[CurrentStep].Current = new TimeSpan(MT.CurrentTSOnly.Ticks);
+                    CheckPoints[CurrentStep].IsEnd = true;
+                    //CurrentStep++;
+                    int nextstep = CurrentStep + 1;
+                    if (nextstep >= CheckPoints.Count)
+                    {
+                        MT.Stop();
+                    }
+                    else
+                    {
+                        CheckPoints[nextstep].IsBegin = true;
+                    }
+                    CurrentStep = nextstep;
+                    //PostCloudRank();
+                }
+            }
+            else
+            {
+                MT.Stop();
+            }
+        }
+
+        /// <summary>
+        /// 是否在UI层面上暂停计时（比如手动暂停）
+        /// </summary>
+        public bool IsUIPause = false;
+        /// <summary>
+        /// 暂停，暂停次数不加
+        /// </summary>
+        /// <param name="isp"></param>
+        protected void SetUIPause(bool isp)
+        {
+            form.SetUIPause(isp);
+        }
+        /// <summary>
+        /// 手动暂停，暂停次数会加1
+        /// </summary>
+        protected void HandPause()
+        {
+            form.UIPause();
+        }
         public delegate void CurrentStepChangeDel(int currentidx);
+        /// <summary>
+        /// 节点序号改变时的事件
+        /// </summary>
         public CurrentStepChangeDel OnCurrentStepChanged = null;
+        /// <summary>
+        /// 节点序号改变事件2
+        /// </summary>
         protected CurrentStepChangeDel OnCurrentStepChangedInner = null;
 
+        /// <summary>
+        /// 主时间下方信息
+        /// </summary>
+        /// <returns></returns>
         public abstract string GetMoreInfo();
+        /// <summary>
+        /// 主时间左上方小时间
+        /// </summary>
+        /// <returns></returns>
         public abstract string GetSmallWatch();
+        /// <summary>
+        /// 预计通关
+        /// </summary>
+        /// <returns></returns>
         public abstract string GetPointEnd();
+        /// <summary>
+        /// 主时间右上方小时间
+        /// </summary>
+        /// <returns></returns>
         public abstract string GetSecondWatch();
-        public abstract string GetMainWatch();
+        /// <summary>
+        /// 主时间
+        /// </summary>
+        /// <returns></returns>
+        public abstract TimeSpan GetMainWatch();
+        /// <summary>
+        /// 主时间是否标星花
+        /// </summary>
+        /// <returns></returns>
+        public abstract bool IsMainWatchStar();
+        /// <summary>
+        /// 游戏版本
+        /// </summary>
+        /// <returns></returns>
         public abstract string GetGameVersion();
-        public abstract void Reset();
-        public abstract void InitUI(NewForm form);
-        public abstract void Start();
-        public abstract void SetTS(TimeSpan ts);
-        public abstract void OnFunctionKey(int FunNo, NewForm form);
+        /// <summary>
+        /// 重置
+        /// </summary>
+        public virtual void Reset()
+        {
+            MT.Reset();
+        }
+        /// <summary>
+        /// 初始化界面
+        /// </summary>
+        public abstract void InitUI();
+        /// <summary>
+        /// 检测间隔（毫秒）
+        /// </summary>
+        protected int CheckInterval = 70;
+        /// <summary>
+        /// 是否继续检测线程？unload的时候设置为false就行
+        /// </summary>
+        private bool IsAllRun = true;
+        /// <summary>
+        /// 计时内核开始
+        /// </summary>
+        public void Start()
+        {
+            HFrame.EX.FormEx.Run(delegate () {
+                while (IsAllRun)
+                {
+                    try
+                    {
+                        OnTick();
+                    }
+                    catch { }
+                    System.Threading.Thread.Sleep(CheckInterval);
+                }
+            });
+        }
+        /// <summary>
+        /// 每次Tick调用的逻辑
+        /// </summary>
+        protected abstract void OnTick();
+        /// <summary>
+        /// 卸载本内核
+        /// </summary>
+        public virtual void Unload()
+        {
+            IsAllRun = false;
+        }
+        /// <summary>
+        /// 设置主时间
+        /// </summary>
+        /// <param name="ts"></param>
+        public void SetTS(TimeSpan ts)
+        {
+            MT.SetTS(ts);
+            try
+            {
+                CheckPoints[CurrentStep].Current = ts;
+            }
+            catch { }
+        }
+        /// <summary>
+        /// 当按下Fx快捷键通知计时内核
+        /// </summary>
+        /// <param name="FunNo">对应F几</param>
+        public abstract void OnFunctionKey(int FunNo);
+        /// <summary>
+        /// 顶部豆豆增加
+        /// </summary>
+        /// <returns>返回空字符串为不增加，否则增加</returns>
         public abstract string GetAAction();
+        /// <summary>
+        /// 是否显示主时间左侧的红C
+        /// </summary>
+        /// <returns></returns>
         public abstract bool IsShowC();
+        /// <summary>
+        /// 是否需要屏蔽掉Ctrl+Enter按键组合
+        /// </summary>
+        /// <returns></returns>
         public abstract bool NeedBlockCtrlEnter();
 
+        /// <summary>
+        /// 本内核添加的Form控件
+        /// </summary>
         protected List<Control> CustomUIC = new List<Control>();
+        /// <summary>
+        /// 本内核添加的MenuItem控件
+        /// </summary>
         protected List<ToolStripMenuItem> CustomUIT = new List<ToolStripMenuItem>();
-        public virtual void UnloadUI(NewForm form)
+        /// <summary>
+        /// 本内核添加的Grender按钮
+        /// </summary>
+        protected List<GRender.GBtn> CustomUIGB = new List<GRender.GBtn>();
+        /// <summary>
+        /// 卸载本内核界面
+        /// </summary>
+        public virtual void UnloadUI()
         {
             if (CustomUIC != null)
             {
@@ -289,21 +659,93 @@ namespace Pal98Timer
                     t.GetCurrentParent().Items.Remove(t);
                 }
             }
+            if (CustomUIGB != null)
+            {
+                foreach (GRender.GBtn b in CustomUIGB)
+                {
+                    b.Remove();
+                }
+            }
         }
+        /// <summary>
+        /// 添加属于本内核的Grender按钮
+        /// </summary>
+        /// <param name="b"></param>
+        public void AddUIGB(GRender.GBtn b)
+        {
+            CustomUIGB.Add(b);
+        }
+        /// <summary>
+        /// 添加属于本内核的Form控件
+        /// </summary>
+        /// <param name="c"></param>
         public void AddUIC(Control c)
         {
             CustomUIC.Add(c);
         }
+        /// <summary>
+        /// 添加属于本内核的MenuItem控件
+        /// </summary>
+        /// <param name="c"></param>
         public void AddUIT(ToolStripMenuItem c)
         {
             CustomUIT.Add(c);
         }
-
-        public abstract void Unload();
+        /// <summary>
+        /// 获取崩溃信息（如果有的话）
+        /// </summary>
+        /// <returns></returns>
         public abstract string GetCriticalError();
+        /// <summary>
+        /// 获取文件的字符集
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <returns></returns>
+        public static Encoding GetFileEncodeType(string filename)
+        {
+            try
+            {
+                using (FileStream fs = new FileStream(filename, FileMode.Open, FileAccess.Read))
+                {
+                    BinaryReader br = new BinaryReader(fs);
+
+                    byte[] buffer = br.ReadBytes(2);
+
+                    if (buffer[0] >= 0xEF)
+                    {
+                        if (buffer[0] == 0xEF && buffer[1] == 0xBB)
+                        {
+                            return Encoding.UTF8;
+                        }
+                        else if (buffer[0] == 0xFE && buffer[1] == 0xFF)
+                        {
+                            return Encoding.BigEndianUnicode;
+                        }
+                        else if (buffer[0] == 0xFF && buffer[1] == 0xFE)
+                        {
+                            return Encoding.Unicode;
+                        }
+                        else
+                        {
+                            return Encoding.Default;
+                        }
+                    }
+                    else
+                    {
+                        return Encoding.Default;
+                    }
+                }
+            }
+            catch
+            {
+                return Encoding.Default;
+            }
+        }
     }
 
-
+    /// <summary>
+    /// 秒表
+    /// </summary>
     public class PTimer
     {
         protected TimeSpan __CurrentTS = new TimeSpan(0);
@@ -428,6 +870,9 @@ namespace Pal98Timer
 
 
     public delegate bool Checker();
+    /// <summary>
+    /// 时间节点
+    /// </summary>
     [Serializable]
     public class CheckPoint
     {
@@ -472,7 +917,21 @@ namespace Pal98Timer
             }
             return chas;
         }
+
+        private GRender.GItem _uiItem = null;
+        public void SetUIItem(GRender.GItem i)
+        {
+            _uiItem = i;
+        }
+        public void SetCurrentTSForLoad(TimeSpan ts)
+        {
+            Current = ts;
+            if (_uiItem != null) _uiItem.Cur = ts;
+        }
     }
+    /// <summary>
+    /// 时间节点（仅数据）
+    /// </summary>
     [Serializable]
     public class CheckPointNewer
     {

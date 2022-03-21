@@ -117,60 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="UITimer.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <metadata name="timer1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
-  <metadata name="menuStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>115, 17</value>
+  <metadata name="dlgColor.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>107, 17</value>
   </metadata>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        AAABAAEAQEAQAAAABABoCgAAFgAAACgAAABAAAAAgAAAAAEABAAAAAAAAAgAAAAAAAAAAAAAEAAAABAA
-        AAAAAAAAAACAAACAAAAAgIAAgAAAAIAAgACAgAAAwMDAAICAgAAAAP8AAP8AAAD//wD/AAAA/wD/AP//
-        AAD///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-        AAAAAHd3cAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAd3dwd3dwAAAAAAAAAAAAAAAAAAAAAAAAAA
-        AAAAAAAHd3d3d3d3dwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHd3d3d3d3d3cAAAAAAAzMzMzMzMzMzM
-        zMzMzMzMzMwHd3d3d3d3d3d3AAAAAAAMzMzMzMzMzMzMzP///////wd3d3d3d3d3d3cAAAAAAAzMzMzM
-        zMzMzMzMz//////wd3d3d3d3d3d3d3AAAAAAAMzMzMzMzMzMzMzP//////B3d3cHd3d3d3d3cAAAAAAA
-        DMzMzMzMzMzMzMz/////8Hd3d3B3d3d3d3dwAAAAAAAMzMzMzMzMzMzMzP////8Hd3d3dwd3d3d3d3cA
-        AAAAAADMzMzMzMzMzMzMz////wd3d3d3cHd3d3d3dwAAAAAAAMzMzMzMzMzMzMzP////Bwd3d3d3AAAA
-        d3cHAAAAAAAAzMzMzMzMzMzMzMz///8Hd3d3d3cHd3d3d3cAAAAAAADMzMzMzMzMzMzMzP///wd3d3d3
-        dwd3d3d3dwAAAAAAAAzMzMzMzMzMzMzM////8Hd3d3d3B3d3d3dwAAAAAAAADMzMzMzMzMzMzMz////w
-        d3d3d3cHd3d3d3AAAAAAAAAMzMzMzMzMzMzMzP////B3d3d3dwd3d3d3cAAAAAAAAAzMzMzMzMzMzMzM
-        /////wd3d3d3B3d3d3cAAAAAAAAADMzMzMzMzMzMzMzP////B3d3d3cHd3d3dwAAAAAAAAAMzMzMzMzM
-        zMzMzM/////wd3d3dwd3d3dwAAAAAAAAAADMzMzMzMzMzMzMz/////8Hd3d3d3d3dwAAAAAAAAAAAMzM
-        zMzMzMzMzMzP//////AHd3cHd3cAAAAAAAAAAAAAzMzMzMzMzMzMzM////////AAd3dwAAAAAAAAAAAA
-        AADMzMzMzMzMzMzMz/////////8AAAwAAAAAAAAAAAAAAMzMzMzMzMzMzMzP/////////////AAAAAAA
-        AAAAAAAADMzMzMzMzMzMzM/////////////8AAAAAAAAAAAAAAAMzMzMzMzMzMzMz/////////////wA
-        AAAAAAAAAAAAAAzMzMzMzMzMzMzP/////////////AAAAAAAAAAAAAAADMzMzMzMzMzMzM//////////
-        ////wAAAAAAAAAAAAAAMzMzMzMzMzMzMz//////////////AAAAAAAAAAAAAAAzMzMzMzMzMzMzM////
-        /////////8AAAAAAAAAAAAAADMzMzMzMzMzMzMz/////////////wAAAAAAAAAAAAAAMzMzMzMzMzMzM
-        zP/////////////AAAAAAAAAAAAAAAzMzMzMzMzMzMzM/////////////8AAAAAAAAAAAAAADMzMzMzM
-        zMzMzMzP////////////wAAAAAAAAAAAAAAMzMzMzMzMzMzMzM/////////////MAAAAAAAAAAAAAADM
-        zMzMzMzMzMzMz/////////////wAAAAAAAAAAAAAAMzMzMzMzMzMzMzP/////////////AAAAAAAAAAA
-        AAAAzMzMzMzMzMzMzM/////////////8AAAAAAAAAAAAAADMzMzMzMzMzMzMz//////////////AAAAA
-        AAAAAAAAAMzMzMzMzMzMzMzM/////////////8AAAAAAAAAAAAAADMzMzMzMzMzMzMz/////////////
-        /AAAAAAAAAAAAAAMzMzMzMzMzMzMzP/////////////8AAAAAAAAAAAAAADMzMzMzMzMzMzM////////
-        //////wAAAAAAAAAAAAAAMzMzMzMzMzMzMzP/////////////8AAAAAAAAAAAAAADMzMzMzMzMzMzMz/
-        ////////////wAAAAAAAAAAAAAAMzMzMzMzMzMzMzP/////////////AAAAAAAAAAAAAAAzMzMzMzMzM
-        zMzM/////////////8AAAAAAAAAAAAAAAMzMzMzMzMzMzMzP/////////////AwAAAAAAAAAAAAADMzM
-        zMzMzMzMzMzMzMzMzMzMzMzMwMDAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAzMAAAAAAAAAA
-        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAADMwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADMzMAAAA
-        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMzMzAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAM
-        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-        AAAAAAAAAAAAAAAAAAD////////////////////////////wf////////4AP///////+AAP///////wA
-        Af//////+AAA/8AAAAAAAAB/4AAAAAAAAH/gAAAAAAAAP/AAAAAAAAA/+AAAAAAAAD/4AAAAAAAAH/wA
-        AAAAAAAf/AAAAAAAAB/8AAAAAAAAH/wAAAAAAAAf/gAAAAAAAD/+AAAAAAAAP/4AAAAAAAA//gAAAAAA
-        AH/+AAAAAAAAf/4AAAAAAAD//wAAAAAAAf//AAAAAAAD//8AAAAAAA///wAAAAAAP///AAAAAAA///+A
-        AAAAAD///4AAAAAAP///gAAAAAA///+AAAAAAB///4AAAAAAH///gAAAAAAf//+AAAAAAB///4AAAAAA
-        H///gAAAAAAf//+AAAAAAB///4AAAAAAD///wAAAAAAP///AAAAAAA///8AAAAAAD///wAAAAAAH///A
-        AAAAAAf//+AAAAAAA///4AAAAAAD///wAAAAAAP///AAAAAAAf//+AAAAAAB///4AAAAAAH///gAAAAA
-        Af///AAAAAAAv//+AAAAAABX/////////8f/////////x/////////+D/////////4H/////////7///
-        /////////////////////////////////////////////////////////////w==
-</value>
-  </data>
+  <metadata name="dlgFont.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>210, 17</value>
+  </metadata>
+  <metadata name="dlgFile.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>307, 17</value>
+  </metadata>
 </root>

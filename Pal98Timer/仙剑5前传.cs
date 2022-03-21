@@ -15,25 +15,20 @@ namespace Pal98Timer
     public class 仙剑5前传 : TimerCore
     {
         private GameObject5Q GameObj = new GameObject5Q();
-        private bool IsAllRun = true;
         private string GMD5 = "none";
         public IntPtr PalHandle;
         public IntPtr GameWindowHandle = IntPtr.Zero;
         private int PID = -1;
         private Process PalProcess;
-        private int CheckInterval = 70;
         private bool _HasGameStart = false;
         private bool _IsFirstStarted = false;
-
-        private PTimer MT = new PTimer();
+        
         private PTimer ST = new PTimer();
         private PTimer LT = new PTimer();
         private DateTime InBattleTime;
         private DateTime OutBattleTime;
         public TimeSpan BattleLong = new TimeSpan(0);
-        private int HandPauseCount = 0;
         private bool IsPause = false;
-        private bool IsUIPause = false;
 
         private bool IsInBattle = false;
         private bool IsDoMoreEndBattle = true;
@@ -43,39 +38,11 @@ namespace Pal98Timer
 
         private string cryerror = "";
         private bool IsShowSpeed = false;
-
-        private TimeSpan WillClear;
-        private TimeSpan BestClear;
+        
         //private long PALBaseAddr;
-        public 仙剑5前传() : base()
+        public 仙剑5前传(GForm form) : base(form)
         {
-            try
-            {
-                BestFile = "best5q.txt";
-                this.OnCurrentStepChangedInner = delegate (int cstep)
-                {
-                    try
-                    {
-                        if (cstep > 0)
-                        {
-                            //CheckPoints[cstep].Current = MT.CurrentTSOnly;
-                            long cha = CheckPoints[cstep - 1].GetCHA() * 1000 * 10000;
-                            if ((BestClear.Ticks + cha) <= 0)
-                            {
-                                WillClear = BestClear.Add(new TimeSpan(0));
-                            }
-                            else
-                            {
-                                WillClear = BestClear.Add(new TimeSpan(cha));
-                            }
-                        }
-                    }
-                    catch
-                    { }
-                };
-            }
-            catch
-            { }
+            CoreName = "PAL5QSTM";
         }
         private string WillAppendNamedBattle = "";
         public override string GetAAction()
@@ -122,9 +89,13 @@ namespace Pal98Timer
             }
         }
 
-        public override string GetMainWatch()
+        public override TimeSpan GetMainWatch()
         {
-            return MT.ToString();
+            return MT.CurrentTS;
+        }
+        public override bool IsMainWatchStar()
+        {
+            return false;
         }
 
         public override string GetMoreInfo()
@@ -522,11 +493,8 @@ namespace Pal98Timer
                     return false;
                 }
             });
-
-            WillClear = GetBest("通关节点", new TimeSpan(2, 0, 38)).BestTS;
-            BestClear = GetBest("通关节点", new TimeSpan(2, 0, 38)).BestTS;
         }
-        public override void InitCheckPoints()
+        protected override void InitCheckPoints()
         {
             LoadBest();
             _CurrentStep = -1;
@@ -711,36 +679,8 @@ namespace Pal98Timer
                     return false;
                 }
             });
-
-            WillClear = GetBest("通关节点", new TimeSpan(3, 39, 4)).BestTS;
-            BestClear = GetBest("通关节点", new TimeSpan(3, 39, 4)).BestTS;
         }
-
-        private Button btnPause;
-        private void BtnPause_Click(object sender, EventArgs e)
-        {
-            if (!IsUIPause)
-            {
-                HandPauseCount++;
-            }
-            SetUIPause(!IsUIPause);
-            if (HandPauseCount > 0)
-            {
-                btnPause.Text = "暂停 " + HandPauseCount;
-            }
-        }
-        private void SetUIPause(bool isp)
-        {
-            IsUIPause = isp;
-            if (IsUIPause)
-            {
-                btnPause.ForeColor = Color.Red;
-            }
-            else
-            {
-                btnPause.ForeColor = Color.White;
-            }
-        }
+        
         public string GetRStr()
         {
             HObj exdata = new HObj();
@@ -765,66 +705,18 @@ namespace Pal98Timer
             return exdata.ToJson();
         }
         private ToolStripMenuItem btnGameSpeedShow;
-        public override void InitUI(NewForm form)
+        public override void InitUI()
         {
-            btnPause = form.NewMenuButton(0);
-            btnPause.Text = "暂停";
-            btnPause.Click += BtnPause_Click;
-
             var btnExportCurrent = form.NewMenuItem();
             btnExportCurrent.Text = "导出本次成绩";
             btnExportCurrent.Click += delegate (object sender, EventArgs e) {
-                DateTime now = DateTime.Now;
-                string filename = now.ToString("pal5Q_yyyyMMddHHmmss");
-                string ext = GetRStr();
-
-                try
-                {
-                    using (FileStream fileStream = new FileStream(filename + ".txt", FileMode.Create))
-                    {
-                        using (StreamWriter streamWriter = new StreamWriter(fileStream, Encoding.Default))
-                        {
-                            streamWriter.Write(ext);
-                            //streamWriter.Flush();
-                        }
-                    }
-                    form.Success("已将此次成绩保存至" + filename + ".txt");
-                }
-                catch (Exception ex)
-                {
-                    form.Error("保存失败：" + ex.Message);
-                }
+                ExportCurrent(GetRStr());
             };
 
             var btnSetCurrentToBest = form.NewMenuItem();
             btnSetCurrentToBest.Text = "设置本次成绩为最佳";
             btnSetCurrentToBest.Click += delegate (object sender, EventArgs e) {
-                DateTime now = DateTime.Now;
-                string filename = now.ToString("pal5Q_yyyyMMddHHmmss");
-                string ext = GetRStr();
-                try
-                {
-                    if (File.Exists("best5Q.txt"))
-                    {
-                        File.Move("best5Q.txt", "best" + filename + ".txt");
-                    }
-                    using (FileStream fileStream = new FileStream("best5Q.txt", FileMode.Create))
-                    {
-                        using (StreamWriter streamWriter = new StreamWriter(fileStream, Encoding.Default))
-                        {
-                            streamWriter.Write(ext);
-                            //streamWriter.Flush();
-                        }
-                    }
-                    if (form.Confirm("保存成功，确定要重置计时器么？"))
-                    {
-                        form._ResetAll();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    form.Error("保存失败：" + ex.Message);
-                }
+                SaveBest(GetRStr());
             };
 
             btnGameSpeedShow = form.NewMenuItem();
@@ -838,13 +730,10 @@ namespace Pal98Timer
             };
         }
 
-        public override void OnFunctionKey(int FunNo, NewForm form)
+        public override void OnFunctionKey(int FunNo)
         {
             switch (FunNo)
             {
-                case 9:
-                    BtnPause_Click(null, null);
-                    break;
                 case 12:
                     DebugForm df = new DebugForm();
                     df.ShowData(GameObj);
@@ -855,27 +744,14 @@ namespace Pal98Timer
 
         public override void Reset()
         {
+            base.Reset();
             MaxXWJ = 0;
-            HandPauseCount = 0;
             HasAlertMutiPal = false;
             ST.Stop();
             _IsFirstStarted = false;
             BattleLong = new TimeSpan(0);
-            InitCheckPoints();
-            MT.Reset();
+            //InitCheckPoints();
             ST.Reset();
-            btnPause.Text = "暂停";
-        }
-
-        public override void SetTS(TimeSpan ts)
-        {
-            MT.SetTS(ts);
-            CheckPoints[CurrentStep].Current = ts;
-        }
-
-        public override void Unload()
-        {
-            IsAllRun = false;
         }
 
         private string GetGameFilePath(string fn)
@@ -1059,123 +935,75 @@ namespace Pal98Timer
                 return true;
             }
         }
-        private void Checking()
+        protected override void OnTick()
         {
-            if (CurrentStep < 0 && CheckPoints.Count > 0)
+            if (GetPalHandle())
             {
-                CheckPoints[0].IsBegin = true;
-                CurrentStep = 0;
-            }
 
-            if (CurrentStep < CheckPoints.Count)
-            {
-                CheckPoints[CurrentStep].Current = MT.CurrentTSOnly;
-                if (CheckPoints[CurrentStep].Check())
+                JudgePause();
+                try
                 {
-                    CheckPoints[CurrentStep].Current = new TimeSpan(MT.CurrentTSOnly.Ticks);
-                    CheckPoints[CurrentStep].IsEnd = true;
-                    //CurrentStep++;
-                    int nextstep = CurrentStep + 1;
-                    if (nextstep >= CheckPoints.Count)
+                    FlushGameObject();
+                }
+                catch (Exception ex)
+                {
+                }
+
+
+                try
+                {
+                    if (GameObj.IsInBattle)
                     {
-                        OnLastCheckPointEnd();
+                        if (!IsInBattle)
+                        {
+                            BattleBegin();
+                        }
+                        IsInBattle = true;
+                        IsDoMoreEndBattle = true;
+                        Battling();
                     }
                     else
                     {
-                        CheckPoints[nextstep].IsBegin = true;
+                        if (!IsDoMoreEndBattle)
+                        {
+                            BattleEndMore();
+                            IsDoMoreEndBattle = true;
+                        }
+                        if (IsInBattle)
+                        {
+                            BattleEnd();
+                            IsDoMoreEndBattle = false;
+                        }
+                        IsInBattle = false;
                     }
-                    CurrentStep = nextstep;
+                }
+                catch { }
+
+                if (HasStartGame())
+                {
+                    ST.Stop();
+                    if (!_IsFirstStarted)
+                    {
+                        _IsFirstStarted = true;
+                    }
+                    MT.Start();
+                    Checking();
+                }
+                else
+                {
+                    MT.Stop();
                 }
             }
             else
             {
-                OnLastCheckPointEnd();
-            }
-        }
-        private void OnLastCheckPointEnd()
-        {
-            MT.Stop();
-        }
-        public override void Start()
-        {
-            FormEx.Run(delegate () {
-                while (IsAllRun)
+                _HasGameStart = false;
+                MT.Stop();
+
+                if (_IsFirstStarted)
                 {
-                    try
-                    {
-                        if (GetPalHandle())
-                        {
-
-                            JudgePause();
-                            try
-                            {
-                                FlushGameObject();
-                            }
-                            catch (Exception ex)
-                            {
-                            }
-
-
-                            try
-                            {
-                                if (GameObj.IsInBattle)
-                                {
-                                    if (!IsInBattle)
-                                    {
-                                        BattleBegin();
-                                    }
-                                    IsInBattle = true;
-                                    IsDoMoreEndBattle = true;
-                                    Battling();
-                                }
-                                else
-                                {
-                                    if (!IsDoMoreEndBattle)
-                                    {
-                                        BattleEndMore();
-                                        IsDoMoreEndBattle = true;
-                                    }
-                                    if (IsInBattle)
-                                    {
-                                        BattleEnd();
-                                        IsDoMoreEndBattle = false;
-                                    }
-                                    IsInBattle = false;
-                                }
-                            }
-                            catch { }
-
-                            if (HasStartGame())
-                            {
-                                ST.Stop();
-                                if (!_IsFirstStarted)
-                                {
-                                    _IsFirstStarted = true;
-                                }
-                                MT.Start();
-                                Checking();
-                            }
-                            else
-                            {
-                                MT.Stop();
-                            }
-                        }
-                        else
-                        {
-                            _HasGameStart = false;
-                            MT.Stop();
-
-                            if (_IsFirstStarted)
-                            {
-                                ST.Start();
-                            }
-                        }
-                    }
-                    catch
-                    { }
-                    Thread.Sleep(CheckInterval);
+                    ST.Start();
                 }
-            });
+            }
         }
         private int beforeMoney = 0;
         private void BattleBegin()
