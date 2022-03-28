@@ -879,31 +879,17 @@ namespace Pal98Timer
                 return true;
             }
         }
-        public string GetRStr()
+        protected override void FillMoreTimerData(HObj exdata)
         {
-            HObj exdata = new HObj();
-            exdata["Current"] = MT.ToString();
             exdata["Idle"] = ST.ToString();
             exdata["Lite"] = LT.ToString();
-            exdata["Step"] = CurrentStep;
             exdata["BeeHouse"] = MaxFC;
             exdata["BeeSheet"] = MaxFM;
             exdata["FireWorm"] = MaxHCG;
             exdata["DragonSword"] = MaxLQJ;
             exdata["BloodLink"] = MaxXLL;
             exdata["NightCloth"] = MaxYXY;
-            exdata["OSTime"] = DateTime.Now.Ticks.ToString();
             exdata["GMD5"] = GMD5;
-            HObj cps = new HObj();
-            foreach (CheckPoint c in CheckPoints)
-            {
-                HObj cur = new HObj();
-                cur["name"] = c.Name;
-                cur["des"] = c.NickName;
-                cur["time"] = TItem.TimeSpanToString(c.Current);
-                cps.Add(cur);
-            }
-            exdata["CheckPoints"] = cps;
 
             string namedbattles = "";
             foreach (string nmb in NamedBattleRes)
@@ -915,8 +901,6 @@ namespace Pal98Timer
                 namedbattles = namedbattles.Substring(0, namedbattles.Length - 1);
             }
             exdata["NamedBattles"] = namedbattles;
-
-            return exdata.ToJson();
         }
         private void CheckCheatBegin()
         {

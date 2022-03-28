@@ -332,27 +332,11 @@ namespace Pal98Timer
                 SaveBest(GetRStr());
             };
         }
-        public string GetRStr()
+        protected override void FillMoreTimerData(HObj exdata)
         {
-            HObj exdata = new HObj();
-            exdata["Current"] = MT.ToString();
             exdata["Idle"] = ST.ToString();
             exdata["Lite"] = LT.ToString();
-            exdata["Step"] = CurrentStep;
-            exdata["OSTime"] = DateTime.Now.Ticks.ToString();
             exdata["GMD5"] = GMD5;
-            HObj cps = new HObj();
-            foreach (CheckPoint c in CheckPoints)
-            {
-                HObj cur = new HObj();
-                cur["name"] = c.Name;
-                cur["des"] = c.NickName;
-                cur["time"] = TItem.TimeSpanToString(c.Current);
-                cps.Add(cur);
-            }
-            exdata["CheckPoints"] = cps;
-            
-            return exdata.ToJson();
         }
 
         private string GetGameFilePath(string fn)

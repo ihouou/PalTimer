@@ -217,7 +217,7 @@ namespace Pal98Timer
         /// <summary>
         /// 用于保存文件的内核名
         /// </summary>
-        protected string CoreName = "";
+        public string CoreName = "";
         /// <summary>
         /// 从最佳里加载的时间线
         /// </summary>
@@ -740,6 +740,100 @@ namespace Pal98Timer
             {
                 return Encoding.Default;
             }
+        }
+
+        /// <summary>
+        /// 当成功获取到云ID的时候触发
+        /// </summary>
+        public virtual void OnCloudOK()
+        { }
+        /// <summary>
+        /// 当云端通讯出现错误时触发
+        /// </summary>
+        public virtual void OnCloudFail()
+        { }
+        /// <summary>
+        /// 当云端正在获取ID的时候触发
+        /// </summary>
+        public virtual void OnCloudPending()
+        { }
+        /// <summary>
+        /// 是否自定义传输云端小数据
+        /// </summary>
+        /// <returns></returns>
+        public virtual bool CustomCloudLiteData()
+        {
+            return false;
+        }
+        /// <summary>
+        /// 是否自定义传输云端大数据
+        /// </summary>
+        /// <returns></returns>
+        public virtual bool CustomCloudBigData()
+        {
+            return false;
+        }
+        /// <summary>
+        /// 云端自动获取的小数据
+        /// </summary>
+        /// <returns></returns>
+        public virtual string ForCloudLiteData()
+        {
+            return MT.CurrentTS.Ticks.ToString();
+        }
+        /// <summary>
+        /// 云端自动获取的大数据
+        /// </summary>
+        /// <returns></returns>
+        public virtual string ForCloudBigData()
+        {
+            return GetTimerJson().Replace("\"", "'");
+        }
+        /// <summary>
+        /// 获取计时器当前的所有状态json
+        /// </summary>
+        /// <returns></returns>
+        public string GetTimerJson()
+        {
+            HObj exdata = new HObj();
+            exdata["Current"] = MT.ToString();
+            exdata["Step"] = CurrentStep;
+            exdata["OSTime"] = DateTime.Now.Ticks.ToString();
+            if (CheckPoints != null)
+            {
+                HObj cps = new HObj();
+                foreach (CheckPoint c in CheckPoints)
+                {
+                    HObj cur = new HObj();
+                    cur["name"] = c.Name;
+                    cur["des"] = c.NickName;
+                    cur["time"] = TItem.TimeSpanToString(c.Current);
+                    cps.Add(cur);
+                }
+                exdata["CheckPoints"] = cps;
+            }
+            FillMoreTimerData(exdata);
+            return exdata.ToJson();
+        }
+        /// <summary>
+        /// 在获取计时器当前所有状态json的时候，每个内核可以再自定义的填充一些数据
+        /// </summary>
+        /// <param name="data"></param>
+        protected virtual void FillMoreTimerData(HObj exdata)
+        { }
+        /// <summary>
+        /// GetTimerJson的兼容性替代
+        /// </summary>
+        /// <returns></returns>
+        public string GetRStr()
+        {
+            return GetTimerJson();
+        }
+        /// <summary>
+        /// 加载此内核能用的所有插件
+        /// </summary>
+        public void LoadPlugins()
+        {
         }
     }
 

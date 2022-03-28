@@ -6,6 +6,7 @@ using System.Drawing;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
+using PalCloudLib;
 
 namespace Pal98Timer
 {
@@ -25,6 +26,10 @@ namespace Pal98Timer
         public GRender.GBtn btnPause;
         private GRender.GBtn btnReset;
         private GRender.GBtn btnData;
+        private GRender.GBtn btnCloud;
+        private ContextMenuStrip cmCloud;
+        private ToolStripMenuItem btnCloudInit;
+        private PCloud cloud;
         public GForm():base(true)
         {
             _keyboardHook = new KeyboardLib();
@@ -43,10 +48,16 @@ namespace Pal98Timer
             rr.SetGBoard(bb);
             rr.SetBG(bgpath);
 
+            cmCloud= new ContextMenuStrip(this.components);
+            btnCloudInit = new ToolStripMenuItem();
+            btnCloudInit.Text = "重新验证";
+            btnCloudInit.Enabled = false;
+            cmCloud.Items.Add(btnCloudInit);
 
             btnPause = rr.AddBtn("暂停", delegate (int x, int y, GRender.GBtn btn) { UIPause(); }, 9);
             btnReset = rr.AddBtn("重置", delegate (int x, int y, GRender.GBtn btn) { btnReset_Click(null, null); }, 10);
             btnData = rr.AddBtn("功能", delegate (int x, int y, GRender.GBtn btn) { mnData.Show(lblFunArea, x, lblFunArea.Height); }, 20);
+            btnCloud = rr.AddBtn("云", delegate (int x, int y, GRender.GBtn btn) { cmCloud.Show(lblFunArea, x, lblFunArea.Height); }, 30);
 
             CoreBtns = new Dictionary<string, ToolStripMenuItem>();
             List<string> cores = TimerCore.GetAllCores();
@@ -87,12 +98,126 @@ namespace Pal98Timer
             {
                 LoadCore(new 仙剑98柔情(this));
             }
-
-
             
             rr.SetVersion(CurrentVersion);
 
             ShowKCEnable();
+        }
+        private void InitCloud()
+        {
+            if (cloud == null)
+            {
+                cloud = new PCloud(this.core.CoreName, delegate (int cid)
+                {
+                    if (cid < 0)
+                    {
+                        switch (cid)
+                        {
+                            case -2:
+                                btnCloud.Text = "正在初始化";
+                                UISetBtnCloudInitEnable(false);
+                                UI(delegate () {
+                                    core?.OnCloudPending();
+                                });
+                                break;
+                            case -3:
+                                btnCloud.Text = "云";
+                                UISetBtnCloudInitEnable(true);
+                                UI(delegate () {
+                                    core?.OnCloudFail();
+                                    Error(cloud.LastError);
+                                });
+                                break;
+                            default:
+                                btnCloud.Text = "云";
+                                UISetBtnCloudInitEnable(true);
+                                UI(delegate () {
+                                    core?.OnCloudFail();
+                                });
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        btnCloud.Text = "云ID:" + cid;
+                        UISetBtnCloudInitEnable(false);
+                        UI(delegate () {
+                            core?.OnCloudOK();
+                        });
+                    }
+                });
+                cloud.OnCloudTickBefore = delegate (int NextDo)
+                  {
+                      switch (NextDo)
+                      {
+                          case 0:
+                              if (!core.CustomCloudLiteData())
+                              {
+                                  cloud.PutLiteData(core.ForCloudLiteData());
+                              }
+                              break;
+                          case 1:
+                              if (!core.CustomCloudBigData())
+                              {
+                                  cloud.PutBigData(core.ForCloudBigData());
+                              }
+                              break;
+                          case 2:
+                              if (!core.CustomCloudBigData())
+                              {
+                                  cloud.PutBigData(core.ForCloudBigData());
+                              }
+                              if (!core.CustomCloudLiteData())
+                              {
+                                  cloud.PutLiteData(core.ForCloudLiteData());
+                              }
+                              break;
+                      }
+                  };
+                cloud.Start();
+                btnCloudInit.Click += delegate(object sender, EventArgs e) {
+                    InitCloud();
+                };
+            }
+            else
+            {
+                cloud.Reset(this.core.CoreName);
+                cloud.Start();
+            }
+        }
+        public int CloudID()
+        {
+            if (cloud == null) return int.MinValue;
+            return cloud.CloudID;
+        }
+        public void PutLiteData(string data)
+        {
+            if (cloud == null) return;
+            cloud.PutLiteData(data);
+        }
+        public void PutBigData(string data)
+        {
+            if (cloud == null) return;
+            cloud.PutBigData(data);
+        }
+
+        private void UISetBtnCloudInitEnable(bool isEnable)
+        {
+            UI(delegate () {
+                if (btnCloudInit == null) return;
+                btnCloudInit.Enabled = isEnable;
+            });
+        }
+        public void OUpload(string LocalFileName, string RemoteFileName = "")
+        {
+            if (cloud == null || cloud.CloudID < 0) throw new Exception("版本不匹配");
+            cloud.OUpload(LocalFileName, RemoteFileName);
+        }
+
+        public void ODownload(string RemoteFileName, string LocalFileName)
+        {
+            if (cloud == null || cloud.CloudID < 0) throw new Exception("版本不匹配");
+            cloud.ODownload(RemoteFileName, LocalFileName);
         }
 
         private int HandPauseCount = 0;
@@ -133,6 +258,7 @@ namespace Pal98Timer
 
         public void LoadCore(TimerCore core)
         {
+            core.LoadPlugins();
             //Success(core.GetType().Name);
             if (this.core != null)
             {
@@ -166,6 +292,7 @@ namespace Pal98Timer
             }
             catch { }
             this.core = core;
+            InitCloud();
             this.core.LoadCore = LoadCore;
             this.core.InitUI();
             this.core.OnCurrentStepChanged = delegate (int curidx)
@@ -579,6 +706,10 @@ namespace Pal98Timer
             mnData.Items.Add(btn);
             core.AddUIT(btn);
             return btn;
+        }
+        public ToolStripMenuItem NewCloudMenuItem()
+        {
+            return NewMenuItem(cmCloud);
         }
     }
 

@@ -16,9 +16,7 @@ namespace Pal98Timer
 {
     public class 仙剑98官方Steam : TimerCore
     {
-        public PCloud cloud;
         private string GMD5 = "none";
-        private string CloudID = "";
         public IntPtr PalHandle;
         public IntPtr GameWindowHandle = IntPtr.Zero;
         private int PID = -1;
@@ -32,8 +30,6 @@ namespace Pal98Timer
         private DateTime InBattleTime;
         private DateTime OutBattleTime;
         public TimeSpan BattleLong = new TimeSpan(0);
-        private bool IsPostRank = false;
-        private bool IsPostRankForce = false;
         private bool HasUnCheated = false;
         private bool IsInUnCheat = false;
 
@@ -63,12 +59,6 @@ namespace Pal98Timer
         public 仙剑98官方Steam(GForm form) : base(form)
         {
             CoreName = "PAL98STM";
-            try
-            {
-                cloud = new PCloud();
-            }
-            catch
-            { }
         }
 
         protected override void InitCheckPoints()
@@ -505,11 +495,6 @@ namespace Pal98Timer
             NamedBattleRes = new List<string>();
         }
         
-        private GRender.GBtn btnCloud;
-        private ContextMenuStrip cmCloud;
-
-        private ToolStripMenuItem btnCloudInit;
-        private ToolStripMenuItem btnPostRank;
         private ToolStripMenuItem btnCloudSave;
         private ToolStripMenuItem btnCloudLoad;
         private ToolStripMenuItem btnLive;
@@ -613,38 +598,9 @@ namespace Pal98Timer
                     GameObj.ResetGameSpeed();
                 }
             };
-
-            btnCloud = form.NewMenuButton(100);
-            btnCloud.Text = "云";
-            //btnCloud.ForeColor = Color.White;
-
-            cmCloud = form.NewMenu(btnCloud);
-
-            btnCloudInit = form.NewMenuItem(cmCloud);
-            btnCloudInit.Text = "验证初始化";
-            btnCloudInit.Click += delegate (object sender, EventArgs e)
-            {
-                InitCloud(form);
-            };
-
-            btnPostRank = form.NewMenuItem(cmCloud);
-            btnPostRank.Text = "开启成绩上传";
-            btnPostRank.Enabled = false;
-            btnPostRank.Click += delegate (object sender, EventArgs e)
-            {
-                if (IsPostRank)
-                {
-                    IsPostRank = false;
-                    btnPostRank.Text = "开启成绩上传";
-                }
-                else
-                {
-                    IsPostRank = true;
-                    btnPostRank.Text = "停止成绩上传";
-                }
-            };
-
-            btnCloudSave = form.NewMenuItem(cmCloud);
+            
+            
+            btnCloudSave = form.NewCloudMenuItem();
             btnCloudSave.Text = "云存档";
             btnCloudSave.Enabled = false;
             btnCloudSave.Click += delegate (object sender, EventArgs e) {
@@ -661,7 +617,7 @@ namespace Pal98Timer
                     {
                         try
                         {
-                            cloud.OUpload(System.Environment.CurrentDirectory + "\\" + fn);
+                            form.OUpload(System.Environment.CurrentDirectory + "\\" + fn);
                             if (File.Exists(System.Environment.CurrentDirectory + "\\" + fn))
                             {
                                 File.Delete(System.Environment.CurrentDirectory + "\\" + fn);
@@ -689,7 +645,7 @@ namespace Pal98Timer
                 }, fn);
             };
 
-            btnCloudLoad = form.NewMenuItem(cmCloud);
+            btnCloudLoad = form.NewCloudMenuItem();
             btnCloudLoad.Text = "云读档";
             btnCloudLoad.Enabled = false;
             btnCloudLoad.Click += delegate (object sender, EventArgs e) {
@@ -698,8 +654,6 @@ namespace Pal98Timer
                 });
                 dw.ShowDialog(form);
             };
-
-            InitCloud(form);
         }
 
         private void BtnSwitch_Click(object sender, EventArgs e)
@@ -815,7 +769,7 @@ namespace Pal98Timer
             SI.ins.XLL = MaxXLL.ToString();
             SI.ins.YXY = MaxYXY.ToString();
             SI.ins.LQJ = MaxLQJ.ToString();
-            SI.ins.CloudID = CloudID;
+            SI.ins.CloudID = form.CloudID().ToString();
             SI.ins.CurrentStep = CurrentStep;
             SI.ins.cps = CheckPoints;
             SI.ins.Luck = MConfig.ins.Luck();
@@ -1053,7 +1007,6 @@ namespace Pal98Timer
                     {
                         return false;
                     }
-                    PostCloudRank();
                     return true;
                 }
                 else
@@ -1070,145 +1023,17 @@ namespace Pal98Timer
                 return true;
             }
         }
-        private void InitCloud(FormEx f)
+        protected override void FillMoreTimerData(HObj exdata)
         {
-            //f.SetControlEnabled(btnCloud, false);
-            btnCloud.Enabled = false;
-            btnCloud.Text = "初始化中...";
-            FormEx.Run(delegate ()
-            {
-                string initres = "";
-                int tmp = 0;
-                try
-                {
-                    cloud.Init();
-
-                    PCloudQS qs = new PCloudQS();
-                    qs.Add("do", "fid");
-                    qs.Add("t", DateTime.Now.Ticks.ToString());
-                    qs.Add("m", MT.CurrentTS.Ticks.ToString());
-                    qs.Add("s", ST.CurrentTS.Ticks.ToString());
-                    qs.Add("l", LT.CurrentTS.Ticks.ToString());
-                    initres = cloud.CloudGet(qs);
-                }
-                catch (Exception ex)
-                {
-                    initres = ex.Message;
-                }
-                if (!int.TryParse(initres, out tmp))
-                {
-                    CloudID = "";
-                    SI.ins.CloudID = "云端未认证";
-                    f.UI(delegate ()
-                    {
-                        MessageBox.Show("初始化云端失败：" + initres, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        //f.SetControlEnabled(btnCloud, true);
-                        btnCloud.Enabled = true;
-                        btnCloudInit.Enabled = true;
-                        btnCloud.Text = "云";
-                    });
-                }
-                else
-                {
-                    CloudID = initres;
-                    SI.ins.CloudID = "云ID: " + CloudID;
-                    PostCloudRank();
-                    BeginCloud();
-                    f.UI(delegate ()
-                    {
-                        btnCloudInit.Enabled = false;
-                        //f.SetControlEnabled(btnCloud, true);
-                        btnCloud.Enabled = true;
-                        btnCloudSave.Enabled = true;
-                        btnCloudLoad.Enabled = true;
-                        btnCloud.Text = "云ID:" + CloudID;
-                    });
-                }
-            });
-        }
-        private void BeginCloud()
-        {
-            FormEx.Run(delegate () {
-                while (CloudID != "")
-                {
-                    try
-                    {
-                        PCloudQS qs = new PCloudQS();
-                        qs.Add("do", "hb");
-                        qs.Add("id", CloudID);
-                        qs.Add("t", DateTime.Now.Ticks.ToString());
-                        qs.Add("m", MT.CurrentTS.Ticks.ToString());
-                        qs.Add("s", ST.CurrentTS.Ticks.ToString());
-                        qs.Add("l", LT.CurrentTS.Ticks.ToString());
-                        string ret = cloud.CloudGet(qs);
-                        if (!IsPostRankForce)
-                        {
-                            if (ret == "F")
-                            {
-                                IsPostRankForce = true;
-                                PostCloudRank();
-                            }
-                        }
-                        else
-                        {
-                            if (ret == "C")
-                            {
-                                IsPostRankForce = false;
-                            }
-                        }
-                    }
-                    catch { }
-                    Thread.Sleep(1000);
-                }
-            });
-        }
-        private void PostCloudRank()
-        {
-            if (CloudID != "" && (IsPostRankForce || IsPostRank))
-            {
-                FormEx.Run(delegate ()
-                {
-                    string ext = GetRStr();
-                    try
-                    {
-                        PCloudQS qs = new PCloudQS();
-                        qs.Add("do", "cp");
-                        qs.Add("id", CloudID);
-                        qs.Add("t", DateTime.Now.Ticks.ToString());
-                        qs.Add("m", MT.CurrentTS.Ticks.ToString());
-                        qs.Add("s", ST.CurrentTS.Ticks.ToString());
-                        qs.Add("l", LT.CurrentTS.Ticks.ToString());
-                        cloud.CloudPost(qs, "data=" + ext.Replace("\"", "'") + "");
-                    }
-                    catch { }
-                });
-            }
-        }
-        public string GetRStr()
-        {
-            HObj exdata = new HObj();
-            exdata["Current"] = MT.ToString();
             exdata["Idle"] = ST.ToString();
             exdata["Lite"] = LT.ToString();
-            exdata["Step"] = CurrentStep;
             exdata["BeeHouse"] = MaxFC;
             exdata["BeeSheet"] = MaxFM;
             exdata["FireWorm"] = MaxHCG;
             exdata["DragonSword"] = MaxLQJ;
             exdata["BloodLink"] = MaxXLL;
             exdata["NightCloth"] = MaxYXY;
-            exdata["OSTime"] = DateTime.Now.Ticks.ToString();
             exdata["GMD5"] = GMD5;
-            HObj cps = new HObj();
-            foreach (CheckPoint c in CheckPoints)
-            {
-                HObj cur = new HObj();
-                cur["name"] = c.Name;
-                cur["des"] = c.NickName;
-                cur["time"] = TItem.TimeSpanToString(c.Current);
-                cps.Add(cur);
-            }
-            exdata["CheckPoints"] = cps;
 
             string namedbattles = "";
             foreach (string nmb in NamedBattleRes)
@@ -1220,8 +1045,6 @@ namespace Pal98Timer
                 namedbattles = namedbattles.Substring(0, namedbattles.Length - 1);
             }
             exdata["NamedBattles"] = namedbattles;
-
-            return exdata.ToJson();
         }
         private void CheckCheatBegin()
         {
@@ -1551,17 +1374,9 @@ namespace Pal98Timer
         };
         private string GetTimeName()
         {
-            if (CloudID == "") throw new Exception("云功能没有初始化");
-            string res = "";
+            if (form.CloudID() < 0) throw new Exception("云功能没有初始化");
+            string res = form.CloudID().ToString().PadLeft(3, '0');
             DateTime now = DateTime.Now;
-            if (CloudID.Length < 2)
-            {
-                res = "0" + CloudID;
-            }
-            else
-            {
-                res = CloudID;
-            }
             res += tnbase[now.Month] + tnbase[now.Day] + tnbase[now.Hour] + tnbase[now.Minute] + tnbase[now.Second];
             return res;
         }
@@ -1573,7 +1388,7 @@ namespace Pal98Timer
                 {
                     string key = code + ".bin";
                     string localname = System.Environment.CurrentDirectory + "\\" + key;
-                    cloud.ODownload(key, localname);
+                    form.ODownload(key, localname);
                     f.UI(delegate ()
                     {
                         try
@@ -1636,7 +1451,6 @@ namespace Pal98Timer
         public override void Unload()
         {
             base.Unload();
-            CloudID = "";
             StopDataServer();
         }
         private void StopDataServer()
@@ -1669,6 +1483,25 @@ namespace Pal98Timer
         public override bool NeedBlockCtrlEnter()
         {
             return false;
+        }
+        public override void OnCloudOK()
+        {
+            btnCloudSave.Enabled = true;
+            btnCloudLoad.Enabled = true;
+        }
+        public override void OnCloudFail()
+        {
+            btnCloudSave.Enabled = false;
+            btnCloudLoad.Enabled = false;
+        }
+        public override void OnCloudPending()
+        {
+            btnCloudSave.Enabled = false;
+            btnCloudLoad.Enabled = false;
+        }
+        public override string ForCloudLiteData()
+        {
+            return MT.CurrentTS.Ticks.ToString() + "," + ST.CurrentTS.Ticks.ToString() + "," + LT.CurrentTS.Ticks.ToString();
         }
     }
 
