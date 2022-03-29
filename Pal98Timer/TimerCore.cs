@@ -464,7 +464,7 @@ namespace Pal98Timer
                     int nextstep = CurrentStep + 1;
                     if (nextstep >= CheckPoints.Count)
                     {
-                        MT.Stop();
+                        OnCheckPointEnd();
                     }
                     else
                     {
@@ -476,10 +476,13 @@ namespace Pal98Timer
             }
             else
             {
-                MT.Stop();
+                OnCheckPointEnd();
             }
         }
-
+        protected virtual void OnCheckPointEnd()
+        {
+            MT.Stop();
+        }
         /// <summary>
         /// 是否在UI层面上暂停计时（比如手动暂停）
         /// </summary>
@@ -523,7 +526,10 @@ namespace Pal98Timer
         /// 预计通关
         /// </summary>
         /// <returns></returns>
-        public abstract string GetPointEnd();
+        public virtual string GetPointEnd()
+        {
+            return TimeSpanToStringLite(WillClear);
+        }
         /// <summary>
         /// 主时间右上方小时间
         /// </summary>
@@ -533,7 +539,10 @@ namespace Pal98Timer
         /// 主时间
         /// </summary>
         /// <returns></returns>
-        public abstract TimeSpan GetMainWatch();
+        public virtual TimeSpan GetMainWatch()
+        {
+            return MT.CurrentTS;
+        }
         /// <summary>
         /// 主时间是否标星花
         /// </summary>

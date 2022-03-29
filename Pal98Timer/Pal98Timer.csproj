@@ -227,6 +227,7 @@
     <Compile Include="wapi\Enums.cs" />
     <Compile Include="wapi\Structs.cs" />
     <Compile Include="wapi\Win32API.cs" />
+    <Compile Include="自定义.cs" />
     <EmbeddedResource Include="DebugForm.resx">
       <DependentUpon>DebugForm.cs</DependentUpon>
     </EmbeddedResource>

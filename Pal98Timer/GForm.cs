@@ -449,7 +449,6 @@ namespace Pal98Timer
                 case Keys.F2:
                     if (hookStruct.flags >= 128)
                     {
-                        //btnReset_Click(null, null);
                         core.OnFunctionKey(2);
                     }
                     break;
@@ -492,14 +491,15 @@ namespace Pal98Timer
                 case Keys.F9:
                     if (hookStruct.flags >= 128)
                     {
-                        //core.OnFunctionKey(9);
                         UIPause();
+                        core.OnFunctionKey(9);
                     }
                     break;
                 case Keys.F10:
                     if (hookStruct.flags >= 128)
                     {
                         btnReset_Click(null, null);
+                        core.OnFunctionKey(10);
                     }
                     break;
                 case Keys.F11:
@@ -510,6 +510,7 @@ namespace Pal98Timer
                             kc.IsEnable = !kc.IsEnable;
                             ShowKCEnable();
                         }
+                        core.OnFunctionKey(11);
                     }
                     break;
                 case Keys.F12:
