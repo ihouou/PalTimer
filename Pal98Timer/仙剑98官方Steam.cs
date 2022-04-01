@@ -932,7 +932,7 @@ namespace Pal98Timer
         
         private void FlushGameObject()
         {
-            GameObj.Flush(PalHandle, PID, PALBaseAddr);
+            GameObj.Flush(PalHandle, PID, 0, PALBaseAddr);
         }
         private Pal98SteamBattleItemWatch biw = new Pal98SteamBattleItemWatch();
         private string CurrentNamedBattle = "";
@@ -1505,7 +1505,7 @@ namespace Pal98Timer
         }
     }
 
-    public class Pal98SteamGameObject
+    public class Pal98SteamGameObject:MemoryReadBase
     {
         //public const long BaseAddrPTR = 0x00428000;
         public const long MoneyOffset = 0x486044;//!
@@ -1981,7 +1981,7 @@ namespace Pal98Timer
             return "";
         }
 
-        public void Flush(IntPtr handle, int PID,long PALBaseAddr)
+        public override void Flush(IntPtr handle, int PID,int b32,long PALBaseAddr)
         {
             if (PID != this.PID)
             {
@@ -2112,19 +2112,7 @@ namespace Pal98Timer
             }
             Enemies = tmp;
         }
-
-        public static bool ArrayContains<T>(T[] array, T ele)
-        {
-            foreach (T e in array)
-            {
-                if (e.Equals(ele))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
+        
         public short GetItemCount(short ItemID)
         {
             if (Items.ContainsKey(ItemID))
@@ -2136,52 +2124,7 @@ namespace Pal98Timer
                 return 0;
             }
         }
-
-        public static T Readm<T>(IntPtr handle, long addr)
-        {
-            T res = default(T);
-            Type t = typeof(T);
-            int size = System.Runtime.InteropServices.Marshal.SizeOf(t);
-            byte[] buffer = new byte[size];
-            int sizeofRead;
-
-            if (Kernel32.ReadProcessMemory(handle, new IntPtr(addr), buffer, size, out sizeofRead))
-            {
-                if (t == typeof(short))
-                {
-                    short tmp = BitConverter.ToInt16(buffer, 0);
-                    res = (T)Convert.ChangeType(tmp, t);
-                }
-                else if (t == typeof(ushort))
-                {
-                    ushort tmp = BitConverter.ToUInt16(buffer, 0);
-                    res = (T)Convert.ChangeType(tmp, t);
-                }
-                else if (t == typeof(int))
-                {
-                    int tmp = BitConverter.ToInt32(buffer, 0);
-                    res = (T)Convert.ChangeType(tmp, t);
-                }
-                else if (t == typeof(long))
-                {
-                    long tmp = BitConverter.ToInt64(buffer, 0);
-                    res = (T)Convert.ChangeType(tmp, t);
-                }
-                else if (t == typeof(bool))
-                {
-                    bool tmp = BitConverter.ToBoolean(buffer, 0);
-                    res = (T)Convert.ChangeType(tmp, t);
-                }
-                else
-                {
-                    string tmp = BitConverter.ToString(buffer, 0);
-                    res = (T)Convert.ChangeType(tmp, t);
-                }
-            }
-
-            return res;
-        }
-
+        
         public void SetFastSpeakIfCan() {
             byte[] readbuf = new byte[3];
             int sizeofRead;
@@ -2213,9 +2156,9 @@ namespace Pal98Timer
 
         public Pal98SteamEnemyObject(IntPtr handle, long HeadAddr)
         {
-            ID = Pal98SteamGameObject.Readm<short>(handle, HeadAddr + IDOffset);
+            ID = MemoryReadBase.Readm<short>(handle, HeadAddr + IDOffset);
             //ID -= 398;
-            Blood = Pal98SteamGameObject.Readm<short>(handle, HeadAddr + BloodOffset);
+            Blood = MemoryReadBase.Readm<short>(handle, HeadAddr + BloodOffset);
         }
     }
 

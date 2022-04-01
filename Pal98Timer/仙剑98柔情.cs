@@ -944,7 +944,7 @@ namespace Pal98Timer
             short lasty = GameObj.Y;
             short lastarea = GameObj.Area;
 
-            GameObj.Flush(PalHandle, PID);
+            GameObj.Flush(PalHandle, PID, 0, 0);
 
             try
             {
@@ -1615,7 +1615,7 @@ namespace Pal98Timer
         }
     }
 
-    public class GameObject
+    public class GameObject:MemoryReadBase
     {
         public const int BaseAddrPTR = 0x00428000;
         public const int MoneyOffset = 0x2B4;
@@ -2085,7 +2085,7 @@ namespace Pal98Timer
             return "";
         }
 
-        public void Flush(IntPtr handle, int PID)
+        public override void Flush(IntPtr handle, int PID,int b32,long b64)
         {
             if (PID != this.PID)
             {
@@ -2158,19 +2158,7 @@ namespace Pal98Timer
             }
             Enemies = tmp;
         }
-
-        public static bool ArrayContains<T>(T[] array, T ele)
-        {
-            foreach (T e in array)
-            {
-                if (e.Equals(ele))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
+        
         public short GetItemCount(short ItemID)
         {
             if (Items.ContainsKey(ItemID))
@@ -2181,46 +2169,6 @@ namespace Pal98Timer
             {
                 return 0;
             }
-        }
-
-        public static T Readm<T>(IntPtr handle, int addr)
-        {
-            T res = default(T);
-            Type t = typeof(T);
-            int size = System.Runtime.InteropServices.Marshal.SizeOf(t);
-            byte[] buffer = new byte[size];
-            int sizeofRead;
-
-            if (Kernel32.ReadProcessMemory(handle, new IntPtr(addr), buffer, size, out sizeofRead))
-            {
-                if (t == typeof(short))
-                {
-                    short tmp = BitConverter.ToInt16(buffer, 0);
-                    res = (T)Convert.ChangeType(tmp, t);
-                }
-                else if (t == typeof(int))
-                {
-                    int tmp = BitConverter.ToInt32(buffer, 0);
-                    res = (T)Convert.ChangeType(tmp, t);
-                }
-                else if (t == typeof(long))
-                {
-                    long tmp = BitConverter.ToInt64(buffer, 0);
-                    res = (T)Convert.ChangeType(tmp, t);
-                }
-                else if (t == typeof(bool))
-                {
-                    bool tmp = BitConverter.ToBoolean(buffer, 0);
-                    res = (T)Convert.ChangeType(tmp, t);
-                }
-                else
-                {
-                    string tmp = BitConverter.ToString(buffer, 0);
-                    res = (T)Convert.ChangeType(tmp, t);
-                }
-            }
-
-            return res;
         }
     }
 
@@ -2252,7 +2200,7 @@ namespace Pal98Timer
                 {
                     File.Delete(FileName);
                 }
-                int BaseAddr = GameObject.Readm<int>(handle, GameObject.BaseAddrPTR);
+                int BaseAddr = MemoryReadBase.Readm<int>(handle, GameObject.BaseAddrPTR);
 
                 using (FileStream fileStream = new FileStream(FileName, FileMode.Append))
                 {
@@ -2270,7 +2218,7 @@ namespace Pal98Timer
                             }
                             else
                             {
-                                cur[3] = GameObject.Readm<int>(handle, BaseAddr + cur[0]);
+                                cur[3] = MemoryReadBase.Readm<int>(handle, BaseAddr + cur[0]);
                             }
                             byte[] tmp = Readb(handle, cur[3] + cur[4], cur[2]);
                             Writer.Write(tmp);
@@ -2290,7 +2238,7 @@ namespace Pal98Timer
         {
             byte[] res = BitConverter.GetBytes((short)1);
 
-            int BaseAddr = GameObject.Readm<int>(handle, GameObject.BaseAddrPTR);
+            int BaseAddr = MemoryReadBase.Readm<int>(handle, GameObject.BaseAddrPTR);
             for (int i = 0; i < Items.Length; ++i)
             {
                 int[] cur = Items[i];
@@ -2300,7 +2248,7 @@ namespace Pal98Timer
                 }
                 else
                 {
-                    cur[3] = GameObject.Readm<int>(handle, BaseAddr + cur[0]);
+                    cur[3] = MemoryReadBase.Readm<int>(handle, BaseAddr + cur[0]);
                 }
                 byte[] tmp = Readb(handle, cur[3] + cur[4], cur[2]);
                 Array.Resize(ref res, res.Length + tmp.Length);
@@ -2334,8 +2282,8 @@ namespace Pal98Timer
 
         public EnemyObject(IntPtr handle, int HeadAddr)
         {
-            ID = GameObject.Readm<short>(handle, HeadAddr + IDOffset);
-            Blood = GameObject.Readm<short>(handle, HeadAddr + BloodOffset);
+            ID = MemoryReadBase.Readm<short>(handle, HeadAddr + IDOffset);
+            Blood = MemoryReadBase.Readm<short>(handle, HeadAddr + BloodOffset);
         }
     }
 

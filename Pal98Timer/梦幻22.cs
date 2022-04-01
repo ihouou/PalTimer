@@ -788,7 +788,7 @@ namespace Pal98Timer
 
         private void FlushGameObject()
         {
-            GameObj.Flush(PalHandle, PID, PALBaseAddr);
+            GameObj.Flush(PalHandle, PID, PALBaseAddr,0);
         }
         private Dream22BattleItemWatch biw = new Dream22BattleItemWatch();
         private string CurrentNamedBattle = "";
@@ -1160,7 +1160,7 @@ namespace Pal98Timer
     }
 
 
-    public class GameObjectDream22
+    public class GameObjectDream22:MemoryReadBase
     {
         public const int BaseAddrPTR = 0x0044129C;
         public const int MoneyOffset = 0x4468;
@@ -1454,7 +1454,7 @@ namespace Pal98Timer
             return "";
         }
 
-        public void Flush(IntPtr handle, int PID,int SDLBaseAddr)
+        public override void Flush(IntPtr handle, int PID,int SDLBaseAddr,long b)
         {
             if (PID != this.PID)
             {
@@ -1537,18 +1537,6 @@ namespace Pal98Timer
             Enemies = tmp;
         }
 
-        public static bool ArrayContains<T>(T[] array, T ele)
-        {
-            foreach (T e in array)
-            {
-                if (e.Equals(ele))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
         public short GetItemCount(short ItemID)
         {
             if (Items.ContainsKey(ItemID))
@@ -1559,46 +1547,6 @@ namespace Pal98Timer
             {
                 return 0;
             }
-        }
-
-        public static T Readm<T>(IntPtr handle, int addr)
-        {
-            T res = default(T);
-            Type t = typeof(T);
-            int size = System.Runtime.InteropServices.Marshal.SizeOf(t);
-            byte[] buffer = new byte[size];
-            int sizeofRead;
-
-            if (Kernel32.ReadProcessMemory(handle, new IntPtr(addr), buffer, size, out sizeofRead))
-            {
-                if (t == typeof(short))
-                {
-                    short tmp = BitConverter.ToInt16(buffer, 0);
-                    res = (T)Convert.ChangeType(tmp, t);
-                }
-                else if (t == typeof(int))
-                {
-                    int tmp = BitConverter.ToInt32(buffer, 0);
-                    res = (T)Convert.ChangeType(tmp, t);
-                }
-                else if (t == typeof(long))
-                {
-                    long tmp = BitConverter.ToInt64(buffer, 0);
-                    res = (T)Convert.ChangeType(tmp, t);
-                }
-                else if (t == typeof(bool))
-                {
-                    bool tmp = BitConverter.ToBoolean(buffer, 0);
-                    res = (T)Convert.ChangeType(tmp, t);
-                }
-                else
-                {
-                    string tmp = BitConverter.ToString(buffer, 0);
-                    res = (T)Convert.ChangeType(tmp, t);
-                }
-            }
-
-            return res;
         }
     }
 
@@ -1614,8 +1562,8 @@ namespace Pal98Timer
 
         public EnemyObjectDream22(IntPtr handle, int HeadAddr)
         {
-            ID = GameObject.Readm<short>(handle, HeadAddr + IDOffset);
-            Blood = GameObject.Readm<short>(handle, HeadAddr + BloodOffset);
+            ID = MemoryReadBase.Readm<short>(handle, HeadAddr + IDOffset);
+            Blood = MemoryReadBase.Readm<short>(handle, HeadAddr + BloodOffset);
         }
     }
 

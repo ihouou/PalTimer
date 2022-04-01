@@ -117,14 +117,22 @@ namespace Pal98Timer
                                 btnCloud.Text = "正在初始化";
                                 UISetBtnCloudInitEnable(false);
                                 UI(delegate () {
-                                    core?.OnCloudPending();
+                                    try
+                                    {
+                                        core?.OnCloudPending();
+                                    }
+                                    catch { }
                                 });
                                 break;
                             case -3:
                                 btnCloud.Text = "云";
                                 UISetBtnCloudInitEnable(true);
                                 UI(delegate () {
-                                    core?.OnCloudFail();
+                                    try
+                                    {
+                                        core?.OnCloudFail();
+                                    }
+                                    catch { }
                                     Error(cloud.LastError);
                                 });
                                 break;
@@ -132,7 +140,11 @@ namespace Pal98Timer
                                 btnCloud.Text = "云";
                                 UISetBtnCloudInitEnable(true);
                                 UI(delegate () {
-                                    core?.OnCloudFail();
+                                    try
+                                    {
+                                        core?.OnCloudFail();
+                                    }
+                                    catch { }
                                 });
                                 break;
                         }
@@ -142,7 +154,11 @@ namespace Pal98Timer
                         btnCloud.Text = "云ID:" + cid;
                         UISetBtnCloudInitEnable(false);
                         UI(delegate () {
-                            core?.OnCloudOK();
+                            try
+                            {
+                                core?.OnCloudOK();
+                            }
+                            catch { }
                         });
                     }
                 });

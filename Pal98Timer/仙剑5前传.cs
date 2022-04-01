@@ -1020,14 +1020,14 @@ namespace Pal98Timer
         }
         private void FlushGameObject()
         {
-            GameObj.Flush(PalHandle, PID);
+            GameObj.Flush(PalHandle, PID,0,0);
         }
         public override bool NeedBlockCtrlEnter()
         {
             return false;
         }
     }
-    public class GameObject5Q
+    public class GameObject5Q:MemoryReadBase
     {
         //6001  花妖      E=800
         //6016  厉岩      E=0
@@ -1132,7 +1132,7 @@ namespace Pal98Timer
             return 0;
         }
 
-        public void Flush(IntPtr handle, int PID)
+        public override void Flush(IntPtr handle, int PID,int b32,long b64)
         {
             if (PID != this.PID)
             {
@@ -1238,50 +1238,6 @@ namespace Pal98Timer
                 ID = Readm<int>(handle, a + IDOffset);
                 HP = Readm<int>(handle, a + HPOffset);
             }
-        }
-        public static T Readm<T>(IntPtr handle, int addr)
-        {
-            T res = default(T);
-            Type t = typeof(T);
-            int size = System.Runtime.InteropServices.Marshal.SizeOf(t);
-            byte[] buffer = new byte[size];
-            int sizeofRead;
-
-            if (Kernel32.ReadProcessMemory(handle, new IntPtr(addr), buffer, size, out sizeofRead))
-            {
-                if (t == typeof(short))
-                {
-                    short tmp = BitConverter.ToInt16(buffer, 0);
-                    res = (T)Convert.ChangeType(tmp, t);
-                }
-                else if (t == typeof(int))
-                {
-                    int tmp = BitConverter.ToInt32(buffer, 0);
-                    res = (T)Convert.ChangeType(tmp, t);
-                }
-                else if (t == typeof(long))
-                {
-                    long tmp = BitConverter.ToInt64(buffer, 0);
-                    res = (T)Convert.ChangeType(tmp, t);
-                }
-                else if (t == typeof(bool))
-                {
-                    bool tmp = BitConverter.ToBoolean(buffer, 0);
-                    res = (T)Convert.ChangeType(tmp, t);
-                }
-                else if (t == typeof(float))
-                {
-                    float tmp = BitConverter.ToSingle(buffer, 0);
-                    res = (T)Convert.ChangeType(tmp, t);
-                }
-                else
-                {
-                    string tmp = BitConverter.ToString(buffer, 0);
-                    res = (T)Convert.ChangeType(tmp, t);
-                }
-            }
-
-            return res;
         }
     }
 }

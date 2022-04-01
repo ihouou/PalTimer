@@ -143,6 +143,7 @@
     <Compile Include="GForm.Designer.cs">
       <DependentUpon>GForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="MemoryReadBase.cs" />
     <Compile Include="仙剑5前传.cs" />
     <Compile Include="仙剑98官方Steam.cs" />
     <Compile Include="仙剑二官方Steam.cs" />

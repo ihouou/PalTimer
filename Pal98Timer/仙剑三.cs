@@ -584,7 +584,7 @@ namespace Pal98Timer
         }
         private void FlushGameObject()
         {
-            GameObj.Flush(PalHandle, PID);
+            GameObj.Flush(PalHandle, PID, 0, 0);
         }
 
         public override string GetAAction()
@@ -687,7 +687,7 @@ namespace Pal98Timer
             return false;
         }
     }
-    public class Pal3Object
+    public class Pal3Object:MemoryReadBase
     {
         private const int MapAddr = 0x00C12B48;
         private const int SubMapAddr = 0x00C12B88;
@@ -781,7 +781,7 @@ namespace Pal98Timer
             return sb.ToString();
         }
 
-        public void Flush(IntPtr handle, int PID)
+        public override void Flush(IntPtr handle, int PID,int b32,long b64)
         {
             if (PID != this.PID)
             {
@@ -904,87 +904,6 @@ namespace Pal98Timer
             BattleTotalBlood = tmpBattleTotalBlood;
             Enemies = tmp;
         }
-        public static bool ArrayContains<T>(T[] array, T ele)
-        {
-            foreach (T e in array)
-            {
-                if (e.Equals(ele))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-        public static T Readm<T>(IntPtr handle, int addr)
-        {
-            T res = default(T);
-            Type t = typeof(T);
-            int size = 0;
-            if (t.Name=="String")
-            {
-                size = 1024;
-            }
-            else
-            {
-                size = System.Runtime.InteropServices.Marshal.SizeOf(t);
-            }
-            byte[] buffer = new byte[size];
-            int sizeofRead;
-
-            if (Kernel32.ReadProcessMemory(handle, new IntPtr(addr), buffer, size, out sizeofRead))
-            {
-                if (t == typeof(short))
-                {
-                    short tmp = BitConverter.ToInt16(buffer, 0);
-                    res = (T)Convert.ChangeType(tmp, t);
-                }
-                else if (t == typeof(int))
-                {
-                    int tmp = BitConverter.ToInt32(buffer, 0);
-                    res = (T)Convert.ChangeType(tmp, t);
-                }
-                else if (t == typeof(long))
-                {
-                    long tmp = BitConverter.ToInt64(buffer, 0);
-                    res = (T)Convert.ChangeType(tmp, t);
-                }
-                else if (t == typeof(bool))
-                {
-                    bool tmp = BitConverter.ToBoolean(buffer, 0);
-                    res = (T)Convert.ChangeType(tmp, t);
-                }
-                else if (t == typeof(double))
-                {
-                    double tmp = BitConverter.ToDouble(buffer, 0);
-                    res = (T)Convert.ChangeType(tmp, t);
-                }
-                else if (t == typeof(float))
-                {
-                    float tmp = BitConverter.ToSingle(buffer, 0);
-                    res = (T)Convert.ChangeType(tmp, t);
-                }
-                else
-                {
-                    StringBuilder sb = new StringBuilder();
-                    for (int i = 0; i < sizeofRead; ++i)
-                    {
-                        //byte b = buffer[i];
-                        char c = (char)buffer[i];
-                        if (c == '\0')
-                        {
-                            res=(T)Convert.ChangeType(sb.ToString(), t);
-                            break;
-                        }
-                        else
-                        {
-                            sb.Append(c);
-                        }
-                    }
-                }
-            }
-
-            return res;
-        }
     }
     public class Pal3EnemyObject
     {
@@ -996,8 +915,8 @@ namespace Pal98Timer
         public int Blood;
         public Pal3EnemyObject(IntPtr handle, int HeadAddr)
         {
-            ID = GameObject.Readm<int>(handle, HeadAddr + IDOffset);
-            Blood = GameObject.Readm<int>(handle, HeadAddr + BloodOffset);
+            ID = MemoryReadBase.Readm<int>(handle, HeadAddr + IDOffset);
+            Blood = MemoryReadBase.Readm<int>(handle, HeadAddr + BloodOffset);
         }
     }
 }

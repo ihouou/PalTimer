@@ -651,7 +651,7 @@ namespace Pal98Timer
         }
         private void FlushGameObject()
         {
-            GameObj.Flush(PalHandle, PID, ExeBaseAddr);
+            GameObj.Flush(PalHandle, PID, ExeBaseAddr,0);
         }
         public override bool NeedBlockCtrlEnter()
         {
@@ -659,7 +659,7 @@ namespace Pal98Timer
         }
     }
 
-    public class GameObjectGuJian2
+    public class GameObjectGuJian2:MemoryReadBase
     {
         private static readonly int[] MoneyOffset = new int[] { 0x7080A8, 0x20, 0x4 };
         private const int CanControlOffset = 0x7080A8 + 0x544;
@@ -748,7 +748,7 @@ namespace Pal98Timer
 
             return ret;
         }
-        public void Flush(IntPtr handle, int PID, int ExeBaseAddr)
+        public override void Flush(IntPtr handle, int PID, int ExeBaseAddr,long b)
         {
             Money = Readm<int>(handle, ExeBaseAddr, MoneyOffset);
             GameTime = Readm<float>(handle, ExeBaseAddr, GameTimeOffset);
@@ -917,95 +917,6 @@ namespace Pal98Timer
             public int ID;
             public int HP;
             public int MaxHP;
-        }
-        public static T Readm<T>(IntPtr handle, int baseaddr, int[] offset)
-        {
-            int addr = baseaddr;
-            for (var i = 0; i < offset.Length - 1; ++i)
-            {
-                addr = Readm<int>(handle, addr + offset[i]);
-            }
-            return Readm<T>(handle, addr + offset[offset.Length - 1]);
-        }
-        public static T Readm<T>(IntPtr handle, int addr)
-        {
-            T res = default(T);
-            Type t = typeof(T);
-            int size = 0;
-            if (t.Name == "String")
-            {
-                size = 1024;
-            }
-            else
-            {
-                size = System.Runtime.InteropServices.Marshal.SizeOf(t);
-            }
-            byte[] buffer = new byte[size];
-            int sizeofRead;
-
-            if (Kernel32.ReadProcessMemory(handle, new IntPtr(addr), buffer, size, out sizeofRead))
-            {
-                if (t == typeof(short))
-                {
-                    short tmp = BitConverter.ToInt16(buffer, 0);
-                    res = (T)Convert.ChangeType(tmp, t);
-                }
-                else if (t == typeof(ushort))
-                {
-                    ushort tmp = BitConverter.ToUInt16(buffer, 0);
-                    res = (T)Convert.ChangeType(tmp, t);
-                }
-                else if (t == typeof(byte))
-                {
-                    byte tmp = buffer[0];
-                    res = (T)Convert.ChangeType(tmp, t);
-                }
-                else if (t == typeof(int))
-                {
-                    int tmp = BitConverter.ToInt32(buffer, 0);
-                    res = (T)Convert.ChangeType(tmp, t);
-                }
-                else if (t == typeof(long))
-                {
-                    long tmp = BitConverter.ToInt64(buffer, 0);
-                    res = (T)Convert.ChangeType(tmp, t);
-                }
-                else if (t == typeof(bool))
-                {
-                    bool tmp = BitConverter.ToBoolean(buffer, 0);
-                    res = (T)Convert.ChangeType(tmp, t);
-                }
-                else if (t == typeof(double))
-                {
-                    double tmp = BitConverter.ToDouble(buffer, 0);
-                    res = (T)Convert.ChangeType(tmp, t);
-                }
-                else if (t == typeof(float))
-                {
-                    float tmp = BitConverter.ToSingle(buffer, 0);
-                    res = (T)Convert.ChangeType(tmp, t);
-                }
-                else
-                {
-                    StringBuilder sb = new StringBuilder();
-                    for (int i = 0; i < sizeofRead; ++i)
-                    {
-                        //byte b = buffer[i];
-                        char c = (char)buffer[i];
-                        if (c == '\0')
-                        {
-                            res = (T)Convert.ChangeType(sb.ToString(), t);
-                            break;
-                        }
-                        else
-                        {
-                            sb.Append(c);
-                        }
-                    }
-                }
-            }
-
-            return res;
         }
     }
 }
