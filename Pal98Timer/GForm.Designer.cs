@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GForm));
             this.lblClose = new System.Windows.Forms.Label();
             this.lblConfig = new System.Windows.Forms.Label();
             this.lblFunArea = new System.Windows.Forms.Label();
@@ -108,19 +109,19 @@
             this.btnChangeStyle,
             this.toolStripSeparator1});
             this.mnMain.Name = "mnMain";
-            this.mnMain.Size = new System.Drawing.Size(181, 54);
+            this.mnMain.Size = new System.Drawing.Size(101, 32);
             // 
             // btnChangeStyle
             // 
             this.btnChangeStyle.Name = "btnChangeStyle";
-            this.btnChangeStyle.Size = new System.Drawing.Size(180, 22);
+            this.btnChangeStyle.Size = new System.Drawing.Size(100, 22);
             this.btnChangeStyle.Text = "样式";
             this.btnChangeStyle.Click += new System.EventHandler(this.btnChangeStyle_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(97, 6);
             // 
             // GForm
             // 
@@ -131,6 +132,7 @@
             this.Controls.Add(this.lblFunArea);
             this.Controls.Add(this.lblConfig);
             this.Controls.Add(this.lblClose);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "GForm";
             this.Text = "GForm";
             this.mnData.ResumeLayout(false);

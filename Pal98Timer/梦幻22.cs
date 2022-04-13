@@ -789,6 +789,7 @@ namespace Pal98Timer
         private void FlushGameObject()
         {
             GameObj.Flush(PalHandle, PID, PALBaseAddr,0);
+            FlushPlugins(PalHandle, PID, PALBaseAddr, 0);
         }
         private Dream22BattleItemWatch biw = new Dream22BattleItemWatch();
         private string CurrentNamedBattle = "";

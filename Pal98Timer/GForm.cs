@@ -274,7 +274,6 @@ namespace Pal98Timer
 
         public void LoadCore(TimerCore core)
         {
-            core.LoadPlugins();
             //Success(core.GetType().Name);
             if (this.core != null)
             {
@@ -331,6 +330,8 @@ namespace Pal98Timer
         }
         public void _ResetAll()
         {
+            core.UnloadPlugins();
+            core.LoadPlugins();
             HandPauseCount = 0;
             btnPause.Text = "暂停";
             btnPause.White();
@@ -629,6 +630,18 @@ namespace Pal98Timer
                     {
                         rr.AddDot(aas);
                     }
+                }
+                if (core.HasPlugin(TimerPluginBase.TimerPlugin.EPluginPosition.BL))
+                {
+                    rr.SetBL(core.GetPluginResult(TimerPluginBase.TimerPlugin.EPluginPosition.BL));
+                }
+                if (core.HasPlugin(TimerPluginBase.TimerPlugin.EPluginPosition.BR))
+                {
+                    rr.SetBR(core.GetPluginResult(TimerPluginBase.TimerPlugin.EPluginPosition.BR));
+                }
+                if (core.HasPlugin(TimerPluginBase.TimerPlugin.EPluginPosition.Title))
+                {
+                    rr.SetTitle(core.GetPluginResult(TimerPluginBase.TimerPlugin.EPluginPosition.Title));
                 }
             }
             else

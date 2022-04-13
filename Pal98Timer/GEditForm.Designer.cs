@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GEditForm));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.pnBack = new Pal98Timer.DFPanel();
             this.pnMain = new Pal98Timer.DFPanel();
@@ -200,6 +201,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(559, 700);
             this.Controls.Add(this.splitContainer1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(550, 500);
             this.Name = "GEditForm";
             this.Text = "编辑样式";

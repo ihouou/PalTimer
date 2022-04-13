@@ -97,6 +97,8 @@
             this.Controls.Add(this.txtOri);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "KeyAdd";
+            this.ShowIcon = false;
+            this.ShowInTaskbar = false;
             this.Text = "添加键位";
             this.ResumeLayout(false);
             this.PerformLayout();

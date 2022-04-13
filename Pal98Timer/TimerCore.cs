@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
+using TimerPluginBase;
 
 namespace Pal98Timer
 {
@@ -796,7 +797,7 @@ namespace Pal98Timer
         /// <returns></returns>
         public virtual string ForCloudBigData()
         {
-            return GetTimerJson().Replace("\"", "'");
+            return GetTimerJson();
         }
         /// <summary>
         /// 获取计时器当前的所有状态json
@@ -815,7 +816,7 @@ namespace Pal98Timer
                 {
                     HObj cur = new HObj();
                     cur["name"] = c.Name;
-                    cur["des"] = c.NickName;
+                    cur["des"] = c.NickName.Replace("\"","").Replace("'","");
                     cur["time"] = TItem.TimeSpanToString(c.Current);
                     cps.Add(cur);
                 }
@@ -838,11 +839,110 @@ namespace Pal98Timer
         {
             return GetTimerJson();
         }
+
+        protected Dictionary<TimerPlugin.EPluginPosition, TimerPlugin> Plugins = new Dictionary<TimerPlugin.EPluginPosition, TimerPlugin>();
         /// <summary>
         /// 加载此内核能用的所有插件
         /// </summary>
         public void LoadPlugins()
         {
+            string pluginPath = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName) + "\\plugins\\";
+            if (!Directory.Exists(pluginPath)) return;
+            DirectoryInfo root = new DirectoryInfo(pluginPath);
+            FileInfo[] files = root.GetFiles();
+            foreach (var f in files)
+            {
+                string sn = f.FullName.Replace(pluginPath, "");
+                if (sn.StartsWith(CoreName + ".") && sn.EndsWith(".tpg"))
+                {
+                    string tpsfile = f.FullName;
+                    if (File.Exists(tpsfile))
+                    {
+                        try
+                        {
+                            _loadOnePlugin(tpsfile);
+                        }
+                        catch
+                        { }
+                    }
+                }
+            }
+        }
+        private void _loadOnePlugin(string tpgPath)
+        {
+            TimerPluginPackageInfo ti = new TimerPluginPackageInfo(tpgPath);
+            if (!ti.Enable || !ti.IsOK) return;
+            //string dllpath = tpgPath + ".dll";
+            //ti.SaveDll(dllpath);
+            //System.Reflection.Assembly asm = System.Reflection.Assembly.LoadFrom(dllpath);
+            System.Reflection.Assembly asm = System.Reflection.Assembly.Load(ti.Data);
+            TimerPlugin p = (TimerPlugin)System.Activator.CreateInstance(asm.GetType(ti.ClassName + ".Main"));
+            TimerPlugin.EPluginPosition pos = p.GetPosition();
+            if (!Plugins.ContainsKey(pos))
+            {
+                p.OnLoad();
+                Plugins.Add(pos, p);
+            }
+        }
+        /// <summary>
+        /// 卸载此内核能用的所有插件
+        /// </summary>
+        public void UnloadPlugins()
+        {
+            foreach (var kv in Plugins)
+            {
+                try
+                {
+                    kv.Value.OnUnload();
+                }
+                catch { }
+            }
+            Plugins?.Clear();
+        }
+        /// <summary>
+        /// 刷新所有插件的数据
+        /// </summary>
+        /// <param name="handle"></param>
+        /// <param name="PID"></param>
+        /// <param name="BaseAddr32"></param>
+        /// <param name="BaseAddr64"></param>
+        protected void FlushPlugins(IntPtr handle, int PID, int BaseAddr32, long BaseAddr64)
+        {
+            foreach (var kv in Plugins)
+            {
+                try
+                {
+                    kv.Value.Flush(handle, PID, BaseAddr32, BaseAddr64);
+                }
+                catch
+                { }
+            }
+        }
+        /// <summary>
+        /// 判断是否有此位置的插件
+        /// </summary>
+        /// <param name="pos"></param>
+        /// <returns></returns>
+        public bool HasPlugin(TimerPlugin.EPluginPosition pos)
+        {
+            if (Plugins.ContainsKey(pos) && Plugins[pos] != null)
+            {
+                return true;
+            }
+            return false;
+        }
+        /// <summary>
+        /// 获取此位置插件的值
+        /// </summary>
+        /// <param name="pos"></param>
+        /// <returns></returns>
+        public string GetPluginResult(TimerPlugin.EPluginPosition pos)
+        {
+            if (HasPlugin(pos))
+            {
+                return Plugins[pos].GetResult();
+            }
+            return null;
         }
     }
 
@@ -1041,5 +1141,141 @@ namespace Pal98Timer
         public string Name;
         public string NickName = "";
         public TimeSpan BestTS;
+    }
+
+
+    public class TimerPluginPackageInfo
+    {
+        public string FileName;
+        public bool Enable
+        {
+            get { return _enable; }
+            set
+            {
+                _enable = value;
+                using (FileStream fs = new FileStream(FileName, FileMode.Open, FileAccess.ReadWrite))
+                {
+                    byte[] e = new byte[fs.Length];
+                    fs.Read(e, 0, e.Length);
+                    if (_enable)
+                    {
+                        e[0] = 100;
+                    }
+                    else
+                    {
+                        e[0] = 200;
+                    }
+                    fs.Seek(0, SeekOrigin.Begin);
+                    fs.Write(e, 0, e.Length);
+                    fs.Flush();
+                }
+            }
+        }
+        private bool _enable;
+        public string ClassName;
+        public string Version;
+        public string Des;
+        private string Sign;
+        private string DllMD5;
+        public byte[] Data;
+        public bool IsOK
+        {
+            get { return _isok; }
+        }
+        private bool _isok = false;
+        public void SaveDll(string path)
+        {
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+            }
+            using (FileStream fs = new FileStream(path, FileMode.Create, FileAccess.ReadWrite))
+            {
+                fs.Write(Data, 0, Data.Length);
+                fs.Flush();
+            }
+        }
+        public TimerPluginPackageInfo(string tpgPath)
+        {
+            if (!File.Exists(tpgPath)) return;
+            FileName = tpgPath;
+            List<long> zeroPos = new List<long>();
+            using (FileStream fs = new FileStream(tpgPath, FileMode.Open, FileAccess.Read))
+            {
+                long len = fs.Length;
+                for (long i = 0L; i < len; ++i)
+                {
+                    if (fs.ReadByte() == 0)
+                    {
+                        zeroPos.Add(i);
+                        if (zeroPos.Count == 4) break;
+                    }
+                }
+
+                byte[] bEnable = new byte[1];
+                byte[] bClass = new byte[zeroPos[0] - 1];
+                byte[] bVersion = new byte[zeroPos[1] - zeroPos[0] - 1];
+                byte[] bDes = new byte[zeroPos[2] - zeroPos[1] - 1];
+                byte[] bSign = new byte[zeroPos[3] - zeroPos[2] - 1];
+                Data = new byte[len - bVersion.LongLength - bDes.LongLength - bSign.LongLength - bClass.LongLength - 4L - 1L];
+
+                fs.Seek(0, SeekOrigin.Begin);
+                fs.Read(bEnable, 0, bEnable.Length);
+                fs.Seek(1, SeekOrigin.Begin);
+                fs.Read(bClass, 0, bClass.Length);
+                fs.Seek((int)zeroPos[0] + 1, SeekOrigin.Begin);
+                fs.Read(bVersion, 0, bVersion.Length);
+                fs.Seek((int)zeroPos[1] + 1, SeekOrigin.Begin);
+                fs.Read(bDes, 0, bDes.Length);
+                fs.Seek((int)zeroPos[2] + 1, SeekOrigin.Begin);
+                fs.Read(bSign, 0, bSign.Length);
+                fs.Seek((int)zeroPos[3] + 1, SeekOrigin.Begin);
+                fs.Read(Data, 0, Data.Length);
+
+                System.Security.Cryptography.MD5 md5 = new System.Security.Cryptography.MD5CryptoServiceProvider();
+                byte[] retVal = md5.ComputeHash(Data);
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < retVal.Length; i++)
+                {
+                    sb.Append(retVal[i].ToString("x2"));
+                }
+                DllMD5 = sb.ToString().ToUpper();
+
+                byte enable = bEnable[0];
+                _enable = (enable != 200);
+
+                Version = Encoding.UTF8.GetString(bVersion);
+                Des = Encoding.UTF8.GetString(bDes);
+                Sign = Encoding.UTF8.GetString(bSign);
+                ClassName = Encoding.UTF8.GetString(bClass);
+            }
+            CheckSign();
+        }
+        public void CheckSign()
+        {
+            if (RSAVerify(PublicKey(), Version + " " + DllMD5, Sign))
+            {
+                _isok = true;
+            }
+            else
+            {
+                _isok = false;
+            }
+        }
+        public static string PublicKey()
+        {
+            return @"<RSAKeyValue><Modulus>1svEvynNYZr/YlUZB9a7txNfEFNPN9jDj7nPlIEqpP3SoHaLI8cCYbyjTMuqvthcOWURqgxlKbIqk9YpX0mzQv308JconeRjGJHB06WoYZ2BCJieQ2AUn5hzWHtBcbRdnLMRyZpRZMIrds9gRU40BQvOXq8roVl4lJCjGE1OXYE=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue>";
+        }
+        public static bool RSAVerify(string key, string content, string sign)
+        {
+            try
+            {
+                System.Security.Cryptography.RSACryptoServiceProvider rsa = new System.Security.Cryptography.RSACryptoServiceProvider(1024);
+                rsa.FromXmlString(key);
+                return rsa.VerifyData(Encoding.UTF8.GetBytes(content), new System.Security.Cryptography.SHA1CryptoServiceProvider(), Convert.FromBase64String(sign));
+            }
+            catch { }
+            return false;
+        }
     }
 }

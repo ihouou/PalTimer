@@ -1020,7 +1020,8 @@ namespace Pal98Timer
         }
         private void FlushGameObject()
         {
-            GameObj.Flush(PalHandle, PID,0,0);
+            GameObj.Flush(PalHandle, PID, 0, 0);
+            FlushPlugins(PalHandle, PID, 0, 0);
         }
         public override bool NeedBlockCtrlEnter()
         {

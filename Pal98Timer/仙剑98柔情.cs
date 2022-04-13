@@ -945,6 +945,7 @@ namespace Pal98Timer
             short lastarea = GameObj.Area;
 
             GameObj.Flush(PalHandle, PID, 0, 0);
+            FlushPlugins(PalHandle, PID, 0, 0);
 
             try
             {
@@ -1554,7 +1555,7 @@ namespace Pal98Timer
         }
         public override string ForCloudLiteData()
         {
-            return MT.CurrentTS.Ticks.ToString() + "," + ST.CurrentTS.Ticks.ToString() + "," + LT.CurrentTS.Ticks.ToString();
+            return MT.CurrentTS.Ticks.ToString() + "," + ST.CurrentTS.Ticks.ToString() + "," + BattleLong.Ticks.ToString();
         }
     }
 

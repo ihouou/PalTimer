@@ -933,6 +933,7 @@ namespace Pal98Timer
         private void FlushGameObject()
         {
             GameObj.Flush(PalHandle, PID, 0, PALBaseAddr);
+            FlushPlugins(PalHandle, PID, 0, PALBaseAddr);
         }
         private Pal98SteamBattleItemWatch biw = new Pal98SteamBattleItemWatch();
         private string CurrentNamedBattle = "";

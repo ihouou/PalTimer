@@ -440,7 +440,7 @@ namespace HFrame.ENT
                 string res = "{";
                 foreach (KeyValuePair<string, object> kv in _dic)
                 {
-                    res += "" + kv.Key + ":";
+                    res += "\"" + kv.Key + "\":";
                     if (kv.Value is HObj)
                     {
                         res += ((HObj)(kv.Value)).ToJson(IsLocalTime) + ",";

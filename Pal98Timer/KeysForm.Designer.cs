@@ -103,6 +103,8 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.MinimumSize = new System.Drawing.Size(187, 236);
             this.Name = "KeysForm";
+            this.ShowIcon = false;
+            this.ShowInTaskbar = false;
             this.Text = "键位设置";
             this.ResumeLayout(false);
             this.PerformLayout();
