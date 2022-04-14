@@ -741,6 +741,21 @@ namespace Pal98Timer
         {
             return NewMenuItem(cmCloud);
         }
+
+        PluginMgrForm pmf = null;
+        private void btnPluginManage_Click(object sender, EventArgs e)
+        {
+            if (pmf == null)
+            {
+                pmf = new PluginMgrForm();
+                this.CenterChild(pmf);
+                pmf.Show(this);
+                pmf.FormClosed += delegate(object sender1, FormClosedEventArgs e1) {
+                    pmf.Dispose();
+                    pmf = null;
+                };
+            }
+        }
     }
 
     public class MConfig

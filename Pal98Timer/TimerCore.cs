@@ -846,7 +846,7 @@ namespace Pal98Timer
         /// </summary>
         public void LoadPlugins()
         {
-            string pluginPath = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName) + "\\plugins\\";
+            string pluginPath = TimerPluginPackageInfo.GetPluginDir();
             if (!Directory.Exists(pluginPath)) return;
             DirectoryInfo root = new DirectoryInfo(pluginPath);
             FileInfo[] files = root.GetFiles();
@@ -871,7 +871,7 @@ namespace Pal98Timer
         private void _loadOnePlugin(string tpgPath)
         {
             TimerPluginPackageInfo ti = new TimerPluginPackageInfo(tpgPath);
-            if (!ti.Enable || !ti.IsOK) return;
+            if (!ti.Enable || !ti.IsOK || ti.Version!=TimerPlugin.Version.ToString()) return;
             //string dllpath = tpgPath + ".dll";
             //ti.SaveDll(dllpath);
             //System.Reflection.Assembly asm = System.Reflection.Assembly.LoadFrom(dllpath);
@@ -898,6 +898,7 @@ namespace Pal98Timer
                 catch { }
             }
             Plugins?.Clear();
+            GC.Collect();
         }
         /// <summary>
         /// 刷新所有插件的数据
@@ -1146,6 +1147,10 @@ namespace Pal98Timer
 
     public class TimerPluginPackageInfo
     {
+        public static string GetPluginDir()
+        {
+            return Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName) + "\\plugins\\";
+        }
         public string FileName;
         public bool Enable
         {
@@ -1175,6 +1180,7 @@ namespace Pal98Timer
         public string ClassName;
         public string Version;
         public string Des;
+        public string Core;
         private string Sign;
         private string DllMD5;
         public byte[] Data;
@@ -1248,6 +1254,8 @@ namespace Pal98Timer
                 Des = Encoding.UTF8.GetString(bDes);
                 Sign = Encoding.UTF8.GetString(bSign);
                 ClassName = Encoding.UTF8.GetString(bClass);
+                Core = ClassName.Substring(0, ClassName.IndexOf('.'));
+                
             }
             CheckSign();
         }
