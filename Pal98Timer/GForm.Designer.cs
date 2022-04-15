@@ -39,8 +39,9 @@
             this.btnAutoLuck = new System.Windows.Forms.ToolStripMenuItem();
             this.mnMain = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.btnChangeStyle = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.btnPluginManage = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.btnAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.mnData.SuspendLayout();
             this.mnMain.SuspendLayout();
             this.SuspendLayout();
@@ -109,9 +110,10 @@
             this.mnMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.btnChangeStyle,
             this.btnPluginManage,
+            this.btnAbout,
             this.toolStripSeparator1});
             this.mnMain.Name = "mnMain";
-            this.mnMain.Size = new System.Drawing.Size(181, 76);
+            this.mnMain.Size = new System.Drawing.Size(181, 98);
             // 
             // btnChangeStyle
             // 
@@ -120,17 +122,24 @@
             this.btnChangeStyle.Text = "样式";
             this.btnChangeStyle.Click += new System.EventHandler(this.btnChangeStyle_Click);
             // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
-            // 
             // btnPluginManage
             // 
             this.btnPluginManage.Name = "btnPluginManage";
             this.btnPluginManage.Size = new System.Drawing.Size(180, 22);
             this.btnPluginManage.Text = "插件管理";
             this.btnPluginManage.Click += new System.EventHandler(this.btnPluginManage_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
+            // 
+            // btnAbout
+            // 
+            this.btnAbout.Name = "btnAbout";
+            this.btnAbout.Size = new System.Drawing.Size(180, 22);
+            this.btnAbout.Text = "关于";
+            this.btnAbout.Click += new System.EventHandler(this.btnAbout_Click);
             // 
             // GForm
             // 
@@ -163,5 +172,6 @@
         private System.Windows.Forms.ToolStripMenuItem btnChangeStyle;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem btnPluginManage;
+        private System.Windows.Forms.ToolStripMenuItem btnAbout;
     }
 }

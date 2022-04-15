@@ -213,6 +213,7 @@ namespace Pal98Timer
                 }
             }
             CurrentStep = index;
+            SendPluginsEvent("Jump", index);
         }
 
         /// <summary>
@@ -270,6 +271,7 @@ namespace Pal98Timer
                         });
                     }
                 }
+                SendPluginsEvent("LoadBest", beststr);
             }
             else
             {
@@ -344,6 +346,7 @@ namespace Pal98Timer
                 {
                     form._ResetAll();
                 }
+                SendPluginsEvent("SaveBest", filename);
             }
             catch (Exception ex)
             {
@@ -370,6 +373,7 @@ namespace Pal98Timer
                     }
                 }
                 form.Success("已将此次成绩保存至" + CoreName + filename + ".txt");
+                SendPluginsEvent("ExportCurrent", CoreName + filename + ".txt");
             }
             catch (Exception ex)
             {
@@ -407,6 +411,7 @@ namespace Pal98Timer
                 BestClear = new TimeSpan(CheckPoints[CheckPoints.Count - 1].Best.Ticks);
                 WillClear = new TimeSpan(BestClear.Ticks);
             }
+            SendPluginsEvent("InitCheckPoints", null);
         }
         /// <summary>
         /// 当前节点序号（别乱改）
@@ -483,6 +488,7 @@ namespace Pal98Timer
         protected virtual void OnCheckPointEnd()
         {
             MT.Stop();
+            SendPluginsEvent("OnCheckPointEnd", null);
         }
         /// <summary>
         /// 是否在UI层面上暂停计时（比如手动暂停）
@@ -495,6 +501,7 @@ namespace Pal98Timer
         protected void SetUIPause(bool isp)
         {
             form.SetUIPause(isp);
+            SendPluginsEvent("SetUIPause", isp);
         }
         /// <summary>
         /// 手动暂停，暂停次数会加1
@@ -502,6 +509,7 @@ namespace Pal98Timer
         protected void HandPause()
         {
             form.UIPause();
+            SendPluginsEvent("HandPause", null);
         }
         public delegate void CurrentStepChangeDel(int currentidx);
         /// <summary>
@@ -589,6 +597,7 @@ namespace Pal98Timer
                     System.Threading.Thread.Sleep(CheckInterval);
                 }
             });
+            SendPluginsEvent("Start", null);
         }
         /// <summary>
         /// 每次Tick调用的逻辑
@@ -611,6 +620,7 @@ namespace Pal98Timer
             try
             {
                 CheckPoints[CurrentStep].Current = ts;
+                SendPluginsEvent("SetTS", ts);
             }
             catch { }
         }
@@ -914,6 +924,23 @@ namespace Pal98Timer
                 try
                 {
                     kv.Value.Flush(handle, PID, BaseAddr32, BaseAddr64);
+                }
+                catch
+                { }
+            }
+        }
+        /// <summary>
+        /// 向所有插件发送数据
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="data"></param>
+        public void SendPluginsEvent(string name,object data)
+        {
+            foreach (var kv in Plugins)
+            {
+                try
+                {
+                    kv.Value.OnEvent(name, data);
                 }
                 catch
                 { }

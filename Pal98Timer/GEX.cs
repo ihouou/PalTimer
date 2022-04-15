@@ -991,6 +991,8 @@ namespace Pal98Timer
         private Rectangle rcWillClear = new Rectangle();
         private Rectangle rcDots = new Rectangle();
         private Rectangle rcItems = new Rectangle();
+        private Rectangle rcItemScroll = new Rectangle();
+        private Rectangle rcItemScBlock = new Rectangle();
         private Rectangle rcIName = new Rectangle();
         private Rectangle rcIBest = new Rectangle();
         private Rectangle rcICha = new Rectangle();
@@ -1021,7 +1023,25 @@ namespace Pal98Timer
 
             ModifyRect(ref rcDots, 0, 60, Width, 30);
 
-            ModifyRect(ref rcItems, 5, 95, Width - 10, Height - 200 - 95);
+            /*ModifyRect(ref rcItems, 5, 95, Width - 10, Height - 200 - 95);
+            ModifyRect(ref rcIName, rcItems.X, 0, rcItems.Width - 170, GItem.Height);
+            ModifyRect(ref rcIBest, rcItems.X + rcItems.Width - 170, 0, 60, GItem.HalfHeight);
+            ModifyRect(ref rcICha, rcIBest.X, 0, rcIBest.Width, GItem.Height - GItem.HalfHeight);
+            ModifyRect(ref rcICur, rcItems.X + rcItems.Width - 110, 0, 110, GItem.Height);*/
+            BuildRects_Item(rcItemScroll.Width > 0);
+        }
+        private void BuildRects_Item(bool showScroll)
+        {
+            if (showScroll)
+            {
+                ModifyRect(ref rcItems, 0, 95, Width - 10, Height - 200 - 95);
+                ModifyRect(ref rcItemScroll, Width - 6, rcItems.Y, 3, rcItems.Height);
+            }
+            else
+            {
+                ModifyRect(ref rcItems, 0, 95, Width, Height - 200 - 95);
+                ModifyRect(ref rcItemScroll, 0, 0, 0, 0);
+            }
             ModifyRect(ref rcIName, rcItems.X, 0, rcItems.Width - 170, GItem.Height);
             ModifyRect(ref rcIBest, rcItems.X + rcItems.Width - 170, 0, 60, GItem.HalfHeight);
             ModifyRect(ref rcICha, rcIBest.X, 0, rcIBest.Width, GItem.Height - GItem.HalfHeight);
@@ -2310,20 +2330,16 @@ namespace Pal98Timer
         private bool DrawCheckPoints(Graphics g, delUpdateRect ur = null)
         {
             if (rcItems.Height <= 0) return false;
-            bool isForceDrawAll = false;
-            if (isSizeChanged || isBGChanged || isBBChanged || isItemsChanged || isItemScroll)
-            {
-                if (!isSizeChanged && !isBGChanged)
-                {
-                    GEX.ClearRect(g, rcItems, bg, Width, Height);
-                }
-                isForceDrawAll = true;
-            }
             int CanShowCount = (int)Math.Floor(((double)(rcItems.Height)) / GItem.Height);
             if (CanShowCount < 1) CanShowCount = 1;
             if (CanShowCount >= itemList.Count)
             {
                 ItemScroll = 0;
+                //hide scroll
+                if (rcItemScroll.Width > 0)
+                {
+                    BuildRects_Item(false);
+                }
             }
             else
             {
@@ -2332,6 +2348,32 @@ namespace Pal98Timer
                     ItemScroll = itemList.Count - CanShowCount;
                 }
                 if (ItemScroll < 0) ItemScroll = 0;
+                //draw scroll
+                BuildRects_Item(true);
+                if (isItemScroll || isSizeChanged)
+                {
+                    int barstep = (int)(((double)1 / itemList.Count) * rcItemScroll.Height);
+                    ModifyRect(ref rcItemScBlock, rcItemScroll.X, rcItemScroll.Y+ItemScroll*barstep, rcItemScroll.Width, barstep*CanShowCount);
+                }
+            }
+
+            bool isForceDrawAll = false;
+            if (isSizeChanged || isBGChanged || isBBChanged || isItemsChanged || isItemScroll)
+            {
+                if (!isSizeChanged && !isBGChanged)
+                {
+                    GEX.ClearRect(g, rcItems, bg, Width, Height);
+                }
+                if (!isSizeChanged && !isBGChanged && isItemScroll && rcItemScroll.Width > 0)
+                {
+                    GEX.ClearRect(g, rcItemScroll, bg, Width, Height);
+                }
+                isForceDrawAll = true;
+            }
+            if (isForceDrawAll)
+            {
+                g.FillRectangle(bb.CPItemBG, rcItemScroll);
+                g.FillRectangle(bb.CPItemActBG, rcItemScBlock);
             }
             bool ret = false;
             for (int i = ItemScroll, j = 0; i < itemList.Count && j < CanShowCount; ++i, ++j)
@@ -2349,6 +2391,10 @@ namespace Pal98Timer
             if (isForceDrawAll)
             {
                 ur?.Invoke(rcItems);
+                if (rcItemScroll.Width > 0)
+                {
+                    ur?.Invoke(rcItemScroll);
+                }
             }
             return ret;
         }

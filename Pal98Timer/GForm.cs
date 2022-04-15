@@ -756,6 +756,14 @@ namespace Pal98Timer
                 };
             }
         }
+
+        private void btnAbout_Click(object sender, EventArgs e)
+        {
+            AboutForm af = new AboutForm();
+            this.CenterChild(af);
+            af.ShowDialog(this);
+            af.Dispose();
+        }
     }
 
     public class MConfig

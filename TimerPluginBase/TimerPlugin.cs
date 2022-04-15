@@ -19,6 +19,9 @@ namespace TimerPluginBase
         public virtual void Flush(IntPtr handle, int PID, int BaseAddr32, long BaseAddr64)
         {
         }
+        public virtual void OnEvent(string name,object data)
+        {
+        }
         public abstract EPluginPosition GetPosition();
         public abstract string GetResult();
 

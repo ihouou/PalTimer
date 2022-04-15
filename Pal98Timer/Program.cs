@@ -16,7 +16,7 @@ namespace Pal98Timer
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new GForm());
-            //Application.Run(new PluginMgrForm());
+            //Application.Run(new AboutForm());
         }
     }
 }
