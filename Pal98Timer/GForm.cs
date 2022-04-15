@@ -103,6 +103,7 @@ namespace Pal98Timer
 
             ShowKCEnable();
         }
+
         private void InitCloud()
         {
             if (cloud == null)

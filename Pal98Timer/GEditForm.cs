@@ -64,6 +64,7 @@ namespace Pal98Timer
             };
             InitRender();
         }
+
         private void InitRender()
         {
             rr.SetTitle("自动计时器");

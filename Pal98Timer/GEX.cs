@@ -315,6 +315,9 @@ namespace Pal98Timer
             {
                 BaseCtl.MouseDoubleClick += onBaseMouseDBClick;
                 BaseCtl.MouseWheel += onBaseMouseWheel;
+                BaseCtl.MouseEnter += delegate (object sender, EventArgs e) {
+                    BaseCtl.Focus();
+                };
             }
         }
         private void createConfigIconFromBase64()
