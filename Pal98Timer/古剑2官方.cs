@@ -107,7 +107,7 @@ namespace Pal98Timer
             int yin = m % 100;
             m = m / 100;
 
-            return m + "金  乐Lv." + GameObj.YWYLevel;
+            return m + "金  乐Lv." + GameObj.YWYLevel + (CurrentStep <= 9 ? (" 返:" + GameObj.QFLSCount) : "");
         }
 
         public override string GetPointEnd()
@@ -693,6 +693,9 @@ namespace Pal98Timer
             new int[]{ 0x700870, 0x118, 0xC, 0x6C4+40},
             new int[]{ 0x700870, 0x118, 0x10, 0x6C4+40},
         };
+        private static readonly int[] 七返灵砂Offset = new int[] { 0x6AC574, 0xF4, 0x4C, 0x18, 0xC };
+        //private static readonly int[] 寒月冰履Offset = new int[] { };
+        //private static readonly int[] 明月巾Offset = new int[] { };
 
         public bool CanControl = false;
         public bool IsInBattle = false;
@@ -732,6 +735,7 @@ namespace Pal98Timer
         public int TotalEnemyMaxHP = 0;
         public int YWYLevel = 0;
         public string BattleName = "";
+        public int QFLSCount = 0;
 
         public GameObjectGuJian2()
         {
@@ -758,6 +762,7 @@ namespace Pal98Timer
             CanControl = (Readm<int>(handle, ExeBaseAddr + CanControlOffset) == 1);
             YWYLevel = Readm<int>(handle, ExeBaseAddr, YWYLevelOffset);
             UIType = Readm<int>(handle, ExeBaseAddr, UITypeOffset);
+            QFLSCount = Readm<int>(handle, ExeBaseAddr, 七返灵砂Offset);
             IsLoading = (UIType == 3);
             EnemyCountBegin = Readm<int>(handle, ExeBaseAddr, EnemyCountBeginOffset);
             int tmpec = 0;
