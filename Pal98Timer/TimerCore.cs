@@ -972,6 +972,36 @@ namespace Pal98Timer
             }
             return null;
         }
+
+        public int GetX86ModuleBaseAddr(int pid, string moduleName = "")
+        {
+            int ret = 0;
+            string delpath = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName) + "\\ModuleAddrX86Delegate.exe";
+
+            using (Process dp = new Process())
+            {
+                dp.StartInfo.FileName = delpath;
+                if (moduleName == "")
+                {
+                    dp.StartInfo.Arguments = pid.ToString();
+                }
+                else
+                {
+                    dp.StartInfo.Arguments = pid.ToString() + " " + moduleName;
+                }
+                dp.StartInfo.UseShellExecute = false;
+                dp.StartInfo.RedirectStandardOutput = true;
+                dp.StartInfo.CreateNoWindow = true;
+                dp.Start();
+                dp.WaitForExit();
+                if (dp.ExitCode == 0)
+                {
+                    ret = int.Parse(dp.StandardOutput.ReadLine());
+                }
+                dp.Close();
+            }
+            return ret;
+        }
     }
 
     /// <summary>

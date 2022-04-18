@@ -503,14 +503,15 @@ namespace Pal98Timer
                 GameWindowHandle = res[0].MainWindowHandle;
                 if (PID != PalProcess.Id || ExeBaseAddr<=0)
                 {
-                    foreach (ProcessModule pm in PalProcess.Modules)
+                    ExeBaseAddr = GetX86ModuleBaseAddr(PalProcess.Id, "TRGame.vPlugin");
+                    /*foreach (ProcessModule pm in PalProcess.Modules)
                     {
                         if (pm.ModuleName == "TRGame.vPlugin")
                         {
                             ExeBaseAddr = pm.BaseAddress.ToInt32();
                             break;
                         }
-                    }
+                    }*/
                 }
                 PID = PalProcess.Id;
                 PalHandle = new IntPtr(Kernel32.OpenProcess(0x1F0FFF, false, PID));

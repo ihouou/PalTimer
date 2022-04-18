@@ -634,15 +634,33 @@ namespace Pal98Timer
                 }
                 if (core.HasPlugin(TimerPluginBase.TimerPlugin.EPluginPosition.BL))
                 {
-                    rr.SetBL(core.GetPluginResult(TimerPluginBase.TimerPlugin.EPluginPosition.BL));
+                    string pr = core.GetPluginResult(TimerPluginBase.TimerPlugin.EPluginPosition.BL);
+                    rr.SetBL(pr);
+                    try
+                    {
+                        cloud?.PutPluginData("BL", pr);
+                    }
+                    catch { }
                 }
                 if (core.HasPlugin(TimerPluginBase.TimerPlugin.EPluginPosition.BR))
                 {
-                    rr.SetBR(core.GetPluginResult(TimerPluginBase.TimerPlugin.EPluginPosition.BR));
+                    string pr = core.GetPluginResult(TimerPluginBase.TimerPlugin.EPluginPosition.BR);
+                    rr.SetBR(pr);
+                    try
+                    {
+                        cloud?.PutPluginData("BR", pr);
+                    }
+                    catch { }
                 }
                 if (core.HasPlugin(TimerPluginBase.TimerPlugin.EPluginPosition.Title))
                 {
-                    rr.SetTitle(core.GetPluginResult(TimerPluginBase.TimerPlugin.EPluginPosition.Title));
+                    string pr = core.GetPluginResult(TimerPluginBase.TimerPlugin.EPluginPosition.Title);
+                    rr.SetTitle(pr);
+                    try
+                    {
+                        cloud?.PutPluginData("Title", pr);
+                    }
+                    catch { }
                 }
             }
             else
