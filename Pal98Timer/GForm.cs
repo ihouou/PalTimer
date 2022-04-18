@@ -40,6 +40,25 @@ namespace Pal98Timer
             this.FormClosing += GForm_FormClosing;
             this.FormClosed += GForm_FormClosed;
 
+            string filepath = Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName) + "\\size";
+            try
+            {
+                if (File.Exists(filepath))
+                {
+                    using (FileStream fs = new FileStream(filepath, FileMode.Open, FileAccess.Read))
+                    {
+                        using (StreamReader sr = new StreamReader(fs, Encoding.UTF8))
+                        {
+                            string[] sizestr = sr.ReadToEnd().Split('*');
+                            this.Width = int.Parse(sizestr[0]);
+                            this.Height = int.Parse(sizestr[1]);
+                        }
+                    }
+                }
+            }
+            catch
+            { }
+
             GBoard bb = new GBoard();
             bb.Load();
             rr = new GRender(this);
@@ -565,6 +584,20 @@ namespace Pal98Timer
 
         private void GForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            if (core != null && core.CoreName != "S")
+            {
+                string sizestr = this.Width + "*" + this.Height;
+                string filepath = Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName) + "\\size";
+                if (File.Exists(filepath)) File.Delete(filepath);
+                using (FileStream fs = new FileStream(filepath, FileMode.Create, FileAccess.ReadWrite))
+                {
+                    using (StreamWriter sw = new StreamWriter(fs, Encoding.UTF8))
+                    {
+                        sw.Write(sizestr);
+                        sw.Flush();
+                    }
+                }
+            }
             if (!Confirm("确定退出计时器么？"))
             {
                 e.Cancel = true;
