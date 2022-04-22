@@ -679,7 +679,8 @@ namespace Pal98Timer
 
                 try
                 {
-                    if (GameObj.Enemies.Count > 0)
+                    //if (GameObj.Enemies.Count > 0)
+                    if (GameObj.BattleFlag)
                     {
                         if (!IsInBattle)
                         {
@@ -985,6 +986,7 @@ namespace Pal98Timer
         private void BattleEndMore()
         {
             //战斗结束，强制再算差
+            FlushGameObject();
             biw.SetCount(GameObj);
             if (CurrentStep <= 5)
             {

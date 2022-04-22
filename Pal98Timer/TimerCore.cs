@@ -485,10 +485,16 @@ namespace Pal98Timer
                 OnCheckPointEnd();
             }
         }
+        private bool _hasCallPointEnd = false;
         protected virtual void OnCheckPointEnd()
         {
             MT.Stop();
-            SendPluginsEvent("OnCheckPointEnd", null);
+            if (!_hasCallPointEnd)
+            {
+                _hasCallPointEnd = true;
+                form.CallCloudFinishOne();
+                SendPluginsEvent("OnCheckPointEnd", null);
+            }
         }
         /// <summary>
         /// 是否在UI层面上暂停计时（比如手动暂停）
@@ -568,6 +574,7 @@ namespace Pal98Timer
         public virtual void Reset()
         {
             MT.Reset();
+            _hasCallPointEnd = false;
         }
         /// <summary>
         /// 初始化界面
@@ -644,7 +651,10 @@ namespace Pal98Timer
         /// </summary>
         /// <returns></returns>
         public abstract bool NeedBlockCtrlEnter();
-
+        public virtual bool NeedBlockFunctionKey(int fnno)
+        {
+            return false;
+        }
         /// <summary>
         /// 本内核添加的Form控件
         /// </summary>

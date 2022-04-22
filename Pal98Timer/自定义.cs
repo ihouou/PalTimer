@@ -120,7 +120,7 @@ namespace Pal98Timer
         }
         protected override void OnCheckPointEnd()
         {
-            MT.Stop();
+            base.OnCheckPointEnd();
             IsBegin = false;
             btnLiteCtrl.Text = "开始";
         }

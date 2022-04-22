@@ -30,7 +30,10 @@ namespace Pal98Timer
             r.Add("江月", new string[3] { "江月/星辰月", "https://space.bilibili.com/1757879609", "0" });
             r.Add("回忆", new string[3] { "回忆", "https://space.bilibili.com/1917199059", "1" });
             r.Add("齐大", new string[3] { "齐小伙", "https://space.bilibili.com/520126686", "1" });
+            r.Add("麻烦", new string[3] { "麻烦（鼻祖）", "https://www.douyu.com/1561684", "1" });
+            r.Add("wjjjj12", new string[3] { "wjjjj12", "https://space.bilibili.com/1953354", "1" });
             r.Add("!官网", new string[3] { "www.palspeed.com", "http://www.palspeed.com", "2" });
+            r.Add("!各位玩家", new string[3] { "各位玩家", "http://www.palspeed.com/player/", "2" });
             r.Add("!github", new string[3] { "https://github.com/ihouou/PalTimer", "https://github.com/ihouou/PalTimer", "2" });
             r.Add("!gitee", new string[3] { "https://gitee.com/houou/PalTimer", "https://gitee.com/houou/PalTimer", "2" });
             return r;
@@ -44,11 +47,11 @@ namespace Pal98Timer
                 .Title("视觉")
                 .Text("界面：").Link(c["Houou"]).Space().Text("图标：").Link(c["兰"]).Space().Link(c["狐狸"])
                 .Title("内核贡献")
-                .Text("仙剑98柔情：")
+                .Text("仙剑98柔情：").Link(c["麻烦"]).Space().Link(c["!各位玩家"])
                 .Line()
-                .Text("仙剑98官方Steam：").Link(c["寒泠"])
+                .Text("仙剑98 Steam：").Link(c["寒泠"])
                 .Line()
-                .Text("仙剑二官方Steam：").Link(c["齐大"]).Space().Link(c["寒泠"]).Space().Link(c["发财鼠"])
+                .Text("仙剑二 Steam：").Link(c["齐大"]).Space().Link(c["寒泠"]).Line().Space(14).Link(c["发财鼠"]).Space().Link(c["wjjjj12"])
                 .Line()
                 .Text("仙剑三：").Link(c["小小绝"])
                 .Line()

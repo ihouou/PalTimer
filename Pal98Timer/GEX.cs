@@ -2758,7 +2758,20 @@ namespace Pal98Timer
             try
             {
                 string[] spli = str.Trim().Split(' ');
-                return new Font(spli[0], float.Parse(spli[1]), (FontStyle)(int.Parse(spli[2])));
+                if (spli.Length == 3)
+                {
+                    return new Font(spli[0], float.Parse(spli[1]), (FontStyle)(int.Parse(spli[2])));
+                }
+                else if (spli.Length > 3)
+                {
+                    int ni = spli.Length - 2;
+                    string fn = spli[0];
+                    for (int i = 1; i < ni; ++i)
+                    {
+                        fn += " " + spli[i];
+                    }
+                    return new Font(fn, float.Parse(spli[spli.Length - 2]), (FontStyle)(int.Parse(spli[spli.Length - 1])));
+                }
             }
             catch { }
             return null;

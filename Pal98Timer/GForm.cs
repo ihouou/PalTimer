@@ -123,6 +123,13 @@ namespace Pal98Timer
             ShowKCEnable();
         }
 
+        private void CloudFailReconn()
+        {
+            Run(delegate () {
+                System.Threading.Thread.Sleep(60000);
+                InitCloud();
+            });
+        }
         private void InitCloud()
         {
             if (cloud == null)
@@ -153,8 +160,9 @@ namespace Pal98Timer
                                         core?.OnCloudFail();
                                     }
                                     catch { }
-                                    Error(cloud.LastError);
+                                    //Error(cloud.LastError);
                                 });
+                                CloudFailReconn();
                                 break;
                             default:
                                 btnCloud.Text = "云";
@@ -166,6 +174,7 @@ namespace Pal98Timer
                                     }
                                     catch { }
                                 });
+                                CloudFailReconn();
                                 break;
                         }
                     }
@@ -184,6 +193,24 @@ namespace Pal98Timer
                 });
                 cloud.OnCloudTickBefore = delegate (int NextDo)
                   {
+                      if (core.HasPlugin(TimerPluginBase.TimerPlugin.EPluginPosition.BL))
+                      {
+                          cloud.PutPluginData("BL", core.GetPluginResult(TimerPluginBase.TimerPlugin.EPluginPosition.BL));
+                      }
+
+                      if (core.HasPlugin(TimerPluginBase.TimerPlugin.EPluginPosition.BR))
+                      {
+                          cloud.PutPluginData("BR", core.GetPluginResult(TimerPluginBase.TimerPlugin.EPluginPosition.BR));
+                      }
+
+                      if (core.HasPlugin(TimerPluginBase.TimerPlugin.EPluginPosition.Title))
+                      {
+                          cloud.PutPluginData("Title", core.GetPluginResult(TimerPluginBase.TimerPlugin.EPluginPosition.Title));
+                      }
+
+
+                      cloud.PutIsC(rr.IsC);
+
                       switch (NextDo)
                       {
                           case 0:
@@ -427,7 +454,10 @@ namespace Pal98Timer
                     if (kc.KeyMap.ContainsKey(hookStruct.vkCode))
                     {
                         int flag = 0;
-                        if (hookStruct.flags >= 128) flag = 2;
+                        if (hookStruct.flags >= 128)
+                        {
+                            flag = 2;
+                        }
                         int v = kc.KeyMap[hookStruct.vkCode];
                         handle = true;
                         KeyboardLib.keybd_event(v, KeyboardLib.MapVirtualKey((uint)v, 0), flag, 0);
@@ -482,48 +512,56 @@ namespace Pal98Timer
                     {
                         core.OnFunctionKey(1);
                     }
+                    handle = core.NeedBlockFunctionKey(1);
                     break;
                 case Keys.F2:
                     if (hookStruct.flags >= 128)
                     {
                         core.OnFunctionKey(2);
                     }
+                    handle = core.NeedBlockFunctionKey(2);
                     break;
                 case Keys.F3:
                     if (hookStruct.flags >= 128)
                     {
                         core.OnFunctionKey(3);
                     }
+                    handle = core.NeedBlockFunctionKey(3);
                     break;
                 case Keys.F4:
                     if (hookStruct.flags >= 128)
                     {
                         core.OnFunctionKey(4);
                     }
+                    handle = core.NeedBlockFunctionKey(4);
                     break;
                 case Keys.F5:
                     if (hookStruct.flags >= 128)
                     {
                         core.OnFunctionKey(5);
                     }
+                    handle = core.NeedBlockFunctionKey(5);
                     break;
                 case Keys.F6:
                     if (hookStruct.flags >= 128)
                     {
                         core.OnFunctionKey(6);
                     }
+                    handle = core.NeedBlockFunctionKey(6);
                     break;
                 case Keys.F7:
                     if (hookStruct.flags >= 128)
                     {
                         core.OnFunctionKey(7);
                     }
+                    handle = core.NeedBlockFunctionKey(7);
                     break;
                 case Keys.F8:
                     if (hookStruct.flags >= 128)
                     {
                         core.OnFunctionKey(8);
                     }
+                    handle = core.NeedBlockFunctionKey(8);
                     break;
                 case Keys.F9:
                     if (hookStruct.flags >= 128)
@@ -531,6 +569,7 @@ namespace Pal98Timer
                         UIPause();
                         core.OnFunctionKey(9);
                     }
+                    handle = core.NeedBlockFunctionKey(9);
                     break;
                 case Keys.F10:
                     if (hookStruct.flags >= 128)
@@ -538,6 +577,7 @@ namespace Pal98Timer
                         btnReset_Click(null, null);
                         core.OnFunctionKey(10);
                     }
+                    handle = core.NeedBlockFunctionKey(10);
                     break;
                 case Keys.F11:
                     if (hookStruct.flags >= 128)
@@ -549,12 +589,14 @@ namespace Pal98Timer
                         }
                         core.OnFunctionKey(11);
                     }
+                    handle = core.NeedBlockFunctionKey(11);
                     break;
                 case Keys.F12:
                     if (hookStruct.flags >= 128)
                     {
                         core.OnFunctionKey(12);
                     }
+                    handle = core.NeedBlockFunctionKey(12);
                     break;
             }
         }
@@ -634,6 +676,15 @@ namespace Pal98Timer
             }
         }
 
+        public void CallCloudFinishOne()
+        {
+            try
+            {
+                cloud?.FinishOne();
+            }
+            catch { }
+        }
+
         private void tmMain_Tick(object sender, EventArgs e)
         {
             if (core != null)
@@ -667,39 +718,26 @@ namespace Pal98Timer
                 }
                 if (core.HasPlugin(TimerPluginBase.TimerPlugin.EPluginPosition.BL))
                 {
-                    string pr = core.GetPluginResult(TimerPluginBase.TimerPlugin.EPluginPosition.BL);
-                    rr.SetBL(pr);
-                    try
-                    {
-                        cloud?.PutPluginData("BL", pr);
-                    }
-                    catch { }
+                    rr.SetBL(core.GetPluginResult(TimerPluginBase.TimerPlugin.EPluginPosition.BL));
                 }
                 if (core.HasPlugin(TimerPluginBase.TimerPlugin.EPluginPosition.BR))
                 {
-                    string pr = core.GetPluginResult(TimerPluginBase.TimerPlugin.EPluginPosition.BR);
-                    rr.SetBR(pr);
-                    try
-                    {
-                        cloud?.PutPluginData("BR", pr);
-                    }
-                    catch { }
+                    rr.SetBR(core.GetPluginResult(TimerPluginBase.TimerPlugin.EPluginPosition.BR));
                 }
                 if (core.HasPlugin(TimerPluginBase.TimerPlugin.EPluginPosition.Title))
                 {
-                    string pr = core.GetPluginResult(TimerPluginBase.TimerPlugin.EPluginPosition.Title);
-                    rr.SetTitle(pr);
-                    try
-                    {
-                        cloud?.PutPluginData("Title", pr);
-                    }
-                    catch { }
+                    rr.SetTitle(core.GetPluginResult(TimerPluginBase.TimerPlugin.EPluginPosition.Title));
                 }
             }
             else
             {
                 rr.IsC = false;
                 rr.IsInCheck = false;
+                try
+                {
+                    cloud?.PutIsC(false);
+                }
+                catch { }
             }
             if (rr != null && rr.Draw(delegate (Rectangle? rect) {
                 if (rect == null)

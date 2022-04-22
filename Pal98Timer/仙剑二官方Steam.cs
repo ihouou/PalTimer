@@ -688,6 +688,10 @@ namespace Pal98Timer
         {
             return this.IsGameWindowFocus();
         }
+        public override bool NeedBlockFunctionKey(int fnno)
+        {
+            return fnno == 8;
+        }
     }
 
     public class Pal2SteamObject:MemoryReadBase
