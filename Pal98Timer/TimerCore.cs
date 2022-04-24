@@ -306,18 +306,7 @@ namespace Pal98Timer
                 };
             }
         }
-        /*
-         老的best文件：
-
-            bestGuJian2.txt
-            Dream22_best.txt
-            best5q.txt
-            Pal98Steam_best.txt
-            best.txt
-            best2.txt
-            best3.txt
-             
-             */
+        
         
         /// <summary>
         /// 保存最佳文件
