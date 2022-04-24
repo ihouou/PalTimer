@@ -123,15 +123,29 @@ namespace Pal98Timer
             ShowKCEnable();
         }
 
+        private bool IsCloudInReconn = false;
+        private bool NeedStopReconn = false;
         private void CloudFailReconn()
         {
+            if (IsCloudInReconn) return;
+            IsCloudInReconn = true;
+            NeedStopReconn = false;
             Run(delegate () {
                 System.Threading.Thread.Sleep(60000);
-                InitCloud();
+                if (!NeedStopReconn)
+                {
+                    InitCloud();
+                    IsCloudInReconn = false;
+                }
+                NeedStopReconn = false;
             });
         }
         private void InitCloud()
         {
+            if (IsCloudInReconn)
+            {
+                NeedStopReconn = true;
+            }
             if (cloud == null)
             {
                 cloud = new PCloud(this.core.CoreName, delegate (int cid)

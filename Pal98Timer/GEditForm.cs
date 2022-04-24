@@ -172,9 +172,24 @@ namespace Pal98Timer
         {
             if (dlgFile.ShowDialog(this) == DialogResult.OK)
             {
-                SelectedBGPath = dlgFile.FileName;
-                rr.SetBG(SelectedBGPath);
-                rr.IsForceRefreshAll = true;
+                string fn1 = dlgFile.FileName;
+                CutBGForm cf = new CutBGForm();
+                cf.SetData(mf, fn1);
+                if (cf.ShowDialog(this) == DialogResult.OK)
+                {
+                    Image tmp = cf.GetResult();
+                    if (tmp != null)
+                    {
+                        SelectedBGPath = "tmpbg_" + Guid.NewGuid().ToString() + ".png";
+                        //if (File.Exists("tmp.png")) File.Delete("tmp.png");
+                        tmp.Save(SelectedBGPath, System.Drawing.Imaging.ImageFormat.Png);
+                        tmp.Dispose();
+                        rr.SetBG(SelectedBGPath);
+                        rr.IsForceRefreshAll = true;
+                    }
+                }
+                cf.x();
+                cf.Dispose();
             }
         }
 

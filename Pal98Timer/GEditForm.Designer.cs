@@ -193,7 +193,7 @@
             // dlgFile
             // 
             this.dlgFile.FileName = "选择背景图";
-            this.dlgFile.Filter = "PNG图片文件|*.png";
+            this.dlgFile.Filter = "图片文件|*.png;*.jpg;*.jpeg;*.gif;*.bmp";
             // 
             // GEditForm
             // 

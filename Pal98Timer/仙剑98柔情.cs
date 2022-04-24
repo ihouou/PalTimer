@@ -78,7 +78,7 @@ namespace Pal98Timer
             Data = new HObj();
             Data["caiyi"] = false;
             CheckPoints = new List<CheckPoint>();
-            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("见石碑", new TimeSpan(0, 5, 49)))
+            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("见石碑", new TimeSpan(0, 6, 5)))
             {
                 Check = delegate ()
                 {
@@ -90,7 +90,7 @@ namespace Pal98Timer
                     return false;
                 }
             });
-            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("学功夫", new TimeSpan(0, 10, 44)))
+            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("学功夫", new TimeSpan(0, 11, 13)))
             {
                 Check = delegate ()
                 {
@@ -101,7 +101,7 @@ namespace Pal98Timer
                     return false;
                 }
             });
-            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("上船", new TimeSpan(0, 17, 40)))
+            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("上船", new TimeSpan(0, 18, 37)))
             {
                 Check = delegate ()
                 {
@@ -113,7 +113,7 @@ namespace Pal98Timer
                     return false;
                 }
             });
-            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("出林家堡", new TimeSpan(0, 23, 20)))
+            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("出林家堡", new TimeSpan(0, 24, 53)))
             {
                 Check = delegate ()
                 {
@@ -124,7 +124,7 @@ namespace Pal98Timer
                     return false;
                 }
             });
-            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("出隐龙窟", new TimeSpan(0, 28, 47)))
+            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("出隐龙窟", new TimeSpan(0, 30, 46)))
             {
                 Check = delegate ()
                 {
@@ -135,7 +135,7 @@ namespace Pal98Timer
                     return false;
                 }
             });
-            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("生化危机", new TimeSpan(0, 35, 7)))
+            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("生化危机", new TimeSpan(0, 37, 56)))
             {
                 Check = delegate ()
                 {
@@ -147,7 +147,7 @@ namespace Pal98Timer
                     return false;
                 }
             });
-            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("过鬼将军", new TimeSpan(0, 39, 57)))
+            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("过鬼将军", new TimeSpan(0, 43, 25)))
             {
                 Check = delegate ()
                 {
@@ -158,7 +158,7 @@ namespace Pal98Timer
                     return false;
                 }
             });
-            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("过赤鬼王", new TimeSpan(0, 43, 32)))
+            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("过赤鬼王", new TimeSpan(0, 47, 45)))
             {
                 Check = delegate ()
                 {
@@ -169,7 +169,7 @@ namespace Pal98Timer
                     return false;
                 }
             });
-            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("进扬州", new TimeSpan(0, 49, 24)))
+            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("进扬州", new TimeSpan(0, 54, 0)))
             {
                 Check = delegate ()
                 {
@@ -181,7 +181,7 @@ namespace Pal98Timer
                     return false;
                 }
             });
-            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("出扬州", new TimeSpan(0, 56, 34)))
+            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("出扬州", new TimeSpan(1, 1, 53)))
             {
                 Check = delegate ()
                 {
@@ -193,7 +193,7 @@ namespace Pal98Timer
                     return false;
                 }
             });
-            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("出麻烦洞", new TimeSpan(1, 1, 3)))
+            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("出麻烦洞", new TimeSpan(1, 7, 26)))
             {
                 Check = delegate ()
                 {
@@ -205,7 +205,7 @@ namespace Pal98Timer
                     return false;
                 }
             });
-            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("进京城", new TimeSpan(1, 2, 58)))
+            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("进京城", new TimeSpan(1, 9, 32)))
             {
                 Check = delegate ()
                 {
@@ -217,7 +217,7 @@ namespace Pal98Timer
                     return false;
                 }
             });
-            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("过彩依", new TimeSpan(1, 11, 18)))
+            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("过彩依", new TimeSpan(1, 19, 47)))
             {
                 Check = delegate ()
                 {
@@ -255,7 +255,7 @@ namespace Pal98Timer
                     return false;
                 }
             });
-            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("进锁妖塔", new TimeSpan(1, 16, 25)))
+            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("进锁妖塔", new TimeSpan(1, 25, 33)))
             {
                 Check = delegate ()
                 {
@@ -271,7 +271,7 @@ namespace Pal98Timer
                     return false;
                 }
             });
-            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("剑柱", new TimeSpan(1, 25, 32)))
+            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("剑柱", new TimeSpan(1, 37, 27)))
             {
                 Check = delegate ()
                 {
@@ -283,7 +283,7 @@ namespace Pal98Timer
                     return false;
                 }
             });
-            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("拆塔", new TimeSpan(1, 31, 45)))
+            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("拆塔", new TimeSpan(1, 44, 22)))
             {
                 Check = delegate ()
                 {
@@ -294,7 +294,7 @@ namespace Pal98Timer
                     return false;
                 }
             });
-            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("过凤凰", new TimeSpan(1, 40, 37)))
+            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("过凤凰", new TimeSpan(1, 54, 11)))
             {
                 Check = delegate ()
                 {
@@ -305,7 +305,7 @@ namespace Pal98Timer
                     return false;
                 }
             });
-            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("进十年前", new TimeSpan(1, 48, 5)))
+            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("进十年前", new TimeSpan(2, 3, 17)))
             {
                 Check = delegate ()
                 {
@@ -316,7 +316,7 @@ namespace Pal98Timer
                     return false;
                 }
             });
-            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("水灵珠", new TimeSpan(1, 57, 51)))
+            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("水灵珠", new TimeSpan(2, 14, 1)))
             {
                 Check = delegate ()
                 {
@@ -327,7 +327,7 @@ namespace Pal98Timer
                     return false;
                 }
             });
-            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("祈雨", new TimeSpan(2, 8, 39)))
+            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("祈雨", new TimeSpan(2, 27, 8)))
             {
                 Check = delegate ()
                 {
@@ -338,7 +338,7 @@ namespace Pal98Timer
                     return false;
                 }
             });
-            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("通关", new TimeSpan(2, 16, 30)))
+            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("通关", new TimeSpan(2, 37, 32)))
             {
                 Check = delegate ()
                 {

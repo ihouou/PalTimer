@@ -136,6 +136,12 @@
     <Compile Include="ColorDialogEx.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="CutBGForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CutBGForm.Designer.cs">
+      <DependentUpon>CutBGForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="GEditForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -243,6 +249,9 @@
     <Compile Include="自定义.cs" />
     <EmbeddedResource Include="AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CutBGForm.resx">
+      <DependentUpon>CutBGForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DebugForm.resx">
       <DependentUpon>DebugForm.cs</DependentUpon>
