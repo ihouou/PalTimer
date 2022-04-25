@@ -122,30 +122,9 @@ namespace Pal98Timer
 
             ShowKCEnable();
         }
-
-        private bool IsCloudInReconn = false;
-        private bool NeedStopReconn = false;
-        private void CloudFailReconn()
-        {
-            if (IsCloudInReconn) return;
-            IsCloudInReconn = true;
-            NeedStopReconn = false;
-            Run(delegate () {
-                System.Threading.Thread.Sleep(60000);
-                if (!NeedStopReconn)
-                {
-                    InitCloud();
-                    IsCloudInReconn = false;
-                }
-                NeedStopReconn = false;
-            });
-        }
+        
         private void InitCloud()
         {
-            if (IsCloudInReconn)
-            {
-                NeedStopReconn = true;
-            }
             if (cloud == null)
             {
                 cloud = new PCloud(this.core.CoreName, delegate (int cid)
@@ -176,7 +155,6 @@ namespace Pal98Timer
                                     catch { }
                                     //Error(cloud.LastError);
                                 });
-                                CloudFailReconn();
                                 break;
                             default:
                                 btnCloud.Text = "云";
@@ -188,7 +166,6 @@ namespace Pal98Timer
                                     }
                                     catch { }
                                 });
-                                CloudFailReconn();
                                 break;
                         }
                     }
@@ -259,7 +236,6 @@ namespace Pal98Timer
             else
             {
                 cloud.Reset(this.core.CoreName);
-                cloud.Start();
             }
         }
         public int CloudID()
