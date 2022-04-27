@@ -133,6 +133,18 @@
     <Compile Include="AboutForm.Designer.cs">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="BestEditForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BestEditForm.Designer.cs">
+      <DependentUpon>BestEditForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BestEditItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BestEditItem.Designer.cs">
+      <DependentUpon>BestEditItem.cs</DependentUpon>
+    </Compile>
     <Compile Include="ColorDialogEx.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -249,6 +261,12 @@
     <Compile Include="自定义.cs" />
     <EmbeddedResource Include="AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BestEditForm.resx">
+      <DependentUpon>BestEditForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BestEditItem.resx">
+      <DependentUpon>BestEditItem.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CutBGForm.resx">
       <DependentUpon>CutBGForm.cs</DependentUpon>

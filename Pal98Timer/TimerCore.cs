@@ -342,6 +342,27 @@ namespace Pal98Timer
                 form.Error("保存失败：" + ex.Message);
             }
         }
+
+        public void SaveBest()
+        {
+            DateTime now = DateTime.Now;
+            string filename = "best" + CoreName + ".txt";
+            string snow = now.ToString("yyyyMMddHHmmss");
+
+            if (File.Exists(filename))
+            {
+                File.Move(filename, "best" + CoreName + snow + ".txt");
+            }
+            using (FileStream fileStream = new FileStream(filename, FileMode.Create))
+            {
+                using (StreamWriter streamWriter = new StreamWriter(fileStream, Encoding.UTF8))
+                {
+                    streamWriter.Write(GetRStr());
+                    //streamWriter.Flush();
+                }
+            }
+            SendPluginsEvent("SaveBest", filename);
+        }
         /// <summary>
         /// 导出当前成绩
         /// </summary>

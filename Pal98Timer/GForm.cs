@@ -844,6 +844,31 @@ namespace Pal98Timer
             af.ShowDialog(this);
             af.Dispose();
         }
+
+        private void btnEditBest_Click(object sender, EventArgs e)
+        {
+            if (core != null)
+            {
+                if (!File.Exists("best" + core.CoreName + ".txt"))
+                {
+                    try
+                    {
+                        core.SaveBest();
+                    }
+                    catch (Exception ex)
+                    {
+                        Error("无法生成最佳线文件");
+                        return;
+                    }
+                }
+                BestEditForm bef = new BestEditForm(core.CoreName);
+                bef.ShowDialog(this);
+            }
+            else
+            {
+                Error("还没有准备好，请稍候再试");
+            }
+        }
     }
 
     public class MConfig
