@@ -470,7 +470,57 @@ namespace Pal98Timer
                 return false;
             }
         }
-        private bool GetPalHandle() {
+        private bool GetPalHandle()
+        {
+            Process[] res = Process.GetProcessesByName("Pal2_x64");
+            if (res.Length > 0)
+            {
+                if (PID > 0)
+                {
+                    //已有
+                    foreach (Process p in res)
+                    {
+                        if (p.Id == PID)
+                        {
+                            PALBaseAddr = PalProcess.MainModule.BaseAddress.ToInt64();
+                            return true;
+                        }
+                    }
+                    //pid变了
+                    PalProcess = res[0];
+                    GameWindowHandle = res[0].MainWindowHandle;
+                    PID = PalProcess.Id;
+                    PalHandle = new IntPtr(Kernel32.OpenProcess(0x1F0FFF, false, PID));
+                    PALBaseAddr = PalProcess.MainModule.BaseAddress.ToInt64();
+                    CalcPalMD5();
+
+                    return true;
+                }
+                else
+                {
+                    //首次
+                    PalProcess = res[0];
+                    GameWindowHandle = res[0].MainWindowHandle;
+                    PID = PalProcess.Id;
+                    PalHandle = new IntPtr(Kernel32.OpenProcess(0x1F0FFF, false, PID));
+                    PALBaseAddr = PalProcess.MainModule.BaseAddress.ToInt64();
+                    CalcPalMD5();
+
+                    return true;
+                }
+            }
+            else
+            {
+                PalHandle = IntPtr.Zero;
+                GameWindowHandle = IntPtr.Zero;
+                PalProcess = null;
+                PID = -1;
+                GMD5 = "none";
+                PALBaseAddr = -1;
+                return false;
+            }
+        }
+        private bool GetPalHandle_o() {
             Process[] res = Process.GetProcessesByName("Pal2_x64");
             if (res.Length > 1)
             {
@@ -493,66 +543,6 @@ namespace Pal98Timer
                 CalcPalMD5();
 
                 return true;
-            }
-            else
-            {
-                PalHandle = IntPtr.Zero;
-                GameWindowHandle = IntPtr.Zero;
-                PalProcess = null;
-                PID = -1;
-                GMD5 = "none";
-                PALBaseAddr = -1;
-                return false;
-            }
-        }
-        private bool GetPalHandle_old()
-        {
-            Process[] res = Process.GetProcessesByName("Pal2_x64");
-            if (res.Length > 1)
-            {
-                if (!HasAlertMutiPal)
-                {
-                    cryerror = "检测到多个Pal2_x64.exe进程，请关闭其他的，只保留一个！";
-                    HasAlertMutiPal = true;
-                }
-                return false;
-            }
-
-            HasAlertMutiPal = false;
-            if (res.Length > 0)
-            {
-                if (PID == -1)
-                {
-                    PalProcess = res[0];
-                    GameWindowHandle = res[0].MainWindowHandle;
-                    PID = PalProcess.Id;
-                    PalHandle = new IntPtr(Kernel32.OpenProcess(0x1F0FFF, false, PID));
-                    PALBaseAddr = PalProcess.MainModule.BaseAddress.ToInt64();
-                    CalcPalMD5();
-
-                    return true;
-                }
-                else
-                {
-                    if (PID == res[0].Id)
-                    {
-                        if (GMD5 == "none")
-                        {
-                            CalcPalMD5();
-                        }
-                        return true;
-                    }
-                    else
-                    {
-                        PalHandle = IntPtr.Zero;
-                        GameWindowHandle = IntPtr.Zero;
-                        PalProcess = null;
-                        PID = -1;
-                        GMD5 = "none";
-                        PALBaseAddr = -1;
-                        return false;
-                    }
-                }
             }
             else
             {
