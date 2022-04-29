@@ -54,6 +54,7 @@ namespace Pal98Timer
             }
             else
             {
+                if (WillAppendNamedBattle.IndexOf(":0.00") > 0) return "";
                 string res = WillAppendNamedBattle;
                 WillAppendNamedBattle = "";
                 return res;
@@ -139,7 +140,7 @@ namespace Pal98Timer
             {
                 Check = delegate ()
                 {
-                    if (GameObj.BattleID == GameObjectGuJian2.EBattle.太乙神兵 && (GameObj.EnemyCount <= 0 || GameObj.TotalEnemyHP <= 0))
+                    if (GameObj.BattleID == GameObjectGuJian2.EBattle.太乙神兵 && GameObj.IsWin())
                     {
                         WillAppendNamedBattle = GameObj.BattleID.ToString() + ":" + BattleLong.TotalSeconds.ToString("F2");
                         return true;
@@ -151,7 +152,7 @@ namespace Pal98Timer
             {
                 Check = delegate ()
                 {
-                    if (GameObj.BattleID == GameObjectGuJian2.EBattle.慧明 && (GameObj.EnemyCount <= 0 || GameObj.TotalEnemyHP <= 0))
+                    if (GameObj.BattleID == GameObjectGuJian2.EBattle.慧明 && GameObj.IsWin())
                     {
                         WillAppendNamedBattle = GameObj.BattleID.ToString() + ":" + BattleLong.TotalSeconds.ToString("F2");
                         return true;
@@ -163,7 +164,7 @@ namespace Pal98Timer
             {
                 Check = delegate ()
                 {
-                    if (GameObj.BattleID == GameObjectGuJian2.EBattle.金砖 && (GameObj.EnemyCount <= 0 || GameObj.TotalEnemyHP <= 0))
+                    if (GameObj.BattleID == GameObjectGuJian2.EBattle.金砖 && GameObj.IsWin())
                     {
                         WillAppendNamedBattle = GameObj.BattleID.ToString() + ":" + BattleLong.TotalSeconds.ToString("F2");
                         return true;
@@ -175,7 +176,7 @@ namespace Pal98Timer
             {
                 Check = delegate ()
                 {
-                    if (GameObj.BattleID == GameObjectGuJian2.EBattle.灵虚 && (GameObj.EnemyCount <= 0 || GameObj.TotalEnemyHP <= 0))
+                    if (GameObj.BattleID == GameObjectGuJian2.EBattle.灵虚 && GameObj.IsWin())
                     {
                         WillAppendNamedBattle = GameObj.BattleID.ToString() + ":" + BattleLong.TotalSeconds.ToString("F2");
                         return true;
@@ -187,7 +188,7 @@ namespace Pal98Timer
             {
                 Check = delegate ()
                 {
-                    if (GameObj.BattleID == GameObjectGuJian2.EBattle.偃甲将军 && (GameObj.EnemyCount <= 0 || GameObj.TotalEnemyHP <= 0))
+                    if (GameObj.BattleID == GameObjectGuJian2.EBattle.偃甲将军 && GameObj.IsWin())
                     {
                         WillAppendNamedBattle = GameObj.BattleID.ToString() + ":" + BattleLong.TotalSeconds.ToString("F2");
                         return true;
@@ -199,7 +200,7 @@ namespace Pal98Timer
             {
                 Check = delegate ()
                 {
-                    if (GameObj.BattleID == GameObjectGuJian2.EBattle.雩风 && (GameObj.EnemyCount <= 0 || GameObj.TotalEnemyHP <= 0))
+                    if (GameObj.BattleID == GameObjectGuJian2.EBattle.雩风 && GameObj.IsWin())
                     {
                         WillAppendNamedBattle = GameObj.BattleID.ToString() + ":" + BattleLong.TotalSeconds.ToString("F2");
                         return true;
@@ -211,7 +212,7 @@ namespace Pal98Timer
             {
                 Check = delegate ()
                 {
-                    if (GameObj.BattleID == GameObjectGuJian2.EBattle.尸兽厌火 && (GameObj.EnemyCount <= 0 || GameObj.TotalEnemyHP <= 0))
+                    if (GameObj.BattleID == GameObjectGuJian2.EBattle.尸兽厌火 && GameObj.IsWin())
                     {
                         WillAppendNamedBattle = GameObj.BattleID.ToString() + ":" + BattleLong.TotalSeconds.ToString("F2");
                         return true;
@@ -223,7 +224,7 @@ namespace Pal98Timer
             {
                 Check = delegate ()
                 {
-                    if (GameObj.BattleID == GameObjectGuJian2.EBattle.安尼瓦尔 && (GameObj.EnemyCount <= 0 || GameObj.TotalEnemyHP <= 0))
+                    if (GameObj.BattleID == GameObjectGuJian2.EBattle.安尼瓦尔 && GameObj.IsWin())
                     {
                         WillAppendNamedBattle = GameObj.BattleID.ToString() + ":" + BattleLong.TotalSeconds.ToString("F2");
                         return true;
@@ -235,7 +236,7 @@ namespace Pal98Timer
             {
                 Check = delegate ()
                 {
-                    if (GameObj.BattleID == GameObjectGuJian2.EBattle.流月城守卫头领 && (GameObj.EnemyCount <= 0 || GameObj.TotalEnemyHP <= 0))
+                    if (GameObj.BattleID == GameObjectGuJian2.EBattle.流月城守卫头领 && GameObj.IsWin())
                     {
                         WillAppendNamedBattle = GameObj.BattleID.ToString() + ":" + BattleLong.TotalSeconds.ToString("F2");
                         return true;
@@ -247,7 +248,7 @@ namespace Pal98Timer
             {
                 Check = delegate ()
                 {
-                    if (GameObj.BattleID == GameObjectGuJian2.EBattle.远古石兽 && (GameObj.EnemyCount <= 0 || GameObj.TotalEnemyHP <= 0))
+                    if (GameObj.BattleID == GameObjectGuJian2.EBattle.远古石兽 && GameObj.IsWin())
                     {
                         WillAppendNamedBattle = GameObj.BattleID.ToString() + ":" + BattleLong.TotalSeconds.ToString("F2");
                         return true;
@@ -259,14 +260,10 @@ namespace Pal98Timer
             {
                 Check = delegate ()
                 {
-                    if (GameObj.BattleID == GameObjectGuJian2.EBattle.火龙伏英)
+                    if (GameObj.BattleID == GameObjectGuJian2.EBattle.火龙伏英 && GameObj.IsWin())
                     {
-                        int WinHP = (int)(((double)(GameObj.TotalEnemyMaxHP)) * 0.05);
-                        if (GameObj.EnemyCount <= 0 || GameObj.TotalEnemyHP <= WinHP)
-                        {
-                            WillAppendNamedBattle = GameObj.BattleID.ToString() + ":" + BattleLong.TotalSeconds.ToString("F2");
-                            return true;
-                        }
+                        WillAppendNamedBattle = GameObj.BattleID.ToString() + ":" + BattleLong.TotalSeconds.ToString("F2");
+                        return true;
                     }
                     return false;
                 }
@@ -275,7 +272,7 @@ namespace Pal98Timer
             {
                 Check = delegate ()
                 {
-                    if (GameObj.BattleID == GameObjectGuJian2.EBattle.怒霜天君 && (GameObj.EnemyCount <= 0 || GameObj.TotalEnemyHP <= 0))
+                    if (GameObj.BattleID == GameObjectGuJian2.EBattle.怒霜天君 && GameObj.IsWin())
                     {
                         WillAppendNamedBattle = GameObj.BattleID.ToString() + ":" + BattleLong.TotalSeconds.ToString("F2");
                         return true;
@@ -287,7 +284,7 @@ namespace Pal98Timer
             {
                 Check = delegate ()
                 {
-                    if (GameObj.BattleID == GameObjectGuJian2.EBattle.温留 && (GameObj.EnemyCount <= 0 || GameObj.TotalEnemyHP <= 0))
+                    if (GameObj.BattleID == GameObjectGuJian2.EBattle.温留 && GameObj.IsWin())
                     {
                         WillAppendNamedBattle = GameObj.BattleID.ToString() + ":" + BattleLong.TotalSeconds.ToString("F2");
                         return true;
@@ -299,7 +296,7 @@ namespace Pal98Timer
             {
                 Check = delegate ()
                 {
-                    if (GameObj.BattleID == GameObjectGuJian2.EBattle.蜃精玉怜 && (GameObj.EnemyCount <= 0 || GameObj.TotalEnemyHP <= 0))
+                    if (GameObj.BattleID == GameObjectGuJian2.EBattle.蜃精玉怜 && GameObj.IsWin())
                     {
                         WillAppendNamedBattle = GameObj.BattleID.ToString() + ":" + BattleLong.TotalSeconds.ToString("F2");
                         return true;
@@ -311,7 +308,7 @@ namespace Pal98Timer
             {
                 Check = delegate ()
                 {
-                    if (GameObj.BattleID == GameObjectGuJian2.EBattle.初七 && (GameObj.EnemyCount <= 0 || GameObj.TotalEnemyHP <= 0))
+                    if (GameObj.BattleID == GameObjectGuJian2.EBattle.初七 && GameObj.IsWin())
                     {
                         WillAppendNamedBattle = GameObj.BattleID.ToString() + ":" + BattleLong.TotalSeconds.ToString("F2");
                         return true;
@@ -319,26 +316,14 @@ namespace Pal98Timer
                     return false;
                 }
             });
-            Data["ctj"] = false;
             CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("程廷钧", new TimeSpan(0, 6, 59)))
             {
                 Check = delegate ()
                 {
-                    if (!Data.GetValue<bool>("ctj"))
+                    if (GameObj.BattleID == GameObjectGuJian2.EBattle.程廷钧 && GameObj.IsWin())
                     {
-                        if (GameObj.BattleID == GameObjectGuJian2.EBattle.程廷钧)
-                        {
-                            Data["ctj"] = true;
-                        }
-                    }
-                    else
-                    {
-                        if (GameObj.EnemyCount <= 0 || GameObj.TotalEnemyHP <= 0 || !GameObj.IsInBattle)
-                        {
-                            Data["ctj"] = false;
-                            WillAppendNamedBattle = GameObjectGuJian2.EBattle.程廷钧.ToString() + ":" + BattleLong.TotalSeconds.ToString("F2");
-                            return true;
-                        }
+                        WillAppendNamedBattle = GameObj.BattleID.ToString() + ":" + BattleLong.TotalSeconds.ToString("F2");
+                        return true;
                     }
                     return false;
                 }
@@ -347,7 +332,7 @@ namespace Pal98Timer
             {
                 Check = delegate ()
                 {
-                    if (GameObj.BattleID == GameObjectGuJian2.EBattle.魔化华月 && (GameObj.EnemyCount <= 0 || GameObj.TotalEnemyHP <= 0))
+                    if (GameObj.BattleID == GameObjectGuJian2.EBattle.魔化华月 && GameObj.IsWin())
                     {
                         WillAppendNamedBattle = GameObj.BattleID.ToString() + ":" + BattleLong.TotalSeconds.ToString("F2");
                         return true;
@@ -359,7 +344,7 @@ namespace Pal98Timer
             {
                 Check = delegate ()
                 {
-                    if (GameObj.BattleID == GameObjectGuJian2.EBattle.沈夜变身 && (GameObj.EnemyCount <= 0 || GameObj.TotalEnemyHP <= 0))
+                    if (GameObj.BattleID == GameObjectGuJian2.EBattle.沈夜变身 && GameObj.IsWin())
                     {
                         WillAppendNamedBattle = GameObj.BattleID.ToString() + ":" + BattleLong.TotalSeconds.ToString("F2");
                         return true;
@@ -371,7 +356,7 @@ namespace Pal98Timer
             {
                 Check = delegate ()
                 {
-                    if (GameObj.BattleID == GameObjectGuJian2.EBattle.砺罂 && (GameObj.EnemyCount <= 0 || GameObj.TotalEnemyHP <= 0))
+                    if (GameObj.BattleID == GameObjectGuJian2.EBattle.砺罂 && GameObj.IsWin())
                     {
                         WillAppendNamedBattle = GameObj.BattleID.ToString() + ":" + BattleLong.TotalSeconds.ToString("F2");
                         return true;
@@ -642,7 +627,7 @@ namespace Pal98Timer
             OutBattleTime = DateTime.Now;
             BattleLong = OutBattleTime - InBattleTime;
 
-            if (GameObj.BattleName != "")
+            if (GameObj.IsWin() && GameObj.BattleName != "")
             {
                 WillAppendNamedBattle = GameObj.BattleName + ":" + BattleLong.TotalSeconds.ToString("F2");
             }
@@ -667,6 +652,7 @@ namespace Pal98Timer
         private const int CanControlOffset = 0x7080A8 + 0x544;
         private static readonly int[] GameTimeOffset = new int[] { 0x7080A8, 0x20, 0xE8 };
         private static readonly int[] InBattleOffset = new int[] { 0x700870, 0xAE8 };
+        private static readonly int[] BattleResultOffset = new int[] {0x700870, 0xB18 };
         private static readonly int[] EnemyCountBeginOffset = new int[] { 0x700870, 0xC90 };
         private static readonly int[] EnemyCountCurrentOffset = new int[] { 0x700870, 0x16C };
         private static readonly int[] YWYLevelOffset = new int[] { 0x7080A8, 0x28, 0x8, 0x560, 0x8EC };
@@ -700,6 +686,7 @@ namespace Pal98Timer
         public bool CanControl = false;
         public bool IsInBattle = false;
         public bool IsLoading = false;
+        public int BattleReslut = 0;//0胜利 1失败
         public int UIType = 0;//5战斗 6剧情 3读条 2主界面 4正常
         public int Money = 0;
         public float GameTime = 0.0F;
@@ -736,7 +723,11 @@ namespace Pal98Timer
         public int YWYLevel = 0;
         public string BattleName = "";
         public int QFLSCount = 0;
-
+        public bool IsWin()
+        {
+            if (IsInBattle) return false;
+            return BattleReslut == 0;
+        }
         public GameObjectGuJian2()
         {
         }
@@ -758,6 +749,7 @@ namespace Pal98Timer
         {
             Money = Readm<int>(handle, ExeBaseAddr, MoneyOffset);
             GameTime = Readm<float>(handle, ExeBaseAddr, GameTimeOffset);
+            BattleReslut = Readm<int>(handle, ExeBaseAddr, BattleResultOffset);
             IsInBattle = (Readm<int>(handle, ExeBaseAddr, InBattleOffset) != 0);
             CanControl = (Readm<int>(handle, ExeBaseAddr + CanControlOffset) == 1);
             YWYLevel = Readm<int>(handle, ExeBaseAddr, YWYLevelOffset);
@@ -781,7 +773,7 @@ namespace Pal98Timer
             else
             {
                 tmpec = 0;
-                BattleID = EBattle.none;
+                //BattleID = EBattle.none;
             }
             if (tmpec > 50) tmpec = 0;
             EnemyCount = tmpec;
@@ -807,14 +799,15 @@ namespace Pal98Timer
             Enemies = el;
             TotalEnemyHP = tmphp;
             TotalEnemyMaxHP = tmpmaxhp;
-            if (IsInBattle)
-            {
-                _anabattle();
-            }
+            _anabattle();
         }
 
         private void _anabattle() {
-            if (Enemies.Count <= 0) return;
+            if (Enemies.Count <= 0)
+            {
+                //BattleID = EBattle.none;
+                return;
+            }
             foreach (var eo in Enemies)
             {
                 switch (eo.ID)
@@ -867,6 +860,7 @@ namespace Pal98Timer
                         BattleID = EBattle.初七;
                         return;
                     case 727:
+                    case 733:
                         BattleID = EBattle.程廷钧;
                         return;
                     case 729:
