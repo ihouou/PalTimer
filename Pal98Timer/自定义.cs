@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace Pal98Timer
@@ -93,6 +94,17 @@ namespace Pal98Timer
 
         protected override void InitCheckPoints()
         {
+            string fn = "best" + CoreName + ".txt";
+            if (!File.Exists(fn))
+            {
+                using (FileStream fs = new FileStream(fn, FileMode.Create, FileAccess.ReadWrite))
+                {
+                    using (StreamWriter sw = new StreamWriter(fs, Encoding.UTF8))
+                    {
+                        sw.Write("{\"CheckPoints\":[{\"name\":\"测试1\",\"des\":\"\",\"time\":\"00:01:00.00\"},{\"name\":\"测试2\",\"des\":\"\",\"time\":\"00:02:00.00\"},{\"name\":\"测试3\",\"des\":\"\",\"time\":\"00:03:00.00\"},{\"name\":\"测试4\",\"des\":\"\",\"time\":\"00:04:00.00\"},{\"name\":\"测试5\",\"des\":\"\",\"time\":\"00:05:00.00\"}]}");
+                    }
+                }
+            }
             LoadBest();
             CheckPoints = new List<CheckPoint>();
             foreach (var kv in Best)

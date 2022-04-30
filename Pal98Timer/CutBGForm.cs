@@ -15,71 +15,100 @@ namespace Pal98Timer
         public CutBGForm()
         {
             InitializeComponent();
+        }
 
-            pbMain.MouseEnter += delegate(object sender, EventArgs e) {
-                pbMain.Focus();
-            };
-            pbMain.MouseWheel += PbMain_MouseWheel;
+        private void AddPicture(string imgpath)
+        {
+            if (File.Exists(imgpath))
+            {
+                APB pb = new APB();
+                pb.SizeMode = PictureBoxSizeMode.StretchImage;
+                pb.Image = Image.FromFile(imgpath);
+                pb.Width = pb.Image.Width;
+                pb.Height = pb.Image.Height;
+                pb.Left = 0;
+                pb.Top = 0;
 
-            //拖动位置
-            pbMain.MouseDown += PbMain_MouseDown;
-            pbMain.MouseUp += PbMain_MouseUp;
-            pbMain.MouseMove += PbMain_MouseMove;
+                pb.MouseEnter+= delegate (object sender, EventArgs e) {
+                    ((APB)sender).Focus();
+                };
+                pb.MouseWheel += PbMain_MouseWheel;
+
+                //拖动位置
+                pb.MouseDown += PbMain_MouseDown;
+                pb.MouseUp += PbMain_MouseUp;
+                pb.MouseMove += PbMain_MouseMove;
+                
+
+                pnMain.Controls.Add(pb);
+                pb.BringToFront();
+            }
         }
 
         private void PbMain_MouseMove(object sender, MouseEventArgs e)
         {
-            if (isdown)
+            APB pb = sender as APB;
+            if (pb.isdown)
             {
-                pbMain.Location = new Point(pbMain.Location.X + e.X - offset.X, pbMain.Location.Y + e.Y - offset.Y);
+                pb.Location = new Point(pb.Location.X + e.X - pb.offx, pb.Location.Y + e.Y - pb.offy);
             }
         }
 
         private void PbMain_MouseUp(object sender, MouseEventArgs e)
         {
-            isdown = false;
+            APB pb = sender as APB;
+            switch (e.Button)
+            {
+                case MouseButtons.Left:
+                    pb.isdown = false;
+                    break;
+                case MouseButtons.Middle:
+                    pb.BringToFront();
+                    break;
+                case MouseButtons.Right:
+                    pnMain.Controls.Remove(pb);
+                    pb.Image.Dispose();
+                    pb.Dispose();
+                    break;
+            }
         }
-        private bool isdown = false;
-        private Point offset = new Point(0, 0);
         private void PbMain_MouseDown(object sender, MouseEventArgs e)
         {
-            offset.X = e.X;
-            offset.Y = e.Y;
-            isdown = true;
+            if (e.Button == MouseButtons.Left)
+            {
+                APB pb = sender as APB;
+                pb.offx = e.X;
+                pb.offy = e.Y;
+                pb.isdown = true;
+            }
         }
 
         private void PbMain_MouseWheel(object sender, MouseEventArgs e)
         {
+            APB pb = sender as APB;
             //缩放
             if (e.Delta > 0)
             {
-                zoom += 0.1D;
+                pb.zoom += 0.1D;
             }
             else
             {
-                zoom -= 0.1D;
+                pb.zoom -= 0.1D;
             }
-            pbMain.Width = (int)(zoom * bg.Width);
-            pbMain.Height = (int)(zoom * bg.Height);
+            if (pb.zoom < 0.1D) pb.zoom = 0.1D;
+            pb.Width = (int)(pb.zoom * pb.Image.Width);
+            pb.Height = (int)(pb.zoom * pb.Image.Height);
         }
-        private double zoom = 1.0D;
         public void SetData(GForm mainform, string imgpath)
         {
             //根据主窗口的大小生成视觉控件
             mf = mainform;
-            if (File.Exists(imgpath))
-            {
-                bg = Image.FromFile(imgpath);
-                pbMain.Width = bg.Width;
-                pbMain.Height = bg.Height;
-                pbMain.Image = bg;
-            }
+            AddPicture(imgpath);
             pnMain.Width = mf.Width;
             pnMain.Height = mf.Height;
         }
 
         private GForm mf;
-        private Image bg;
         public Image GetResult()
         {
             //给外面返回结果
@@ -88,27 +117,14 @@ namespace Pal98Timer
 
         public void x()
         {
-            bg?.Dispose();
+            //bg?.Dispose();
+            foreach (APB pb in pnMain.Controls)
+            {
+                pb.Image.Dispose();
+            }
         }
 
         private Image res;
-        /*private void MakeResult()
-        {
-            //根据调整的图片生成最终的背景图
-            //截图吧
-            using (Graphics g1 = pnMain.CreateGraphics())
-            {
-                res = new Bitmap(pnMain.Width, pnMain.Height, g1);
-                using (Graphics g2 = Graphics.FromImage(res))
-                {
-                    IntPtr dc1 = g1.GetHdc();
-                    IntPtr dc2 = g2.GetHdc();
-                    BitBlt(dc2, 0, 0, pnMain.Width, pnMain.Height, dc1, 0, 0, 13369376);
-                    g1.ReleaseHdc(dc1);
-                    g2.ReleaseHdc(dc2);
-                }
-            }
-        }*/
         private void MakeResult()
         {
             IntPtr hdc = GetWindowDC(pnMain.Handle);
@@ -153,18 +169,24 @@ namespace Pal98Timer
             this.Close();
         }
 
-        /*[System.Runtime.InteropServices.DllImportAttribute("gdi32.dll ")]
-        private static extern bool BitBlt(
-        IntPtr hdcDest, // handle to destination DC 
-        int nXDest, // x-coord of destination upper-left corner 
-        int nYDest, // y-coord of destination upper-left corner 
-        int nWidth, // width of destination rectangle 
-        int nHeight, // height of destination rectangle 
-        IntPtr hdcSrc, // handle to source DC 
-        int nXSrc, // x-coordinate of source upper-left corner 
-        int nYSrc, // y-coordinate of source upper-left corner 
-        System.Int32 dwRop // raster operation code 
-        );*/
+        private void btnAddImg_Click(object sender, EventArgs e)
+        {
+            if (ofd.ShowDialog(this) == DialogResult.OK)
+            {
+                AddPicture(ofd.FileName);
+            }
+        }
+
+        private void btnBGColor_Click(object sender, EventArgs e)
+        {
+            colorDlg.Color = pnMain.BackColor;
+            if (colorDlg.ShowDialog(this) == DialogResult.OK)
+            {
+                pnMain.BackColor = colorDlg.Color;
+            }
+        }
+
+
         [System.Runtime.InteropServices.DllImportAttribute("gdi32.dll")]
         private static extern bool BitBlt(
              IntPtr hdcDest, // 目标 DC的句柄  
@@ -237,5 +259,14 @@ namespace Pal98Timer
             public int x;
             public int y;
         }
+    }
+
+
+    public class APB : PictureBox
+    {
+        public double zoom = 1.0D;
+        public bool isdown = false;
+        public int offx = 0;
+        public int offy = 0;
     }
 }

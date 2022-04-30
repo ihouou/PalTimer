@@ -30,13 +30,16 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CutBGForm));
             this.pnMain = new System.Windows.Forms.Panel();
-            this.pbMain = new System.Windows.Forms.PictureBox();
             this.btnOK = new System.Windows.Forms.Button();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.label1 = new System.Windows.Forms.Label();
+            this.btnAddImg = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
-            this.pnMain.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbMain)).BeginInit();
+            this.label1 = new System.Windows.Forms.Label();
+            this.ofd = new System.Windows.Forms.OpenFileDialog();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.btnBGColor = new System.Windows.Forms.Button();
+            this.colorDlg = new System.Windows.Forms.ColorDialog();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -45,25 +48,15 @@
             // pnMain
             // 
             this.pnMain.BackColor = System.Drawing.Color.Black;
-            this.pnMain.Controls.Add(this.pbMain);
             this.pnMain.Location = new System.Drawing.Point(0, 0);
             this.pnMain.Name = "pnMain";
             this.pnMain.Size = new System.Drawing.Size(422, 638);
             this.pnMain.TabIndex = 0;
             // 
-            // pbMain
-            // 
-            this.pbMain.Location = new System.Drawing.Point(0, 0);
-            this.pbMain.Name = "pbMain";
-            this.pbMain.Size = new System.Drawing.Size(100, 50);
-            this.pbMain.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pbMain.TabIndex = 0;
-            this.pbMain.TabStop = false;
-            // 
             // btnOK
             // 
             this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOK.Location = new System.Drawing.Point(60, 685);
+            this.btnOK.Location = new System.Drawing.Point(60, 692);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
             this.btnOK.TabIndex = 1;
@@ -85,12 +78,35 @@
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.btnBGColor);
+            this.splitContainer1.Panel2.Controls.Add(this.label4);
+            this.splitContainer1.Panel2.Controls.Add(this.label3);
+            this.splitContainer1.Panel2.Controls.Add(this.btnAddImg);
             this.splitContainer1.Panel2.Controls.Add(this.label2);
             this.splitContainer1.Panel2.Controls.Add(this.label1);
             this.splitContainer1.Panel2.Controls.Add(this.btnOK);
-            this.splitContainer1.Size = new System.Drawing.Size(438, 721);
-            this.splitContainer1.SplitterDistance = 279;
+            this.splitContainer1.Size = new System.Drawing.Size(484, 728);
+            this.splitContainer1.SplitterDistance = 325;
             this.splitContainer1.TabIndex = 2;
+            // 
+            // btnAddImg
+            // 
+            this.btnAddImg.Location = new System.Drawing.Point(14, 134);
+            this.btnAddImg.Name = "btnAddImg";
+            this.btnAddImg.Size = new System.Drawing.Size(75, 23);
+            this.btnAddImg.TabIndex = 4;
+            this.btnAddImg.Text = "追加图片";
+            this.btnAddImg.UseVisualStyleBackColor = true;
+            this.btnAddImg.Click += new System.EventHandler(this.btnAddImg_Click);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(12, 49);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(125, 12);
+            this.label2.TabIndex = 3;
+            this.label2.Text = "鼠标左键拖拽：调位置";
             // 
             // label1
             // 
@@ -101,26 +117,48 @@
             this.label1.TabIndex = 2;
             this.label1.Text = "鼠标滚轮：调大小";
             // 
-            // label2
+            // ofd
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 49);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(101, 12);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "鼠标拖拽：调位置";
+            this.ofd.Filter = "图片文件|*.png;*.jpg;*.jpeg;*.gif;*.bmp";
+            this.ofd.Title = "追加图片";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(12, 75);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(113, 12);
+            this.label3.TabIndex = 5;
+            this.label3.Text = "鼠标中键：图层置顶";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(12, 101);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(113, 12);
+            this.label4.TabIndex = 6;
+            this.label4.Text = "鼠标右键：移除图层";
+            // 
+            // btnBGColor
+            // 
+            this.btnBGColor.Location = new System.Drawing.Point(14, 177);
+            this.btnBGColor.Name = "btnBGColor";
+            this.btnBGColor.Size = new System.Drawing.Size(75, 23);
+            this.btnBGColor.TabIndex = 7;
+            this.btnBGColor.Text = "设置背景色";
+            this.btnBGColor.UseVisualStyleBackColor = true;
+            this.btnBGColor.Click += new System.EventHandler(this.btnBGColor_Click);
             // 
             // CutBGForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(438, 721);
+            this.ClientSize = new System.Drawing.Size(484, 728);
             this.Controls.Add(this.splitContainer1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "CutBGForm";
             this.Text = "背景剪裁";
-            this.pnMain.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pbMain)).EndInit();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.Panel2.PerformLayout();
@@ -132,10 +170,15 @@
         #endregion
 
         private System.Windows.Forms.Panel pnMain;
-        private System.Windows.Forms.PictureBox pbMain;
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button btnAddImg;
+        private System.Windows.Forms.OpenFileDialog ofd;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button btnBGColor;
+        private System.Windows.Forms.ColorDialog colorDlg;
     }
 }
