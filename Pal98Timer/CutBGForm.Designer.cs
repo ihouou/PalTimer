@@ -32,13 +32,14 @@
             this.pnMain = new System.Windows.Forms.Panel();
             this.btnOK = new System.Windows.Forms.Button();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.label5 = new System.Windows.Forms.Label();
+            this.btnBGColor = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             this.btnAddImg = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.ofd = new System.Windows.Forms.OpenFileDialog();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.btnBGColor = new System.Windows.Forms.Button();
             this.colorDlg = new System.Windows.Forms.ColorDialog();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -74,20 +75,59 @@
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.AutoScroll = true;
+            this.splitContainer1.Panel1.BackColor = System.Drawing.Color.Blue;
             this.splitContainer1.Panel1.Controls.Add(this.pnMain);
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.btnOK);
+            this.splitContainer1.Panel2.Controls.Add(this.label5);
             this.splitContainer1.Panel2.Controls.Add(this.btnBGColor);
             this.splitContainer1.Panel2.Controls.Add(this.label4);
             this.splitContainer1.Panel2.Controls.Add(this.label3);
             this.splitContainer1.Panel2.Controls.Add(this.btnAddImg);
             this.splitContainer1.Panel2.Controls.Add(this.label2);
             this.splitContainer1.Panel2.Controls.Add(this.label1);
-            this.splitContainer1.Panel2.Controls.Add(this.btnOK);
             this.splitContainer1.Size = new System.Drawing.Size(484, 728);
             this.splitContainer1.SplitterDistance = 325;
             this.splitContainer1.TabIndex = 2;
+            // 
+            // label5
+            // 
+            this.label5.Location = new System.Drawing.Point(12, 217);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(131, 127);
+            this.label5.TabIndex = 8;
+            this.label5.Text = "注：最终背景图是将蓝色以内的部分截图，请将窗口扩大至无滚动条的大小进行图片编辑，否则最终背景图可能出现无图片覆盖的色块，影响美观。\r\n蓝色以内的区域大小既为当前主" +
+    "界面的大小。";
+            // 
+            // btnBGColor
+            // 
+            this.btnBGColor.Location = new System.Drawing.Point(14, 177);
+            this.btnBGColor.Name = "btnBGColor";
+            this.btnBGColor.Size = new System.Drawing.Size(75, 23);
+            this.btnBGColor.TabIndex = 7;
+            this.btnBGColor.Text = "设置背景色";
+            this.btnBGColor.UseVisualStyleBackColor = true;
+            this.btnBGColor.Click += new System.EventHandler(this.btnBGColor_Click);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(12, 101);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(113, 12);
+            this.label4.TabIndex = 6;
+            this.label4.Text = "鼠标右键：移除图层";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(12, 75);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(113, 12);
+            this.label3.TabIndex = 5;
+            this.label3.Text = "鼠标中键：图层置顶";
             // 
             // btnAddImg
             // 
@@ -122,34 +162,6 @@
             this.ofd.Filter = "图片文件|*.png;*.jpg;*.jpeg;*.gif;*.bmp";
             this.ofd.Title = "追加图片";
             // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 75);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(113, 12);
-            this.label3.TabIndex = 5;
-            this.label3.Text = "鼠标中键：图层置顶";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(12, 101);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(113, 12);
-            this.label4.TabIndex = 6;
-            this.label4.Text = "鼠标右键：移除图层";
-            // 
-            // btnBGColor
-            // 
-            this.btnBGColor.Location = new System.Drawing.Point(14, 177);
-            this.btnBGColor.Name = "btnBGColor";
-            this.btnBGColor.Size = new System.Drawing.Size(75, 23);
-            this.btnBGColor.TabIndex = 7;
-            this.btnBGColor.Text = "设置背景色";
-            this.btnBGColor.UseVisualStyleBackColor = true;
-            this.btnBGColor.Click += new System.EventHandler(this.btnBGColor_Click);
-            // 
             // CutBGForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -157,6 +169,7 @@
             this.ClientSize = new System.Drawing.Size(484, 728);
             this.Controls.Add(this.splitContainer1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MinimumSize = new System.Drawing.Size(500, 420);
             this.Name = "CutBGForm";
             this.Text = "背景剪裁";
             this.splitContainer1.Panel1.ResumeLayout(false);
@@ -180,5 +193,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button btnBGColor;
         private System.Windows.Forms.ColorDialog colorDlg;
+        private System.Windows.Forms.Label label5;
     }
 }

@@ -106,6 +106,10 @@ namespace Pal98Timer
             AddPicture(imgpath);
             pnMain.Width = mf.Width;
             pnMain.Height = mf.Height;
+            Width = mf.Width + 180;
+            int h= mf.Height + 45;
+            //if (h < 400) h = 400;
+            Height = h;
         }
 
         private GForm mf;
