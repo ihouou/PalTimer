@@ -845,6 +845,11 @@ namespace Pal98Timer
             af.Dispose();
         }
 
+        public void SetEditBestBtnVisible(bool isVisible)
+        {
+
+        }
+
         private void btnEditBest_Click(object sender, EventArgs e)
         {
             if (core != null)

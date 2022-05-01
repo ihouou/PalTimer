@@ -680,7 +680,7 @@ namespace Pal98Timer
         }
         public override bool NeedBlockFunctionKey(int fnno)
         {
-            return fnno == 8;
+            return false;
         }
     }
 

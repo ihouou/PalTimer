@@ -136,229 +136,248 @@ namespace Pal98Timer
             _CurrentStep = -1;
             Data = new HObj();
             CheckPoints = new List<CheckPoint>();
-            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("太乙神兵", new TimeSpan(0, 6, 59)))
+            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("太乙神兵", new TimeSpan(0, 4, 12)))
             {
                 Check = delegate ()
                 {
                     if (GameObj.BattleID == GameObjectGuJian2.EBattle.太乙神兵 && GameObj.IsWin())
                     {
                         WillAppendNamedBattle = GameObj.BattleID.ToString() + ":" + BattleLong.TotalSeconds.ToString("F2");
+                        GameObj.BattleID = GameObjectGuJian2.EBattle.none;
                         return true;
                     }
                     return false;
                 }
             });
-            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("慧明", new TimeSpan(0, 6, 59)))
+            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("慧明", new TimeSpan(0, 17, 7)))
             {
                 Check = delegate ()
                 {
                     if (GameObj.BattleID == GameObjectGuJian2.EBattle.慧明 && GameObj.IsWin())
                     {
                         WillAppendNamedBattle = GameObj.BattleID.ToString() + ":" + BattleLong.TotalSeconds.ToString("F2");
+                        GameObj.BattleID = GameObjectGuJian2.EBattle.none;
                         return true;
                     }
                     return false;
                 }
             });
-            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("金砖", new TimeSpan(0, 6, 59)))
+            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("金砖", new TimeSpan(0, 21, 31)))
             {
                 Check = delegate ()
                 {
                     if (GameObj.BattleID == GameObjectGuJian2.EBattle.金砖 && GameObj.IsWin())
                     {
                         WillAppendNamedBattle = GameObj.BattleID.ToString() + ":" + BattleLong.TotalSeconds.ToString("F2");
+                        GameObj.BattleID = GameObjectGuJian2.EBattle.none;
                         return true;
                     }
                     return false;
                 }
             });
-            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("灵虚", new TimeSpan(0, 6, 59)))
+            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("灵虚", new TimeSpan(0, 27, 52)))
             {
                 Check = delegate ()
                 {
                     if (GameObj.BattleID == GameObjectGuJian2.EBattle.灵虚 && GameObj.IsWin())
                     {
                         WillAppendNamedBattle = GameObj.BattleID.ToString() + ":" + BattleLong.TotalSeconds.ToString("F2");
+                        GameObj.BattleID = GameObjectGuJian2.EBattle.none;
                         return true;
                     }
                     return false;
                 }
             });
-            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("偃甲将军", new TimeSpan(0, 6, 59)))
+            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("偃甲将军", new TimeSpan(0, 38, 40)))
             {
                 Check = delegate ()
                 {
                     if (GameObj.BattleID == GameObjectGuJian2.EBattle.偃甲将军 && GameObj.IsWin())
                     {
                         WillAppendNamedBattle = GameObj.BattleID.ToString() + ":" + BattleLong.TotalSeconds.ToString("F2");
+                        GameObj.BattleID = GameObjectGuJian2.EBattle.none;
                         return true;
                     }
                     return false;
                 }
             });
-            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("雩风", new TimeSpan(0, 6, 59)))
+            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("雩风", new TimeSpan(0, 45, 10)))
             {
                 Check = delegate ()
                 {
                     if (GameObj.BattleID == GameObjectGuJian2.EBattle.雩风 && GameObj.IsWin())
                     {
                         WillAppendNamedBattle = GameObj.BattleID.ToString() + ":" + BattleLong.TotalSeconds.ToString("F2");
+                        GameObj.BattleID = GameObjectGuJian2.EBattle.none;
                         return true;
                     }
                     return false;
                 }
             });
-            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("尸兽厌火", new TimeSpan(0, 6, 59)))
+            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("尸兽厌火", new TimeSpan(1, 10, 1)))
             {
                 Check = delegate ()
                 {
                     if (GameObj.BattleID == GameObjectGuJian2.EBattle.尸兽厌火 && GameObj.IsWin())
                     {
                         WillAppendNamedBattle = GameObj.BattleID.ToString() + ":" + BattleLong.TotalSeconds.ToString("F2");
+                        GameObj.BattleID = GameObjectGuJian2.EBattle.none;
                         return true;
                     }
                     return false;
                 }
             });
-            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("安尼瓦尔", new TimeSpan(0, 6, 59)))
+            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("安尼瓦尔", new TimeSpan(1, 16, 18)))
             {
                 Check = delegate ()
                 {
                     if (GameObj.BattleID == GameObjectGuJian2.EBattle.安尼瓦尔 && GameObj.IsWin())
                     {
                         WillAppendNamedBattle = GameObj.BattleID.ToString() + ":" + BattleLong.TotalSeconds.ToString("F2");
+                        GameObj.BattleID = GameObjectGuJian2.EBattle.none;
                         return true;
                     }
                     return false;
                 }
             });
-            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("流月守卫头领", new TimeSpan(0, 6, 59)))
+            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("流月守卫头领", new TimeSpan(1, 30, 3)))
             {
                 Check = delegate ()
                 {
                     if (GameObj.BattleID == GameObjectGuJian2.EBattle.流月城守卫头领 && GameObj.IsWin())
                     {
                         WillAppendNamedBattle = GameObj.BattleID.ToString() + ":" + BattleLong.TotalSeconds.ToString("F2");
+                        GameObj.BattleID = GameObjectGuJian2.EBattle.none;
                         return true;
                     }
                     return false;
                 }
             });
-            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("远古石兽", new TimeSpan(0, 6, 59)))
+            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("远古石兽", new TimeSpan(1, 46, 11)))
             {
                 Check = delegate ()
                 {
                     if (GameObj.BattleID == GameObjectGuJian2.EBattle.远古石兽 && GameObj.IsWin())
                     {
                         WillAppendNamedBattle = GameObj.BattleID.ToString() + ":" + BattleLong.TotalSeconds.ToString("F2");
+                        GameObj.BattleID = GameObjectGuJian2.EBattle.none;
                         return true;
                     }
                     return false;
                 }
             });
-            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("火龙伏英", new TimeSpan(0, 6, 59)))
+            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("火龙伏英", new TimeSpan(1, 58, 38)))
             {
                 Check = delegate ()
                 {
                     if (GameObj.BattleID == GameObjectGuJian2.EBattle.火龙伏英 && GameObj.IsWin())
                     {
                         WillAppendNamedBattle = GameObj.BattleID.ToString() + ":" + BattleLong.TotalSeconds.ToString("F2");
+                        GameObj.BattleID = GameObjectGuJian2.EBattle.none;
                         return true;
                     }
                     return false;
                 }
             });
-            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("怒霜天君", new TimeSpan(0, 6, 59)))
+            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("怒霜天君", new TimeSpan(2, 5, 50)))
             {
                 Check = delegate ()
                 {
                     if (GameObj.BattleID == GameObjectGuJian2.EBattle.怒霜天君 && GameObj.IsWin())
                     {
                         WillAppendNamedBattle = GameObj.BattleID.ToString() + ":" + BattleLong.TotalSeconds.ToString("F2");
+                        GameObj.BattleID = GameObjectGuJian2.EBattle.none;
                         return true;
                     }
                     return false;
                 }
             });
-            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("温留", new TimeSpan(0, 6, 59)))
+            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("温留", new TimeSpan(2, 10, 27)))
             {
                 Check = delegate ()
                 {
                     if (GameObj.BattleID == GameObjectGuJian2.EBattle.温留 && GameObj.IsWin())
                     {
                         WillAppendNamedBattle = GameObj.BattleID.ToString() + ":" + BattleLong.TotalSeconds.ToString("F2");
+                        GameObj.BattleID = GameObjectGuJian2.EBattle.none;
                         return true;
                     }
                     return false;
                 }
             });
-            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("蜃精玉怜", new TimeSpan(0, 6, 59)))
+            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("蜃精玉怜", new TimeSpan(2, 23, 57)))
             {
                 Check = delegate ()
                 {
                     if (GameObj.BattleID == GameObjectGuJian2.EBattle.蜃精玉怜 && GameObj.IsWin())
                     {
                         WillAppendNamedBattle = GameObj.BattleID.ToString() + ":" + BattleLong.TotalSeconds.ToString("F2");
+                        GameObj.BattleID = GameObjectGuJian2.EBattle.none;
                         return true;
                     }
                     return false;
                 }
             });
-            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("初七", new TimeSpan(0, 6, 59)))
+            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("初七", new TimeSpan(2, 45, 37)))
             {
                 Check = delegate ()
                 {
                     if (GameObj.BattleID == GameObjectGuJian2.EBattle.初七 && GameObj.IsWin())
                     {
                         WillAppendNamedBattle = GameObj.BattleID.ToString() + ":" + BattleLong.TotalSeconds.ToString("F2");
+                        GameObj.BattleID = GameObjectGuJian2.EBattle.none;
                         return true;
                     }
                     return false;
                 }
             });
-            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("程廷钧", new TimeSpan(0, 6, 59)))
+            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("程廷钧", new TimeSpan(2, 48, 44)))
             {
                 Check = delegate ()
                 {
                     if (GameObj.BattleID == GameObjectGuJian2.EBattle.程廷钧 && GameObj.IsWin())
                     {
                         WillAppendNamedBattle = GameObj.BattleID.ToString() + ":" + BattleLong.TotalSeconds.ToString("F2");
+                        GameObj.BattleID = GameObjectGuJian2.EBattle.none;
                         return true;
                     }
                     return false;
                 }
             });
-            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("魔化华月", new TimeSpan(0, 6, 59)))
+            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("魔化华月", new TimeSpan(3, 3, 39)))
             {
                 Check = delegate ()
                 {
                     if (GameObj.BattleID == GameObjectGuJian2.EBattle.魔化华月 && GameObj.IsWin())
                     {
                         WillAppendNamedBattle = GameObj.BattleID.ToString() + ":" + BattleLong.TotalSeconds.ToString("F2");
+                        GameObj.BattleID = GameObjectGuJian2.EBattle.none;
                         return true;
                     }
                     return false;
                 }
             });
-            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("沈夜变身", new TimeSpan(0, 6, 59)))
+            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("沈夜变身", new TimeSpan(3, 10, 6)))
             {
                 Check = delegate ()
                 {
                     if (GameObj.BattleID == GameObjectGuJian2.EBattle.沈夜变身 && GameObj.IsWin())
                     {
                         WillAppendNamedBattle = GameObj.BattleID.ToString() + ":" + BattleLong.TotalSeconds.ToString("F2");
+                        GameObj.BattleID = GameObjectGuJian2.EBattle.none;
                         return true;
                     }
                     return false;
                 }
             });
-            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("通关", new TimeSpan(2, 0, 38)))
+            CheckPoints.Add(new CheckPoint(CheckPoints.Count, GetBest("通关", new TimeSpan(3, 14, 33)))
             {
                 Check = delegate ()
                 {
                     if (GameObj.BattleID == GameObjectGuJian2.EBattle.砺罂 && GameObj.IsWin())
                     {
                         WillAppendNamedBattle = GameObj.BattleID.ToString() + ":" + BattleLong.TotalSeconds.ToString("F2");
+                        GameObj.BattleID = GameObjectGuJian2.EBattle.none;
                         return true;
                     }
                     return false;
@@ -728,6 +747,8 @@ namespace Pal98Timer
             if (IsInBattle) return false;
             return BattleReslut == 0;
         }
+
+        private bool LastIsInBattle = false;
         public GameObjectGuJian2()
         {
         }
@@ -773,7 +794,6 @@ namespace Pal98Timer
             else
             {
                 tmpec = 0;
-                //BattleID = EBattle.none;
             }
             if (tmpec > 50) tmpec = 0;
             EnemyCount = tmpec;
@@ -799,7 +819,49 @@ namespace Pal98Timer
             Enemies = el;
             TotalEnemyHP = tmphp;
             TotalEnemyMaxHP = tmpmaxhp;
-            _anabattle();
+            if (IsInBattle)
+            {
+                if (!LastIsInBattle)
+                {
+                    BattleID = EBattle.none;
+                    BattleName = "";
+                }
+                if (BattleID == EBattle.none || BattleID == EBattle.normal)
+                {
+                    _anabattle();
+                }
+            }
+            else
+            {
+                if (LastIsInBattle)
+                {
+                    ClearEnemyMemory(handle, ExeBaseAddr);
+                }
+            }
+            LastIsInBattle = IsInBattle;
+        }
+
+        public void ClearEnemyMemory(IntPtr handle, int ExeBaseAddr)
+        {
+            for (int i = 0; i < EnemyIDOffset.Length; ++i)
+            {
+                int addr = ExeBaseAddr;
+                int[] offset = EnemyIDOffset[i];
+                for (var j = 0; j < offset.Length - 1; ++j)
+                {
+                    addr = Readm<int>(handle, addr + offset[j]);
+                }
+                addr += offset[offset.Length - 1];
+
+
+                int ID = Readm<int>(handle, addr);
+                if (ID > 0 && ID < 2000)
+                {
+                    byte[] writebuf = new byte[4] { 0x0, 0x0, 0x0, 0x0 };
+                    int sizeofWrite;
+                    Kernel32.WriteProcessMemory(handle, new IntPtr(addr), writebuf, 3, out sizeofWrite);
+                }
+            }
         }
 
         private void _anabattle() {
@@ -819,7 +881,6 @@ namespace Pal98Timer
                         BattleID = EBattle.慧明;
                         return;
                     case 704:
-                    case 705:
                         BattleID = EBattle.金砖;
                         return;
                     case 706:

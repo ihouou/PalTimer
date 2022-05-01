@@ -27,7 +27,7 @@ namespace Pal98Timer
             r.Add("小小绝", new string[3] { "小小绝", "https://space.bilibili.com/386841894", "1" });
             r.Add("云出无心", new string[3] { "zyx云出无心", "https://space.bilibili.com/282885914", "1" });
             r.Add("阿绫", new string[3] { "无敌的阿绫又倒下了", "https://space.bilibili.com/66935559", "1" });
-            r.Add("江月", new string[3] { "江月/星辰月", "https://space.bilibili.com/1757879609", "0" });
+            r.Add("江月", new string[3] { "江月/星辰月", "https://space.bilibili.com/329750223", "0" });
             r.Add("回忆", new string[3] { "回忆", "https://space.bilibili.com/1917199059", "1" });
             r.Add("齐大", new string[3] { "齐小伙", "https://space.bilibili.com/520126686", "1" });
             r.Add("麻烦", new string[3] { "麻烦（鼻祖）", "https://www.douyu.com/1561684", "1" });

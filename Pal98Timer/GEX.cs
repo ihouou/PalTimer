@@ -2356,7 +2356,7 @@ namespace Pal98Timer
                 if (isItemScroll || isSizeChanged)
                 {
                     int barstep = (int)(((double)1 / itemList.Count) * rcItemScroll.Height);
-                    ModifyRect(ref rcItemScBlock, rcItemScroll.X, rcItemScroll.Y+ItemScroll*barstep, rcItemScroll.Width, barstep*CanShowCount);
+                    ModifyRect(ref rcItemScBlock, rcItemScroll.X, rcItemScroll.Y + ItemScroll * barstep, rcItemScroll.Width, barstep * CanShowCount);
                 }
             }
 
