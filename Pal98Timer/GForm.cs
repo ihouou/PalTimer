@@ -77,6 +77,9 @@ namespace Pal98Timer
             btnReset = rr.AddBtn("重置", delegate (int x, int y, GRender.GBtn btn) { btnReset_Click(null, null); }, 10);
             btnData = rr.AddBtn("功能", delegate (int x, int y, GRender.GBtn btn) { mnData.Show(lblFunArea, x, lblFunArea.Height); }, 20);
             btnCloud = rr.AddBtn("云", delegate (int x, int y, GRender.GBtn btn) { cmCloud.Show(lblFunArea, x, lblFunArea.Height); }, 30);
+            btnCloudInit.Click += delegate (object sender, EventArgs e) {
+                InitCloud();
+            };
 
             CoreBtns = new Dictionary<string, ToolStripMenuItem>();
             List<string> cores = TimerCore.GetAllCores();
@@ -125,118 +128,112 @@ namespace Pal98Timer
         
         private void InitCloud()
         {
-            if (cloud == null)
+            if (cloud != null)
             {
-                cloud = new PCloud(this.core.CoreName, delegate (int cid)
+                cloud.Stop();
+            }
+            cloud = new PCloud(this.core.CoreName, delegate (int cid)
+            {
+                if (cid < 0)
                 {
-                    if (cid < 0)
+                    switch (cid)
                     {
-                        switch (cid)
+                        case -2:
+                            btnCloud.Text = "正在初始化";
+                            UISetBtnCloudInitEnable(false);
+                            UI(delegate () {
+                                try
+                                {
+                                    core?.OnCloudPending();
+                                }
+                                catch { }
+                            });
+                            break;
+                        case -3:
+                            btnCloud.Text = "云";
+                            UISetBtnCloudInitEnable(true);
+                            UI(delegate () {
+                                try
+                                {
+                                    core?.OnCloudFail();
+                                }
+                                catch { }
+                                //Error(cloud.LastError);
+                            });
+                            break;
+                        default:
+                            btnCloud.Text = "云";
+                            UISetBtnCloudInitEnable(true);
+                            UI(delegate () {
+                                try
+                                {
+                                    core?.OnCloudFail();
+                                }
+                                catch { }
+                            });
+                            break;
+                    }
+                }
+                else
+                {
+                    btnCloud.Text = "云ID:" + cid;
+                    UISetBtnCloudInitEnable(false);
+                    UI(delegate () {
+                        try
                         {
-                            case -2:
-                                btnCloud.Text = "正在初始化";
-                                UISetBtnCloudInitEnable(false);
-                                UI(delegate () {
-                                    try
-                                    {
-                                        core?.OnCloudPending();
-                                    }
-                                    catch { }
-                                });
-                                break;
-                            case -3:
-                                btnCloud.Text = "云";
-                                UISetBtnCloudInitEnable(true);
-                                UI(delegate () {
-                                    try
-                                    {
-                                        core?.OnCloudFail();
-                                    }
-                                    catch { }
-                                    //Error(cloud.LastError);
-                                });
-                                break;
-                            default:
-                                btnCloud.Text = "云";
-                                UISetBtnCloudInitEnable(true);
-                                UI(delegate () {
-                                    try
-                                    {
-                                        core?.OnCloudFail();
-                                    }
-                                    catch { }
-                                });
-                                break;
+                            core?.OnCloudOK();
                         }
-                    }
-                    else
-                    {
-                        btnCloud.Text = "云ID:" + cid;
-                        UISetBtnCloudInitEnable(false);
-                        UI(delegate () {
-                            try
-                            {
-                                core?.OnCloudOK();
-                            }
-                            catch { }
-                        });
-                    }
-                });
-                cloud.OnCloudTickBefore = delegate (int NextDo)
-                  {
-                      if (core.HasPlugin(TimerPluginBase.TimerPlugin.EPluginPosition.BL))
-                      {
-                          cloud.PutPluginData("BL", core.GetPluginResult(TimerPluginBase.TimerPlugin.EPluginPosition.BL));
-                      }
-
-                      if (core.HasPlugin(TimerPluginBase.TimerPlugin.EPluginPosition.BR))
-                      {
-                          cloud.PutPluginData("BR", core.GetPluginResult(TimerPluginBase.TimerPlugin.EPluginPosition.BR));
-                      }
-
-                      if (core.HasPlugin(TimerPluginBase.TimerPlugin.EPluginPosition.Title))
-                      {
-                          cloud.PutPluginData("Title", core.GetPluginResult(TimerPluginBase.TimerPlugin.EPluginPosition.Title));
-                      }
-
-
-                      cloud.PutIsC(rr.IsC);
-
-                      switch (NextDo)
-                      {
-                          case 0:
-                              if (!core.CustomCloudLiteData())
-                              {
-                                  cloud.PutLiteData(core.ForCloudLiteData());
-                              }
-                              break;
-                          case 1:
-                              if (!core.CustomCloudBigData())
-                              {
-                                  cloud.PutBigData(core.ForCloudBigData());
-                              }
-                              break;
-                          case 2:
-                              if (!core.CustomCloudBigData())
-                              {
-                                  cloud.PutBigData(core.ForCloudBigData());
-                              }
-                              if (!core.CustomCloudLiteData())
-                              {
-                                  cloud.PutLiteData(core.ForCloudLiteData());
-                              }
-                              break;
-                      }
-                  };
-                cloud.Start();
-                btnCloudInit.Click += delegate(object sender, EventArgs e) {
-                    InitCloud();
-                };
-            }
-            else
+                        catch { }
+                    });
+                }
+            });
+            cloud.OnCloudTickBefore = delegate (int NextDo)
             {
-                cloud.Reset(this.core.CoreName);
-            }
+                if (core.HasPlugin(TimerPluginBase.TimerPlugin.EPluginPosition.BL))
+                {
+                    cloud.PutPluginData("BL", core.GetPluginResult(TimerPluginBase.TimerPlugin.EPluginPosition.BL));
+                }
+
+                if (core.HasPlugin(TimerPluginBase.TimerPlugin.EPluginPosition.BR))
+                {
+                    cloud.PutPluginData("BR", core.GetPluginResult(TimerPluginBase.TimerPlugin.EPluginPosition.BR));
+                }
+
+                if (core.HasPlugin(TimerPluginBase.TimerPlugin.EPluginPosition.Title))
+                {
+                    cloud.PutPluginData("Title", core.GetPluginResult(TimerPluginBase.TimerPlugin.EPluginPosition.Title));
+                }
+
+
+                cloud.PutIsC(rr.IsC);
+
+                switch (NextDo)
+                {
+                    case 0:
+                        if (!core.CustomCloudLiteData())
+                        {
+                            cloud.PutLiteData(core.ForCloudLiteData());
+                        }
+                        break;
+                    case 1:
+                        if (!core.CustomCloudBigData())
+                        {
+                            cloud.PutBigData(core.ForCloudBigData());
+                        }
+                        break;
+                    case 2:
+                        if (!core.CustomCloudBigData())
+                        {
+                            cloud.PutBigData(core.ForCloudBigData());
+                        }
+                        if (!core.CustomCloudLiteData())
+                        {
+                            cloud.PutLiteData(core.ForCloudLiteData());
+                        }
+                        break;
+                }
+            };
+            cloud.Start();
         }
         public int CloudID()
         {
@@ -671,6 +668,11 @@ namespace Pal98Timer
             try
             {
                 cloud?.FinishOne();
+            }
+            catch { }
+            try
+            {
+                InitCloud();
             }
             catch { }
         }
