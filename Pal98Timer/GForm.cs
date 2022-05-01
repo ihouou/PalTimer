@@ -847,7 +847,7 @@ namespace Pal98Timer
 
         public void SetEditBestBtnVisible(bool isVisible)
         {
-
+            btnEditBest.Visible = isVisible;
         }
 
         private void btnEditBest_Click(object sender, EventArgs e)

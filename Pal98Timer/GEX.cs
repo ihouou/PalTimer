@@ -953,8 +953,20 @@ namespace Pal98Timer
                 if (_cidx != value)
                 {
                     _cidx = value;
-                    ItemScroll = value;
-                    isItemScroll = true;
+                    int CanShowCount = (int)Math.Floor(((double)(rcItems.Height)) / GItem.Height);
+                    if (CanShowCount < itemList.Count)
+                    {
+                        while ((CanShowCount + ItemScroll) < (value+2))
+                        {
+                            ItemScroll++;
+                        }
+                        while ((value-1) < ItemScroll)
+                        {
+                            ItemScroll--;
+                        }
+                        if (ItemScroll < 0) ItemScroll = 0;
+                        isItemScroll = true;
+                    }
                     for (int i = 0; i < itemList.Count; ++i)
                     {
                         GItem cur = itemList[i];

@@ -98,6 +98,7 @@ namespace Pal98Timer
         private Size orisize;
         public override void InitUI()
         {
+            form.SetEditBestBtnVisible(false);
             form.rr.VisibleBtn(0, false);
             btnLiteCtrl = form.NewMenuButton(0);
             btnLiteCtrl.Text = "开始";
@@ -125,6 +126,7 @@ namespace Pal98Timer
             base.UnloadUI();
             form.Size = orisize;
             form.rr.VisibleBtn(0, true);
+            form.SetEditBestBtnVisible(true);
         }
 
         private void BtnSwitch_Click(object sender, EventArgs e)
