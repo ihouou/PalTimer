@@ -332,12 +332,7 @@ namespace Pal98Timer
             return BattleLong.TotalSeconds.ToString("F2") + "s";
             //return MoveSpeed.ToString("F1");
         }
-
-        public override string GetPointEnd()
-        {
-            return "预计通关  " + TimeSpanToStringLite(WillClear);
-        }
-
+        
         public override string GetSecondWatch()
         {
             if (ST.CurrentTSOnly.Ticks == 0)

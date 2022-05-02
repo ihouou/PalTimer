@@ -76,6 +76,7 @@ namespace Pal98Timer
             rr.SetSubTimer("0.00s");
             rr.SetOutTimer("+ 0:00:00.00");
             rr.SetWillClear("预计通关  03:20:01");
+            rr.SetPointSpan("[xx~xx] 99:00.00");
             rr.AddDot("测试-红");
             rr.AddDot("测试-绿");
             rr.AddDot("测试-蓝");

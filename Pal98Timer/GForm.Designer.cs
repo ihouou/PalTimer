@@ -37,12 +37,13 @@
             this.mnData = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.btnKeyChange = new System.Windows.Forms.ToolStripMenuItem();
             this.btnAutoLuck = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnShowPSInDots = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnEditBest = new System.Windows.Forms.ToolStripMenuItem();
             this.mnMain = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.btnChangeStyle = new System.Windows.Forms.ToolStripMenuItem();
             this.btnPluginManage = new System.Windows.Forms.ToolStripMenuItem();
             this.btnAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.btnEditBest = new System.Windows.Forms.ToolStripMenuItem();
             this.mnData.SuspendLayout();
             this.mnMain.SuspendLayout();
             this.SuspendLayout();
@@ -89,23 +90,40 @@
             this.mnData.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.btnKeyChange,
             this.btnAutoLuck,
+            this.btnShowPSInDots,
             this.btnEditBest});
             this.mnData.Name = "mnData";
-            this.mnData.Size = new System.Drawing.Size(181, 92);
+            this.mnData.Size = new System.Drawing.Size(185, 114);
             // 
             // btnKeyChange
             // 
             this.btnKeyChange.Name = "btnKeyChange";
-            this.btnKeyChange.Size = new System.Drawing.Size(180, 22);
+            this.btnKeyChange.Size = new System.Drawing.Size(184, 22);
             this.btnKeyChange.Text = "改键位";
             this.btnKeyChange.Click += new System.EventHandler(this.btnKeyChange_Click);
             // 
             // btnAutoLuck
             // 
             this.btnAutoLuck.Name = "btnAutoLuck";
-            this.btnAutoLuck.Size = new System.Drawing.Size(180, 22);
+            this.btnAutoLuck.Size = new System.Drawing.Size(184, 22);
             this.btnAutoLuck.Text = "自动换签";
             this.btnAutoLuck.Click += new System.EventHandler(this.btnAutoLuck_Click);
+            // 
+            // btnShowPSInDots
+            // 
+            this.btnShowPSInDots.Checked = true;
+            this.btnShowPSInDots.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.btnShowPSInDots.Name = "btnShowPSInDots";
+            this.btnShowPSInDots.Size = new System.Drawing.Size(184, 22);
+            this.btnShowPSInDots.Text = "小统计显示节点间隔";
+            this.btnShowPSInDots.Click += new System.EventHandler(this.btnShowPSInDots_Click);
+            // 
+            // btnEditBest
+            // 
+            this.btnEditBest.Name = "btnEditBest";
+            this.btnEditBest.Size = new System.Drawing.Size(184, 22);
+            this.btnEditBest.Text = "编辑最佳线";
+            this.btnEditBest.Click += new System.EventHandler(this.btnEditBest_Click);
             // 
             // mnMain
             // 
@@ -143,13 +161,6 @@
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(121, 6);
             // 
-            // btnEditBest
-            // 
-            this.btnEditBest.Name = "btnEditBest";
-            this.btnEditBest.Size = new System.Drawing.Size(180, 22);
-            this.btnEditBest.Text = "编辑最佳线";
-            this.btnEditBest.Click += new System.EventHandler(this.btnEditBest_Click);
-            // 
             // GForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -183,5 +194,6 @@
         private System.Windows.Forms.ToolStripMenuItem btnPluginManage;
         private System.Windows.Forms.ToolStripMenuItem btnAbout;
         private System.Windows.Forms.ToolStripMenuItem btnEditBest;
+        private System.Windows.Forms.ToolStripMenuItem btnShowPSInDots;
     }
 }

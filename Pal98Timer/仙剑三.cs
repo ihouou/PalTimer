@@ -632,12 +632,7 @@ namespace Pal98Timer
         {
             return "雪" + GameObj.XJfv + " 葵" + GameObj.LKfv + " 萱" + GameObj.ZXfv + " " + SelectSword + EndName;
         }
-
-        public override string GetPointEnd()
-        {
-            return "预计通关  " + TimeSpanToStringLite(WillClear);
-        }
-
+        
         public override string GetSecondWatch()
         {
             if (ST.CurrentTSOnly.Ticks == 0)

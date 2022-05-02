@@ -102,11 +102,6 @@ namespace Pal98Timer
             return "按F9手动暂停";
         }
 
-        public override string GetPointEnd()
-        {
-            return "预计通关  " + TimeSpanToStringLite(WillClear);
-        }
-
         public override string GetSecondWatch()
         {
             if (ST.CurrentTSOnly.Ticks == 0)

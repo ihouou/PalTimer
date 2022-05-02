@@ -201,6 +201,17 @@ namespace Pal98Timer
             }
         }
 
+        private string PointSpan;
+        private bool isPointSpanChanged = false;
+        public void SetPointSpan(string val)
+        {
+            if (PointSpan != val)
+            {
+                PointSpan = val;
+                isPointSpanChanged = true;
+            }
+        }
+
         private TimeSpan MainTimer = new TimeSpan(0);
         private bool isMainTimerChanged = false;
         private bool isMainTimerMSChanged = false;
@@ -2020,6 +2031,7 @@ namespace Pal98Timer
                 (isTitleChanged) ||
                 (isVersionChanged) ||
                 (isWillClearChanged) ||
+                (isPointSpanChanged) ||
                 (isConfigCtlChanged) ||
                 (isCChanged)
                 );
@@ -2045,6 +2057,7 @@ namespace Pal98Timer
             isTitleChanged = false;
             isVersionChanged = false;
             isWillClearChanged = false;
+            isPointSpanChanged = false;
             isConfigCtlChanged = false;
             isCChanged = false;
 
@@ -2259,13 +2272,14 @@ namespace Pal98Timer
         private void DrawWillClear(Graphics g, delUpdateRect ur = null)
         {
             //预计通关  03:20:01
-            if (isSizeChanged || isBGChanged || isBBChanged || isWillClearChanged)
+            if (isSizeChanged || isBGChanged || isBBChanged || isWillClearChanged || isPointSpanChanged)
             {
                 if (!isSizeChanged && !isBGChanged)
                 {
                     GEX.ClearRect(g, rcWillClear, bg, Width, Height);
                 }
-                GEX.DrawText(g, WillClear, bb.WillClearFont, bb.WillClearFill, bb.WillClearBorder, rcWillClear, GLayout.sfCC);
+                GEX.DrawText(g, WillClear, bb.WillClearFont, bb.WillClearFill, bb.WillClearBorder, rcWillClear, GLayout.sfNC);
+                GEX.DrawText(g, PointSpan, bb.WillClearFont, bb.WillClearFill, bb.WillClearBorder, rcWillClear, GLayout.sfFC);
                 if (!isSizeChanged && !isBGChanged && !isBBChanged)
                 {
                     ur?.Invoke(rcWillClear);

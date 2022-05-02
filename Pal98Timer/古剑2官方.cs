@@ -110,12 +110,7 @@ namespace Pal98Timer
 
             return m + "金  乐Lv." + GameObj.YWYLevel + (CurrentStep <= 9 ? (" 返:" + GameObj.QFLSCount) : "");
         }
-
-        public override string GetPointEnd()
-        {
-            return "预计通关  " + TimeSpanToStringLite(WillClear);
-        }
-
+        
         public override string GetSecondWatch()
         {
             if (ST.CurrentTSOnly.Ticks == 0)

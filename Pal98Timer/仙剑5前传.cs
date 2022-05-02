@@ -122,12 +122,7 @@ namespace Pal98Timer
                 return deff + "  元神：" + GameObj.OriGod + "  玄武甲：" + MaxXWJ;
             }
         }
-
-        public override string GetPointEnd()
-        {
-            return "预计通关  " + TimeSpanToStringLite(WillClear);
-        }
-
+        
         public override string GetSecondWatch()
         {
             if (ST.CurrentTSOnly.Ticks == 0)

@@ -33,7 +33,7 @@ namespace Pal98Timer
 
         public override string GetPointEnd()
         {
-            return "预计结束 " + base.GetPointEnd();
+            return "预计结束 " + GetWillClearStr();
         }
 
         public override string GetSecondWatch()
@@ -47,6 +47,7 @@ namespace Pal98Timer
         }
 
         private GRender.GBtn btnLiteCtrl;
+        private GRender.GBtn btnJumpBtn;
         public override void InitUI()
         {
             form.rr.VisibleBtn(0, false);
@@ -56,6 +57,13 @@ namespace Pal98Timer
             {
                 OnBtnActive();
             };
+
+            btnJumpBtn = form.NewMenuButton(1);
+            btnJumpBtn.Text = "跳点";
+            btnJumpBtn.OnClicked = delegate (int x, int y, GRender.GBtn ctl)
+              {
+                  IsCallNext = true;
+              };
         }
         public override void UnloadUI()
         {

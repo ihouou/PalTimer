@@ -427,6 +427,7 @@ namespace Pal98Timer
         /// 当前节点序号（别乱改）
         /// </summary>
         protected int _CurrentStep = -1;
+        public string AAction = "";
         /// <summary>
         /// 当前节点序号
         /// </summary>
@@ -443,7 +444,7 @@ namespace Pal98Timer
 
                 if (_CurrentStep > 0 && _CurrentStep <= CheckPoints.Count)
                 {
-                    long cha=CheckPoints[_CurrentStep-1].GetCHA() * 1000 * 10000;
+                    long cha = CheckPoints[_CurrentStep - 1].GetCHA() * 1000 * 10000;
                     if ((BestClear.Ticks + cha) <= 0)
                     {
                         WillClear = new TimeSpan(BestClear.Ticks);
@@ -452,12 +453,43 @@ namespace Pal98Timer
                     {
                         WillClear = new TimeSpan(BestClear.Ticks + cha);
                     }
+                    if (_CurrentStep == 1)
+                    {
+                        PointSpanName = "[0~1]";
+                        PointSpan = new TimeSpan(CheckPoints[0].Current.Ticks);
+                        if (form.IsShowPSInDots)
+                        {
+                            AAction += "|开始~" + CheckPoints[0].Name + " " + GetPointSpanStr();
+                        }
+                    }
+                    else
+                    {
+                        PointSpanName = "[" + (_CurrentStep - 1) + "~" + (_CurrentStep) + "]";
+                        PointSpan = new TimeSpan(CheckPoints[_CurrentStep - 1].Current.Ticks - CheckPoints[_CurrentStep - 2].Current.Ticks);
+                        if (form.IsShowPSInDots)
+                        {
+                            AAction += "|" + CheckPoints[_CurrentStep - 2].Name + "~" + CheckPoints[_CurrentStep - 1].Name + " " + GetPointSpanStr();
+                        }
+                    }
+                }
+                else
+                {
+                    PointSpanName = "";
+                    PointSpan = new TimeSpan(0);
                 }
 
                 OnCurrentStepChangedInner?.Invoke(value);
                 OnCurrentStepChanged?.Invoke(value);
             }
         }
+        /// <summary>
+        /// 区间间隔
+        /// </summary>
+        protected TimeSpan PointSpan = new TimeSpan(0);
+        /// <summary>
+        /// 区间间隔名
+        /// </summary>
+        protected string PointSpanName = "";
         /// <summary>
         /// 检测节点是否触发的逻辑
         /// </summary>
@@ -553,7 +585,29 @@ namespace Pal98Timer
         /// <returns></returns>
         public virtual string GetPointEnd()
         {
+            //PointSpan
+            return "预计通关 " + GetWillClearStr();
+        }
+        public virtual string GetPointSpan()
+        {
+            if (PointSpanName == "") return "--";
+            return PointSpanName + " " + GetPointSpanStr();
+        }
+        /// <summary>
+        /// 获取预计结束的时长字符串
+        /// </summary>
+        /// <returns></returns>
+        public string GetWillClearStr()
+        {
             return TimeSpanToStringLite(WillClear);
+        }
+        /// <summary>
+        /// 获取上一区间时长字符串
+        /// </summary>
+        /// <returns></returns>
+        public string GetPointSpanStr()
+        {
+            return Math.Floor(PointSpan.TotalMinutes) + ":" + PointSpan.Seconds.ToString().PadLeft(2, '0') + "." + Math.Floor(0.1D * PointSpan.Milliseconds).ToString().PadLeft(2, '0');
         }
         /// <summary>
         /// 主时间右上方小时间
@@ -583,8 +637,11 @@ namespace Pal98Timer
         /// </summary>
         public virtual void Reset()
         {
+            AAction = "";
             MT.Reset();
             _hasCallPointEnd = false;
+            PointSpanName = "";
+            PointSpan = new TimeSpan(0);
         }
         /// <summary>
         /// 初始化界面

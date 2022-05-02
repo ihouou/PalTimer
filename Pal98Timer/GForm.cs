@@ -694,18 +694,23 @@ namespace Pal98Timer
                 }
                 rr.SetGameVersion(core.GetGameVersion());
                 rr.SetWillClear(core.GetPointEnd());
+                rr.SetPointSpan(core.GetPointSpan());
                 rr.SetSubTimer(core.GetSmallWatch());
                 rr.SetOutTimer(core.GetSecondWatch());
                 rr.SetMainTimer(core.GetMainWatch());
                 rr.IsInCheck = core.IsMainWatchStar();
                 rr.SetMoreInfo(core.GetMoreInfo());
-                string aaction = core.GetAAction();
+                string aaction = core.GetAAction() + core.AAction;
+                core.AAction = "";
                 if (aaction != "")
                 {
                     string[] aaspli = aaction.Split('|');
                     foreach (string aas in aaspli)
                     {
-                        rr.AddDot(aas);
+                        if (aas.Trim() != "")
+                        {
+                            rr.AddDot(aas);
+                        }
                     }
                 }
                 if (core.HasPlugin(TimerPluginBase.TimerPlugin.EPluginPosition.BL))
@@ -847,9 +852,10 @@ namespace Pal98Timer
             af.Dispose();
         }
 
-        public void SetEditBestBtnVisible(bool isVisible)
+        public void SetSCoreBtnVisible(bool isVisible)
         {
             btnEditBest.Visible = isVisible;
+            btnShowPSInDots.Visible = isVisible;
         }
 
         private void btnEditBest_Click(object sender, EventArgs e)
@@ -875,6 +881,13 @@ namespace Pal98Timer
             {
                 Error("还没有准备好，请稍候再试");
             }
+        }
+
+        public bool IsShowPSInDots = true;
+        private void btnShowPSInDots_Click(object sender, EventArgs e)
+        {
+            btnShowPSInDots.Checked = !btnShowPSInDots.Checked;
+            IsShowPSInDots = btnShowPSInDots.Checked;
         }
     }
 
