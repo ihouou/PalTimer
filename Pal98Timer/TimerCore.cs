@@ -459,16 +459,24 @@ namespace Pal98Timer
                         PointSpan = new TimeSpan(CheckPoints[0].Current.Ticks);
                         if (form.IsShowPSInDots)
                         {
-                            AAction += "|开始~" + CheckPoints[0].Name + " " + GetPointSpanStr();
+                            AAction += "|[开始~" + CheckPoints[0].Name + "] " + GetPointSpanStr();
                         }
                     }
                     else
                     {
                         PointSpanName = "[" + (_CurrentStep - 1) + "~" + (_CurrentStep) + "]";
-                        PointSpan = new TimeSpan(CheckPoints[_CurrentStep - 1].Current.Ticks - CheckPoints[_CurrentStep - 2].Current.Ticks);
-                        if (form.IsShowPSInDots)
+                        TimeSpan tts = new TimeSpan(CheckPoints[_CurrentStep - 1].Current.Ticks - CheckPoints[_CurrentStep - 2].Current.Ticks);
+                        if (tts.Ticks < 0)
                         {
-                            AAction += "|" + CheckPoints[_CurrentStep - 2].Name + "~" + CheckPoints[_CurrentStep - 1].Name + " " + GetPointSpanStr();
+                            PointSpan = new TimeSpan(0);
+                        }
+                        else
+                        {
+                            PointSpan = tts;
+                        }
+                        if (form.IsShowPSInDots && PointSpan.Ticks>0)
+                        {
+                            AAction += "|[" + CheckPoints[_CurrentStep - 2].Name + "~" + CheckPoints[_CurrentStep - 1].Name + "] " + GetPointSpanStr();
                         }
                     }
                 }
