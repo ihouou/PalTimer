@@ -457,7 +457,7 @@ namespace Pal98Timer
                     {
                         PointSpanName = "[0~1]";
                         PointSpan = new TimeSpan(CheckPoints[0].Current.Ticks);
-                        if (form.IsShowPSInDots)
+                        if (form.IsShowPSInDots && PointSpan.Ticks > 0)
                         {
                             AAction += "|[开始~" + CheckPoints[0].Name + "] " + GetPointSpanStr();
                         }
@@ -474,7 +474,7 @@ namespace Pal98Timer
                         {
                             PointSpan = tts;
                         }
-                        if (form.IsShowPSInDots && PointSpan.Ticks>0)
+                        if (form.IsShowPSInDots && PointSpan.Ticks > 0)
                         {
                             AAction += "|[" + CheckPoints[_CurrentStep - 2].Name + "~" + CheckPoints[_CurrentStep - 1].Name + "] " + GetPointSpanStr();
                         }

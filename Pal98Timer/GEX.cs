@@ -438,7 +438,7 @@ namespace Pal98Timer
             Graphics g = Graphics.FromImage(LastDots);
             int addw = (int)(g.MeasureString(str, bb.DotTextFont).Width);
             g.Dispose();
-            addw += 20;
+            addw += 1;
             Bitmap tmp = new Bitmap(LastDots.Width + 5 + addw, LastDots.Height);
             g = Graphics.FromImage(tmp);
             Rectangle rect = new Rectangle(3, 0, addw, LastDots.Height);
