@@ -37,7 +37,7 @@ namespace Pal98Timer
 
         public override string GetMoreInfo()
         {
-            return "按F8启停";
+            return "按F9启停";
         }
 
         public override string GetPointEnd()
@@ -71,15 +71,15 @@ namespace Pal98Timer
         {
             switch (FunNo)
             {
-                case 8:
+                case 9:
                     BtnLiteCtrl_Click(null, null);
                     break;
-                case 6:
+                /*case 6:
                     if (form.Confirm("更换内核将会重置计时器，确认么？"))
                     {
                         BtnSwitch_Click(null, null);
                     }
-                    break;
+                    break;*/
             }
         }
 

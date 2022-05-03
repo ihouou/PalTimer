@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("仙剑自动计时器")]
+[assembly: AssemblyProduct("自动计时器")]
 [assembly: AssemblyCopyright("Copyright © Houou 2022")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
