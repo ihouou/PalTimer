@@ -28,7 +28,7 @@ namespace Pal98Timer
 
         public override string GetMoreInfo()
         {
-            return "F9启停 F12跳节点";
+            return "F9启停 Ctrl+F12上一点 F12下一点";
         }
 
         public override string GetPointEnd()
@@ -95,7 +95,17 @@ namespace Pal98Timer
                     OnBtnActive();
                     break;
                 case 12:
-                    IsCallNext = true;
+                    if (form.OnCtrlDown || form.OnCtrlDown2)
+                    {
+                        if (CurrentStep > 0)
+                        {
+                            CurrentStep = CurrentStep - 1;
+                        }
+                    }
+                    else
+                    {
+                        IsCallNext = true;
+                    }
                     break;
             }
         }
