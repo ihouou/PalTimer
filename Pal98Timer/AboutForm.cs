@@ -19,21 +19,21 @@ namespace Pal98Timer
         private Dictionary<string, string[]> InitCreaterInfo()
         {
             Dictionary<string, string[]> r = new Dictionary<string, string[]>();
-            r.Add("Houou", new string[3] { "Houou", "https://space.bilibili.com/248838981", "1" });
-            r.Add("兰", new string[3] { "兰", "https://space.bilibili.com/1643478", "1" });
-            r.Add("狐狸", new string[3] { "呀MissFOX", "https://space.bilibili.com/43133106", "0" });
-            r.Add("寒泠", new string[3] { "寒泠幽洌", "https://space.bilibili.com/1179827922", "1" });
-            r.Add("发财鼠", new string[3] { "追梦发财鼠", "https://space.bilibili.com/108891098", "1" });
-            r.Add("小小绝", new string[3] { "小小绝", "https://space.bilibili.com/386841894", "1" });
-            r.Add("云出无心", new string[3] { "zyx云出无心", "https://space.bilibili.com/282885914", "1" });
-            r.Add("阿绫", new string[3] { "无敌的阿绫又倒下了", "https://space.bilibili.com/66935559", "1" });
-            r.Add("江月", new string[3] { "江月/星辰月", "https://space.bilibili.com/329750223", "0" });
-            r.Add("回忆", new string[3] { "回忆", "https://space.bilibili.com/1917199059", "1" });
-            r.Add("齐大", new string[3] { "齐小伙", "https://space.bilibili.com/520126686", "1" });
-            r.Add("麻烦", new string[3] { "麻烦（鼻祖）", "https://www.douyu.com/1561684", "1" });
-            r.Add("wjjjj12", new string[3] { "wjjjj12", "https://space.bilibili.com/1953354", "1" });
+            r.Add("Houou", new string[3] { "Houou", "http://www.palspeed.com/tj.html?p1", "1" });
+            r.Add("兰", new string[3] { "兰", "http://www.palspeed.com/tj.html?p2", "1" });
+            r.Add("狐狸", new string[3] { "呀MissFOX", "http://www.palspeed.com/tj.html?p3", "0" });
+            r.Add("寒泠", new string[3] { "寒泠幽洌", "http://www.palspeed.com/tj.html?p4", "1" });
+            r.Add("发财鼠", new string[3] { "追梦发财鼠", "http://www.palspeed.com/tj.html?p5", "1" });
+            r.Add("小小绝", new string[3] { "小小绝", "http://www.palspeed.com/tj.html?p6", "1" });
+            r.Add("云出无心", new string[3] { "zyx云出无心", "http://www.palspeed.com/tj.html?p7", "1" });
+            r.Add("阿绫", new string[3] { "无敌的阿绫又倒下了", "http://www.palspeed.com/tj.html?p8", "1" });
+            r.Add("江月", new string[3] { "江月/星辰月", "http://www.palspeed.com/tj.html?p9", "0" });
+            r.Add("回忆", new string[3] { "回忆", "http://www.palspeed.com/tj.html?p10", "1" });
+            r.Add("齐大", new string[3] { "齐小伙", "http://www.palspeed.com/tj.html?p11", "1" });
+            r.Add("麻烦", new string[3] { "麻烦（鼻祖）", "http://www.palspeed.com/tj.html?p12", "1" });
+            r.Add("wjjjj12", new string[3] { "wjjjj12", "http://www.palspeed.com/tj.html?p13", "1" });
             r.Add("!官网", new string[3] { "www.palspeed.com", "http://www.palspeed.com", "2" });
-            r.Add("!各位玩家", new string[3] { "各位玩家", "http://www.palspeed.com/player/", "2" });
+            r.Add("!各位玩家", new string[3] { "各位玩家", "http://www.palspeed.com/tj.html?n1", "2" });
             r.Add("!github", new string[3] { "https://github.com/ihouou/PalTimer", "https://github.com/ihouou/PalTimer", "2" });
             r.Add("!gitee", new string[3] { "https://gitee.com/houou/PalTimer", "https://gitee.com/houou/PalTimer", "2" });
             return r;
