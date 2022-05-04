@@ -317,7 +317,7 @@ namespace Pal98Timer
             {
                 Check = delegate ()
                 {
-                    if (GameObj.BattleID == GameObjectGuJian2.EBattle.初七 && GameObj.IsWin())
+                    if (GameObj.BattleID == GameObjectGuJian2.EBattle.初七 && (GameObj.IsWin() || GameObj.EnemyCount <= 0 || GameObj.TotalEnemyHP <= 0))
                     {
                         WillAppendNamedBattle = GameObj.BattleID.ToString() + ":" + BattleLong.TotalSeconds.ToString("F2");
                         GameObj.BattleID = GameObjectGuJian2.EBattle.none;
@@ -406,9 +406,9 @@ namespace Pal98Timer
             switch (FunNo)
             {
                 case 12:
-                    DebugForm df = new DebugForm();
-                    df.ShowData(GameObj);
-                    df.Show();
+                    //DebugForm df = new DebugForm();
+                    //df.ShowData(GameObj);
+                    //df.Show();
                     break;
             }
         }

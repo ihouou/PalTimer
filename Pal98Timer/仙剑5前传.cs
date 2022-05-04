@@ -714,9 +714,9 @@ namespace Pal98Timer
             switch (FunNo)
             {
                 case 12:
-                    DebugForm df = new DebugForm();
-                    df.ShowData(GameObj);
-                    df.Show();
+                    //DebugForm df = new DebugForm();
+                    //df.ShowData(GameObj);
+                    //df.Show();
                     break;
             }
         }
