@@ -292,6 +292,10 @@ namespace Pal98Timer
                     {
                         return true;
                     }
+                    if (GameObj.BossID == 576 && GameObj.BattleTotalBlood <= 0)
+                    {
+                        return true;
+                    }
                     return false;
                 }
             });
