@@ -12,7 +12,7 @@ namespace Pal98Timer
 {
     public partial class GForm : NoneBoardFormEx
     {
-        public const string CurrentVersion = "3.34";
+        public const string CurrentVersion = "A.35";
         public const string bgpath = @"bg.png";
         private TimerCore core;
         private KeyboardLib _keyboardHook = null;

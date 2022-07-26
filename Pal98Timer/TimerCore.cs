@@ -1287,6 +1287,18 @@ namespace Pal98Timer
         public TimeSpan BestTS;
     }
 
+    public class TItem
+    {
+        public static string TimeSpanToString(TimeSpan ts)
+        {
+            return ts.Hours.ToString().PadLeft(2, '0') + ":" + ts.Minutes.ToString().PadLeft(2, '0') + ":" + ts.Seconds.ToString().PadLeft(2, '0') + "." + (ts.Milliseconds / 10).ToString().PadLeft(2, '0');
+        }
+
+        public static string TimeSpanToStringLite(TimeSpan ts)
+        {
+            return ts.Hours.ToString().PadLeft(2, '0') + ":" + ts.Minutes.ToString().PadLeft(2, '0') + ":" + ts.Seconds.ToString().PadLeft(2, '0');
+        }
+    }
 
     public class TimerPluginPackageInfo
     {

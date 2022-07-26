@@ -5,8 +5,6 @@ VisualStudioVersion = 15.0.28010.2048
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pal98Timer", "Pal98Timer\Pal98Timer.csproj", "{B8491493-B2EB-43BB-ACE1-4D0D5FCBFA35}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pal98TimerOBSPlugin", "Pal98TimerOBSPlugin\Pal98TimerOBSPlugin.csproj", "{9D504350-B1B8-4DF7-81A0-010828EFBDD1}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9C6F98C7-906B-46F3-8356-A466BAB004D3}"
 	ProjectSection(SolutionItems) = preProject
 		README.md = README.md
@@ -19,6 +17,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PAL98.BestResShow", "PAL98.BestResShow\PAL98.BestResShow.csproj", "{34FAB9CD-DD18-463E-BEFE-9CCE30FDD52D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModuleAddrX86Delegate", "ModuleAddrX86Delegate\ModuleAddrX86Delegate.csproj", "{63E547AA-E861-4ED2-B065-8686E4C43093}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeyChanger", "KeyChanger\KeyChanger.csproj", "{3371E845-AB66-49A3-8D15-9CE748C5FA60}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,18 +42,6 @@ Global
 		{B8491493-B2EB-43BB-ACE1-4D0D5FCBFA35}.Release|x64.Build.0 = Release|x64
 		{B8491493-B2EB-43BB-ACE1-4D0D5FCBFA35}.Release|x86.ActiveCfg = Release|x86
 		{B8491493-B2EB-43BB-ACE1-4D0D5FCBFA35}.Release|x86.Build.0 = Release|x86
-		{9D504350-B1B8-4DF7-81A0-010828EFBDD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9D504350-B1B8-4DF7-81A0-010828EFBDD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9D504350-B1B8-4DF7-81A0-010828EFBDD1}.Debug|x64.ActiveCfg = Release|x64
-		{9D504350-B1B8-4DF7-81A0-010828EFBDD1}.Debug|x64.Build.0 = Release|x64
-		{9D504350-B1B8-4DF7-81A0-010828EFBDD1}.Debug|x86.ActiveCfg = Debug|x86
-		{9D504350-B1B8-4DF7-81A0-010828EFBDD1}.Debug|x86.Build.0 = Debug|x86
-		{9D504350-B1B8-4DF7-81A0-010828EFBDD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9D504350-B1B8-4DF7-81A0-010828EFBDD1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9D504350-B1B8-4DF7-81A0-010828EFBDD1}.Release|x64.ActiveCfg = Release|x64
-		{9D504350-B1B8-4DF7-81A0-010828EFBDD1}.Release|x64.Build.0 = Release|x64
-		{9D504350-B1B8-4DF7-81A0-010828EFBDD1}.Release|x86.ActiveCfg = Release|x86
-		{9D504350-B1B8-4DF7-81A0-010828EFBDD1}.Release|x86.Build.0 = Release|x86
 		{A950C305-460A-436B-B781-9D201316394C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A950C305-460A-436B-B781-9D201316394C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A950C305-460A-436B-B781-9D201316394C}.Debug|x64.ActiveCfg = Release|Any CPU
@@ -102,6 +90,18 @@ Global
 		{63E547AA-E861-4ED2-B065-8686E4C43093}.Release|x64.Build.0 = Release|x86
 		{63E547AA-E861-4ED2-B065-8686E4C43093}.Release|x86.ActiveCfg = Release|Any CPU
 		{63E547AA-E861-4ED2-B065-8686E4C43093}.Release|x86.Build.0 = Release|Any CPU
+		{3371E845-AB66-49A3-8D15-9CE748C5FA60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3371E845-AB66-49A3-8D15-9CE748C5FA60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3371E845-AB66-49A3-8D15-9CE748C5FA60}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{3371E845-AB66-49A3-8D15-9CE748C5FA60}.Debug|x64.Build.0 = Debug|Any CPU
+		{3371E845-AB66-49A3-8D15-9CE748C5FA60}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3371E845-AB66-49A3-8D15-9CE748C5FA60}.Debug|x86.Build.0 = Debug|Any CPU
+		{3371E845-AB66-49A3-8D15-9CE748C5FA60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3371E845-AB66-49A3-8D15-9CE748C5FA60}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3371E845-AB66-49A3-8D15-9CE748C5FA60}.Release|x64.ActiveCfg = Release|Any CPU
+		{3371E845-AB66-49A3-8D15-9CE748C5FA60}.Release|x64.Build.0 = Release|Any CPU
+		{3371E845-AB66-49A3-8D15-9CE748C5FA60}.Release|x86.ActiveCfg = Release|Any CPU
+		{3371E845-AB66-49A3-8D15-9CE748C5FA60}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

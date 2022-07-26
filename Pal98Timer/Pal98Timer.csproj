@@ -180,7 +180,6 @@
     <Compile Include="古剑2官方.cs" />
     <Compile Include="梦幻22.cs" />
     <Compile Include="简版.cs" />
-    <Compile Include="DataServer.cs" />
     <Compile Include="DebugForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -218,12 +217,6 @@
     <Compile Include="KeysForm.Designer.cs">
       <DependentUpon>KeysForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="LiveWindow.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="LiveWindow.Designer.cs">
-      <DependentUpon>LiveWindow.cs</DependentUpon>
-    </Compile>
     <Compile Include="MemoryUtils.cs" />
     <Compile Include="MessageBoxEx.cs" />
     <Compile Include="NoneBoardFormEx.cs">
@@ -232,15 +225,8 @@
     <Compile Include="仙剑三.cs" />
     <Compile Include="仙剑98柔情.cs" />
     <Compile Include="PalPackVersion.cs" />
-    <Compile Include="PngDraw.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SetRTMP.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="SetRTMP.Designer.cs">
-      <DependentUpon>SetRTMP.cs</DependentUpon>
-    </Compile>
     <Compile Include="TimerCore.cs" />
     <Compile Include="TSSet.cs">
       <SubType>Form</SubType>
@@ -292,9 +278,6 @@
     <EmbeddedResource Include="KeysForm.resx">
       <DependentUpon>KeysForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="LiveWindow.resx">
-      <DependentUpon>LiveWindow.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="PluginMgrForm.resx">
       <DependentUpon>PluginMgrForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -308,9 +291,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="SetRTMP.resx">
-      <DependentUpon>SetRTMP.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="TSSet.resx">
       <DependentUpon>TSSet.cs</DependentUpon>
     </EmbeddedResource>

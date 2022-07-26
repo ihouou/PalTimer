@@ -58,9 +58,7 @@ namespace Pal98Timer
         private string WillCopyRPG = "";
 
         private string cryerror = "";
-
-        private DataServer obsdataserver = null;
-
+        
         private GameObject GameObj = new GameObject();
 
         private List<string> NamedBattleRes = new List<string>();
@@ -513,7 +511,6 @@ namespace Pal98Timer
         private ToolStripMenuItem btnSwitch;
         private ToolStripMenuItem btnOBSServer;
         private ToolStripMenuItem btnGameSpeedShow;
-        private LiveWindow LiveView = null;
         public override void InitUI()
         {
             var btnExportCurrent = form.NewMenuItem();
@@ -563,38 +560,7 @@ namespace Pal98Timer
             btnSwitch= form.NewMenuItem();
             btnSwitch.Text = "切换至简版";
             btnSwitch.Click += BtnSwitch_Click;
-
-            btnLive = form.NewMenuItem();
-            btnLive.Text = "直播窗口";
-            btnLive.Click += delegate (object sender, EventArgs e) {
-                if (LiveView == null)
-                {
-                    LiveView = new LiveWindow();
-                    LiveView.FormClosed += delegate (object sender1, FormClosedEventArgs e1) {
-                        this.LiveView = null;
-                    };
-                    LiveView.Show();
-                }
-            };
-
-            btnOBSServer = form.NewMenuItem();
-            btnOBSServer.Text = "启用OBS0.6x插件";
-            btnOBSServer.Checked = false;
-            btnOBSServer.Click += delegate (object sender, EventArgs e) {
-                btnOBSServer.Checked = !btnOBSServer.Checked;
-            };
-            btnOBSServer.CheckedChanged += delegate (object sender, EventArgs e) {
-                if (btnOBSServer.Checked)
-                {
-                    StopDataServer();
-                    obsdataserver = new DataServer();
-                }
-                else
-                {
-                    StopDataServer();
-                }
-            };
-
+            
             btnGameSpeedShow = form.NewMenuItem();
             btnGameSpeedShow.Text = "显示游戏速度";
             btnGameSpeedShow.Checked = false;
@@ -1503,21 +1469,6 @@ namespace Pal98Timer
         public override void Unload()
         {
             base.Unload();
-            StopDataServer();
-        }
-        private void StopDataServer()
-        {
-            try
-            {
-                if (obsdataserver != null)
-                {
-                    obsdataserver.X();
-                }
-            }
-            catch
-            {
-            }
-            obsdataserver = null;
         }
         public override string GetCriticalError()
         {
