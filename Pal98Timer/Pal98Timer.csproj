@@ -167,6 +167,7 @@
     <Compile Include="GForm.Designer.cs">
       <DependentUpon>GForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="KeyChangerDel.cs" />
     <Compile Include="MemoryReadBase.cs" />
     <Compile Include="PluginMgrForm.cs">
       <SubType>Form</SubType>

@@ -32,10 +32,11 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.niMain = new System.Windows.Forms.NotifyIcon(this.components);
             this.cmMain = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.btnSetKeys = new System.Windows.Forms.ToolStripMenuItem();
-            this.btnExit = new System.Windows.Forms.ToolStripMenuItem();
             this.btnEnable = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.btnSetKeys = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnExit = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnBlockCE = new System.Windows.Forms.ToolStripMenuItem();
             this.cmMain.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -51,11 +52,24 @@
             // 
             this.cmMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.btnEnable,
+            this.btnBlockCE,
             this.toolStripSeparator1,
             this.btnSetKeys,
             this.btnExit});
             this.cmMain.Name = "cmMain";
-            this.cmMain.Size = new System.Drawing.Size(181, 98);
+            this.cmMain.Size = new System.Drawing.Size(160, 98);
+            // 
+            // btnEnable
+            // 
+            this.btnEnable.Name = "btnEnable";
+            this.btnEnable.Size = new System.Drawing.Size(180, 22);
+            this.btnEnable.Text = "启用改键";
+            this.btnEnable.Click += new System.EventHandler(this.btnEnable_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
             // 
             // btnSetKeys
             // 
@@ -71,23 +85,18 @@
             this.btnExit.Text = "退出";
             this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
             // 
-            // btnEnable
+            // btnBlockCE
             // 
-            this.btnEnable.Name = "btnEnable";
-            this.btnEnable.Size = new System.Drawing.Size(180, 22);
-            this.btnEnable.Text = "启用改键";
-            this.btnEnable.Click += new System.EventHandler(this.btnEnable_Click);
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
+            this.btnBlockCE.Name = "btnBlockCE";
+            this.btnBlockCE.Size = new System.Drawing.Size(180, 22);
+            this.btnBlockCE.Text = "屏蔽Ctrl+Enter";
+            this.btnBlockCE.Click += new System.EventHandler(this.btnBlockCE_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(235, 28);
+            this.ClientSize = new System.Drawing.Size(279, 207);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
             this.Opacity = 0D;
@@ -109,6 +118,7 @@
         private System.Windows.Forms.ToolStripMenuItem btnSetKeys;
         private System.Windows.Forms.ToolStripMenuItem btnEnable;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem btnBlockCE;
     }
 }
 
