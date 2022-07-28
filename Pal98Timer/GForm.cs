@@ -15,10 +15,6 @@ namespace Pal98Timer
         public const string CurrentVersion = "A.35";
         public const string bgpath = @"bg.png";
         private TimerCore core;
-        private KeyboardLib _keyboardHook = null;
-        private bool IsKeyInEdit = false;
-        private KeyChanger kc = new KeyChanger("");
-        public int CurrentKeyCode = -1;
         private bool IsAutoLuck = false;
         private Dictionary<string, ToolStripMenuItem> CoreBtns;
 
@@ -30,11 +26,11 @@ namespace Pal98Timer
         private ContextMenuStrip cmCloud;
         private ToolStripMenuItem btnCloudInit;
         private PCloud cloud;
+        private KeyboardLib _keyboardHook = null;
         public GForm():base(true)
         {
             _keyboardHook = new KeyboardLib();
             _keyboardHook.InstallHook(this.OnKeyPress);
-            ApplyKeyChange();
             InitializeComponent();
             SetFormCloseControl(lblClose);
             this.FormClosing += GForm_FormClosing;
@@ -408,72 +404,17 @@ namespace Pal98Timer
                 core.Jump(0);
             }
         }
-        public bool OnCtrlDown = false;
         public bool OnCtrlDown2 = false;
-        private void ApplyKeyChange()
-        {
-            try
-            {
-                if (File.Exists("keychange.txt"))
-                {
-                    string keychangestr = "";
-                    using (FileStream fileStream = new FileStream("keychange.txt", FileMode.Open))
-                    {
-                        using (StreamReader streamReader = new StreamReader(fileStream, Encoding.Default))
-                        {
-                            keychangestr = streamReader.ReadToEnd();
-                        }
-                    }
-                    kc = new KeyChanger(keychangestr);
-                }
-            }
-            catch
-            { }
-        }
+        public bool OnCtrlDown = false;
         public void OnKeyPress(KeyboardLib.HookStruct hookStruct, out bool handle)
         {
-            //btnDebug.Text = hookStruct.vkCode.ToString();
-            handle = false; //预设不拦截任何键 
-            if (!IsKeyInEdit)
+            handle = false; //预设不拦截任何键
+            if (((Keys)(hookStruct.vkCode)) == Keys.Enter && (OnCtrlDown || OnCtrlDown2) && this.core != null && this.core.NeedBlockCtrlEnter())
             {
-                if (kc.IsEnable)
-                {
-                    if (kc.KeyMap.ContainsKey(hookStruct.vkCode))
-                    {
-                        int flag = 0;
-                        if (hookStruct.flags >= 128)
-                        {
-                            flag = 2;
-                        }
-                        int v = kc.KeyMap[hookStruct.vkCode];
-                        handle = true;
-                        KeyboardLib.keybd_event(v, KeyboardLib.MapVirtualKey((uint)v, 0), flag, 0);
-                    }
-                    else
-                    {
-                        if (((Keys)(hookStruct.vkCode)) == Keys.Enter && (OnCtrlDown || OnCtrlDown2) && this.core != null && this.core.NeedBlockCtrlEnter())
-                        {
-                            handle = true;
-                        }
-                    }
-                }
-                else
-                {
-                    if (((Keys)(hookStruct.vkCode)) == Keys.Enter && (OnCtrlDown || OnCtrlDown2) && this.core != null && this.core.NeedBlockCtrlEnter())
-                    {
-                        handle = true;
-                    }
-                }
-            }
-            else
-            {
-                CurrentKeyCode = hookStruct.vkCode;
+                handle = true;
             }
             switch ((Keys)(hookStruct.vkCode))
             {
-                /*case Keys.F12:
-                    df.Visible = true;
-                    break;*/
                 case Keys.RControlKey:
                     if (hookStruct.flags >= 128)
                     {
@@ -569,11 +510,15 @@ namespace Pal98Timer
                 case Keys.F11:
                     if (hookStruct.flags >= 128)
                     {
-                        if (kc != null)
+                        if (KeyChangerDel.IsEnable())
                         {
-                            kc.IsEnable = !kc.IsEnable;
-                            ShowKCEnable();
+                            KeyChangerDel.Disable();
                         }
+                        else
+                        {
+                            KeyChangerDel.Enable();
+                        }
+                        ShowKCEnable();
                         core.OnFunctionKey(11);
                     }
                     handle = core.NeedBlockFunctionKey(11);
@@ -596,7 +541,15 @@ namespace Pal98Timer
         }
         private void ShowKCEnable()
         {
-            if (kc != null && kc.IsEnable)
+            /*if (kc != null && kc.IsEnable)
+            {
+                btnData.Orange();
+            }
+            else
+            {
+                btnData.White();
+            }*/
+            if (KeyChangerDel.IsEnable())
             {
                 btnData.Orange();
             }
@@ -608,6 +561,7 @@ namespace Pal98Timer
 
         private void GForm_FormClosed(object sender, FormClosedEventArgs e)
         {
+            KeyChangerDel.Close();
             Environment.Exit(0);
         }
 
@@ -758,12 +712,26 @@ namespace Pal98Timer
 
         private void btnKeyChange_Click(object sender, EventArgs e)
         {
-            IsKeyInEdit = true;
+            /*IsKeyInEdit = true;
             KeysForm kf = new KeysForm(this);
             kf.ShowDialog(this);
             ApplyKeyChange();
             ShowKCEnable();
-            IsKeyInEdit = false;
+            IsKeyInEdit = false;*/
+            Run(delegate () {
+                string ps = this.DesktopBounds.X + "," + this.DesktopBounds.Y + "," + this.DesktopBounds.Width + "," + this.DesktopBounds.Height;
+                using (FileStream fs = new FileStream("trect",FileMode.Create,FileAccess.ReadWrite))
+                {
+                    using (StreamWriter sw = new StreamWriter(fs, Encoding.UTF8))
+                    {
+                        sw.Write(ps);
+                    }
+                }
+                KeyChangerDel.Edit();
+                UI(delegate () {
+                    ShowKCEnable();
+                });
+            });
         }
 
         private void btnAutoLuck_Click(object sender, EventArgs e)

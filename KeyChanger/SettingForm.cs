@@ -22,6 +22,30 @@ namespace KeyChanger
             cbEnable.Checked = kc.IsEnable;
             Showi();
         }
+        private void AutoPosition()
+        {
+            if (File.Exists("trect"))
+            {
+                try
+                {
+                    string ps = "";
+                    using (FileStream fs = new FileStream("trect", FileMode.Open, FileAccess.Read))
+                    {
+                        using (StreamReader sr = new StreamReader(fs, Encoding.UTF8))
+                        {
+                            ps = sr.ReadToEnd();
+                        }
+                    }
+                    string[] spli = ps.Split(',');
+                    if (spli.Length != 4) return;
+                    Rectangle rc = new Rectangle(int.Parse(spli[0]), int.Parse(spli[1]), int.Parse(spli[2]), int.Parse(spli[3]));
+                    int x = rc.X + (int)(((double)(rc.Width - this.Width)) / 2);
+                    int y = rc.Y + (int)(((double)(rc.Height - this.Height)) / 2);
+                    this.SetDesktopLocation(x, y);
+                }
+                catch { }
+            }
+        }
 
         public int CurrentKeyCode
         {
@@ -114,6 +138,11 @@ namespace KeyChanger
         {
             Save();
             this.Close();
+        }
+
+        private void SettingForm_Load(object sender, EventArgs e)
+        {
+            AutoPosition();
         }
     }
     public class klstitem

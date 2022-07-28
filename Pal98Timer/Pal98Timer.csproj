@@ -205,19 +205,7 @@
       <DependentUpon>InfoShow.cs</DependentUpon>
     </Compile>
     <Compile Include="Kernel32.cs" />
-    <Compile Include="KeyAdd.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="KeyAdd.Designer.cs">
-      <DependentUpon>KeyAdd.cs</DependentUpon>
-    </Compile>
     <Compile Include="KeyboardLib.cs" />
-    <Compile Include="KeysForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="KeysForm.Designer.cs">
-      <DependentUpon>KeysForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="MemoryUtils.cs" />
     <Compile Include="MessageBoxEx.cs" />
     <Compile Include="NoneBoardFormEx.cs">
@@ -272,12 +260,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="InfoShow.resx">
       <DependentUpon>InfoShow.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="KeyAdd.resx">
-      <DependentUpon>KeyAdd.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="KeysForm.resx">
-      <DependentUpon>KeysForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PluginMgrForm.resx">
       <DependentUpon>PluginMgrForm.cs</DependentUpon>

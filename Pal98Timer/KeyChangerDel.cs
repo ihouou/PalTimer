@@ -74,13 +74,13 @@ namespace Pal98Timer
         }
         public static void Close()
         {
+            try
+            {
+                call(TEXIT);
+            }
+            catch { }
             if (kcp != null)
             {
-                try
-                {
-                    call(TEXIT);
-                }
-                catch { }
                 try
                 {
                     kcp.Close();

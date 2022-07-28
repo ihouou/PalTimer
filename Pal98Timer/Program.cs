@@ -18,6 +18,7 @@ namespace Pal98Timer
         {
             ClearTmpBG();
             UpdateBestFiles();
+            KeyChangerDel.Open();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new GForm());
