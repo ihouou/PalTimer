@@ -561,6 +561,7 @@ namespace Pal98Timer
 
         private void GForm_FormClosed(object sender, FormClosedEventArgs e)
         {
+            _keyboardHook.UninstallHook();
             KeyChangerDel.Close();
             Environment.Exit(0);
         }
