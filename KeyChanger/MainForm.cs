@@ -6,11 +6,12 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace KeyChanger
 {
-    public partial class MainForm : Form
+    public partial class MainForm : NoneBoardFormEx
     {
         private const int TIMERCALL = 0x8822;
         private const int TSTAT = 1;
@@ -69,15 +70,31 @@ namespace KeyChanger
             _keyboardHook.InstallHook(this.OnKeyPress);
             ApplyKeyChange();
             InitializeComponent();
+            SetFormMoveControl(pbMain);
+
             ShowKCEnable();
             ShowBCEEnable();
-            niMain.ShowBalloonTip(1000, "改建器", "已启动", ToolTipIcon.Info);
+            niMain.ShowBalloonTip(1000, "改建器", "已启动，双击图标打开按键展示，右键设置", ToolTipIcon.Info);
             try
             {
                 initForPaint();
             }
             catch
             { }
+            if (imgok)
+            {
+                thdp = new Thread(new ThreadStart(thdPaint));
+                thdp.Start();
+            }
+        }
+
+        private void thdPaint()
+        {
+            while (true)
+            {
+                draw();
+                Thread.Sleep(40);
+            }
         }
         private void ApplyKeyChange()
         {
@@ -99,6 +116,7 @@ namespace KeyChanger
             catch
             { }
         }
+        private Thread thdp = null;
         private Image bg = null;
         private Image act = null;
         private Image si = null;
@@ -107,6 +125,7 @@ namespace KeyChanger
         private Dictionary<int, Rectangle> lay = null;
         private Dictionary<int, Point> keymid = null;
         private bool imgok = false;
+        private bool drawok = false;
         private void initForPaint()
         {
             if (File.Exists("keyboard\\normal.png") && File.Exists("keyboard\\act.png") && File.Exists("keyboard\\keys.meta"))
@@ -158,19 +177,27 @@ namespace KeyChanger
         private void _draw()
         {
             g.DrawImage(bg, 0, 0);
-            foreach (KeyValuePair<int, int> kv in ActKeys)
+            Dictionary<int, int> mks = new Dictionary<int, int>();
+            for (int key = 0; key < MaxKeyCode; ++key)
             {
-                _drawOne(kv.Key);
+                int val = KeyStat[key];
+                if (val > 0)
+                {
+                    _drawOne(key);
+                    if (val != key)
+                    {
+                        mks.Add(key, val);
+                    }
+                }
             }
-            foreach (KeyValuePair<int, int> kv in ActKeys)
+            if (mks.Count > 0)
             {
-                if (kv.Key != kv.Value)
+                foreach (KeyValuePair<int, int> kv in mks)
                 {
                     _drawOneLink(kv.Key, kv.Value);
                 }
             }
-
-            pbMain.Refresh();
+            drawok = true;
         }
         private void _drawOne(int ori)
         {
@@ -202,7 +229,8 @@ namespace KeyChanger
         }
 
         private int _hasmodify = 100;
-        private Dictionary<int, int> ActKeys = new Dictionary<int, int>();
+        private const int MaxKeyCode = 2020;
+        private int[] KeyStat = new int[MaxKeyCode];
         private void Push(int ori, int tar)
         {
             /*if (ori != tar)
@@ -213,14 +241,7 @@ namespace KeyChanger
             {
                 Console.WriteLine("DOWN: " + ori);
             }*/
-            if (ActKeys.ContainsKey(ori))
-            {
-                ActKeys[ori] = tar;
-            }
-            else
-            {
-                ActKeys.Add(ori, tar);
-            }
+            KeyStat[ori] = tar;
             _hasmodify = 100;
         }
         private void Pull(int ori, int tar)
@@ -233,10 +254,7 @@ namespace KeyChanger
             {
                 Console.WriteLine("UP: " + ori);
             }*/
-            if (ActKeys.ContainsKey(ori))
-            {
-                ActKeys.Remove(ori);
-            }
+            KeyStat[ori] = 0;
             _hasmodify = 100;
         }
         public void OnKeyPress(KeyboardLib.HookStruct hookStruct, out bool handle)
@@ -390,8 +408,19 @@ namespace KeyChanger
 
         private void niMain_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            this.Show();
-            this.ShowInTaskbar = true;
+            if (this.ShowInTaskbar)
+            {
+                if (!this.TopMost)
+                {
+                    this.TopMost = true;
+                    this.TopMost = false;
+                }
+            }
+            else
+            {
+                this.Show();
+                this.ShowInTaskbar = true;
+            }
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -420,7 +449,23 @@ namespace KeyChanger
 
         private void tmMain_Tick(object sender, EventArgs e)
         {
-            draw();
+            if(drawok)
+            {
+                drawok = false;
+                pbMain.Refresh();
+            }
+        }
+
+        private void btnTop_Click(object sender, EventArgs e)
+        {
+            this.TopMost = !this.TopMost;
+            btnTop.Checked = this.TopMost;
+        }
+
+        private void btnHide_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            this.ShowInTaskbar = false;
         }
     }
 }

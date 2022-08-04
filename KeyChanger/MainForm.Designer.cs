@@ -39,8 +39,12 @@
             this.btnExit = new System.Windows.Forms.ToolStripMenuItem();
             this.tmMain = new System.Windows.Forms.Timer(this.components);
             this.pbMain = new System.Windows.Forms.PictureBox();
+            this.cmWin = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.btnTop = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnHide = new System.Windows.Forms.ToolStripMenuItem();
             this.cmMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbMain)).BeginInit();
+            this.cmWin.SuspendLayout();
             this.SuspendLayout();
             // 
             // niMain
@@ -103,13 +107,38 @@
             // 
             // pbMain
             // 
-            this.pbMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pbMain.Location = new System.Drawing.Point(0, 0);
+            this.pbMain.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pbMain.ContextMenuStrip = this.cmWin;
+            this.pbMain.Location = new System.Drawing.Point(3, 3);
             this.pbMain.Name = "pbMain";
-            this.pbMain.Size = new System.Drawing.Size(483, 160);
+            this.pbMain.Size = new System.Drawing.Size(477, 154);
             this.pbMain.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pbMain.TabIndex = 1;
             this.pbMain.TabStop = false;
+            // 
+            // cmWin
+            // 
+            this.cmWin.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.btnTop,
+            this.btnHide});
+            this.cmWin.Name = "cmWin";
+            this.cmWin.Size = new System.Drawing.Size(101, 48);
+            // 
+            // btnTop
+            // 
+            this.btnTop.Name = "btnTop";
+            this.btnTop.Size = new System.Drawing.Size(100, 22);
+            this.btnTop.Text = "置顶";
+            this.btnTop.Click += new System.EventHandler(this.btnTop_Click);
+            // 
+            // btnHide
+            // 
+            this.btnHide.Name = "btnHide";
+            this.btnHide.Size = new System.Drawing.Size(100, 22);
+            this.btnHide.Text = "隐藏";
+            this.btnHide.Click += new System.EventHandler(this.btnHide_Click);
             // 
             // MainForm
             // 
@@ -127,6 +156,7 @@
             this.Shown += new System.EventHandler(this.MainForm_Shown);
             this.cmMain.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pbMain)).EndInit();
+            this.cmWin.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -142,6 +172,9 @@
         private System.Windows.Forms.ToolStripMenuItem btnBlockCE;
         private System.Windows.Forms.Timer tmMain;
         private System.Windows.Forms.PictureBox pbMain;
+        private System.Windows.Forms.ContextMenuStrip cmWin;
+        private System.Windows.Forms.ToolStripMenuItem btnTop;
+        private System.Windows.Forms.ToolStripMenuItem btnHide;
     }
 }
 

@@ -57,6 +57,9 @@
     </Compile>
     <Compile Include="KC.cs" />
     <Compile Include="KeyboardLib.cs" />
+    <Compile Include="NoneBorderFormEx.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="OBJ.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
