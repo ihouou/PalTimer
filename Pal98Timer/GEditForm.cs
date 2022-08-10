@@ -57,6 +57,10 @@ namespace Pal98Timer
                     {
                         info += "\r\n\r\n鼠标滚轮：修改字体大小";
                     }
+                    if (gbc.OnCtrlWheel != null)
+                    {
+                        info += "\r\n\r\nCtl+滚轮：修改描边宽度";
+                    }
 
                     lblBlock.Text = info;
                     gpBlock.Visible = true;
@@ -121,18 +125,37 @@ namespace Pal98Timer
 
         private void PnMain_MouseWheel(object sender, MouseEventArgs e)
         {
-            if (rr.CurrentEdit != null && rr.CurrentEdit.OnWheel != null)
+            if (mf.OnCtrlDown || mf.OnCtrlDown2)
             {
-                int d = 0;
-                if (e.Delta > 0)
+                if (rr.CurrentEdit != null && rr.CurrentEdit.OnCtrlWheel != null)
                 {
-                    d = 1;
+                    int d = 0;
+                    if (e.Delta > 0)
+                    {
+                        d = 1;
+                    }
+                    else if (e.Delta < 0)
+                    {
+                        d = -1;
+                    }
+                    rr.CurrentEdit.OnCtrlWheel(d);
                 }
-                else if (e.Delta < 0)
+            }
+            else
+            {
+                if (rr.CurrentEdit != null && rr.CurrentEdit.OnWheel != null)
                 {
-                    d = -1;
+                    int d = 0;
+                    if (e.Delta > 0)
+                    {
+                        d = 1;
+                    }
+                    else if (e.Delta < 0)
+                    {
+                        d = -1;
+                    }
+                    rr.CurrentEdit.OnWheel(d);
                 }
-                rr.CurrentEdit.OnWheel(d);
             }
         }
         

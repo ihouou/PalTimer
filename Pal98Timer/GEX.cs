@@ -47,7 +47,7 @@ namespace Pal98Timer
                 p.AddString(text, font.FontFamily, (font.Bold ? ((int)FontStyle.Bold) : 0) | (font.Italic ? ((int)FontStyle.Italic) : 0) | (font.Underline ? ((int)FontStyle.Underline) : 0), font.Size, rect, sf);
                 SmoothingMode tmp = g.SmoothingMode;
                 g.SmoothingMode = SmoothingMode.AntiAlias;
-                if (strokePen != null)
+                if (strokePen != null && strokePen.Width>0)
                 {
                     g.DrawPath(strokePen, p);
                 }
@@ -1127,6 +1127,14 @@ namespace Pal98Timer
                         addFontSize(ref bb.TitleFont, delta);
                         IsForceRefreshAll = true;
                     };
+                    CurrentEdit.OnCtrlWheel = delegate (int delta, GBoardChanger.delGBoardChangerGetColor cColor, GBoardChanger.delGBoardChangerGetFont cFont)
+                    {
+                        float w = bb.TitleBorder.Width + delta;
+                        if (w < 0) w = 0;
+                        if (w > 10) w = 10;
+                        bb.TitleBorder.Width = w;
+                        IsForceRefreshAll = true;
+                    };
                     OnEditCurrentChanged?.Invoke(CurrentEdit);
                 }
             }
@@ -1162,6 +1170,14 @@ namespace Pal98Timer
                     CurrentEdit.OnWheel = delegate (int delta, GBoardChanger.delGBoardChangerGetColor cColor, GBoardChanger.delGBoardChangerGetFont cFont)
                     {
                         addFontSize(ref bb.GVersionFont, delta);
+                        IsForceRefreshAll = true;
+                    };
+                    CurrentEdit.OnCtrlWheel = delegate (int delta, GBoardChanger.delGBoardChangerGetColor cColor, GBoardChanger.delGBoardChangerGetFont cFont)
+                    {
+                        float w = bb.GVersionBorder.Width + delta;
+                        if (w < 0) w = 0;
+                        if (w > 10) w = 10;
+                        bb.GVersionBorder.Width = w;
                         IsForceRefreshAll = true;
                     };
                     OnEditCurrentChanged?.Invoke(CurrentEdit);
@@ -1201,6 +1217,14 @@ namespace Pal98Timer
                         addFontSize(ref bb.VersionFont, delta);
                         IsForceRefreshAll = true;
                     };
+                    CurrentEdit.OnCtrlWheel = delegate (int delta, GBoardChanger.delGBoardChangerGetColor cColor, GBoardChanger.delGBoardChangerGetFont cFont)
+                    {
+                        float w = bb.VersionBorder.Width + delta;
+                        if (w < 0) w = 0;
+                        if (w > 10) w = 10;
+                        bb.VersionBorder.Width = w;
+                        IsForceRefreshAll = true;
+                    };
                     OnEditCurrentChanged?.Invoke(CurrentEdit);
                 }
             }
@@ -1236,6 +1260,14 @@ namespace Pal98Timer
                     CurrentEdit.OnWheel = delegate (int delta, GBoardChanger.delGBoardChangerGetColor cColor, GBoardChanger.delGBoardChangerGetFont cFont)
                     {
                         addFontSize(ref bb.BLFont, delta);
+                        IsForceRefreshAll = true;
+                    };
+                    CurrentEdit.OnCtrlWheel = delegate (int delta, GBoardChanger.delGBoardChangerGetColor cColor, GBoardChanger.delGBoardChangerGetFont cFont)
+                    {
+                        float w = bb.BLBorder.Width + delta;
+                        if (w < 0) w = 0;
+                        if (w > 10) w = 10;
+                        bb.BLBorder.Width = w;
                         IsForceRefreshAll = true;
                     };
                     OnEditCurrentChanged?.Invoke(CurrentEdit);
@@ -1275,6 +1307,14 @@ namespace Pal98Timer
                         addFontSize(ref bb.BRFont, delta);
                         IsForceRefreshAll = true;
                     };
+                    CurrentEdit.OnCtrlWheel = delegate (int delta, GBoardChanger.delGBoardChangerGetColor cColor, GBoardChanger.delGBoardChangerGetFont cFont)
+                    {
+                        float w = bb.BRBorder.Width + delta;
+                        if (w < 0) w = 0;
+                        if (w > 10) w = 10;
+                        bb.BRBorder.Width = w;
+                        IsForceRefreshAll = true;
+                    };
                     OnEditCurrentChanged?.Invoke(CurrentEdit);
                 }
             }
@@ -1310,6 +1350,14 @@ namespace Pal98Timer
                     CurrentEdit.OnWheel = delegate (int delta, GBoardChanger.delGBoardChangerGetColor cColor, GBoardChanger.delGBoardChangerGetFont cFont)
                     {
                         addFontSize(ref bb.MoreInfoFont, delta);
+                        IsForceRefreshAll = true;
+                    };
+                    CurrentEdit.OnCtrlWheel = delegate (int delta, GBoardChanger.delGBoardChangerGetColor cColor, GBoardChanger.delGBoardChangerGetFont cFont)
+                    {
+                        float w = bb.MoreInfoBorder.Width + delta;
+                        if (w < 0) w = 0;
+                        if (w > 10) w = 10;
+                        bb.MoreInfoBorder.Width = w;
                         IsForceRefreshAll = true;
                     };
                     OnEditCurrentChanged?.Invoke(CurrentEdit);
@@ -1355,6 +1403,14 @@ namespace Pal98Timer
                         addFontSize(ref bb.MainTimerMSFont, delta);
                         IsForceRefreshAll = true;
                     };
+                    CurrentEdit.OnCtrlWheel = delegate (int delta, GBoardChanger.delGBoardChangerGetColor cColor, GBoardChanger.delGBoardChangerGetFont cFont)
+                    {
+                        float w = bb.MainTimerBorder.Width + delta;
+                        if (w < 0) w = 0;
+                        if (w > 10) w = 10;
+                        bb.MainTimerBorder.Width = w;
+                        IsForceRefreshAll = true;
+                    };
                     OnEditCurrentChanged?.Invoke(CurrentEdit);
                 }
             }
@@ -1390,6 +1446,14 @@ namespace Pal98Timer
                     CurrentEdit.OnWheel = delegate (int delta, GBoardChanger.delGBoardChangerGetColor cColor, GBoardChanger.delGBoardChangerGetFont cFont)
                     {
                         addFontSize(ref bb.SubTimerFont, delta);
+                        IsForceRefreshAll = true;
+                    };
+                    CurrentEdit.OnCtrlWheel = delegate (int delta, GBoardChanger.delGBoardChangerGetColor cColor, GBoardChanger.delGBoardChangerGetFont cFont)
+                    {
+                        float w = bb.SubTimerBorder.Width + delta;
+                        if (w < 0) w = 0;
+                        if (w > 10) w = 10;
+                        bb.SubTimerBorder.Width = w;
                         IsForceRefreshAll = true;
                     };
                     OnEditCurrentChanged?.Invoke(CurrentEdit);
@@ -1429,6 +1493,14 @@ namespace Pal98Timer
                         addFontSize(ref bb.OutTimerFont, delta);
                         IsForceRefreshAll = true;
                     };
+                    CurrentEdit.OnCtrlWheel = delegate (int delta, GBoardChanger.delGBoardChangerGetColor cColor, GBoardChanger.delGBoardChangerGetFont cFont)
+                    {
+                        float w = bb.OutTimerBorder.Width + delta;
+                        if (w < 0) w = 0;
+                        if (w > 10) w = 10;
+                        bb.OutTimerBorder.Width = w;
+                        IsForceRefreshAll = true;
+                    };
                     OnEditCurrentChanged?.Invoke(CurrentEdit);
                 }
             }
@@ -1464,6 +1536,14 @@ namespace Pal98Timer
                     CurrentEdit.OnWheel = delegate (int delta, GBoardChanger.delGBoardChangerGetColor cColor, GBoardChanger.delGBoardChangerGetFont cFont)
                     {
                         addFontSize(ref bb.WillClearFont, delta);
+                        IsForceRefreshAll = true;
+                    };
+                    CurrentEdit.OnCtrlWheel = delegate (int delta, GBoardChanger.delGBoardChangerGetColor cColor, GBoardChanger.delGBoardChangerGetFont cFont)
+                    {
+                        float w = bb.WillClearBorder.Width + delta;
+                        if (w < 0) w = 0;
+                        if (w > 10) w = 10;
+                        bb.WillClearBorder.Width = w;
                         IsForceRefreshAll = true;
                     };
                     OnEditCurrentChanged?.Invoke(CurrentEdit);
@@ -1546,6 +1626,14 @@ namespace Pal98Timer
                                 addFontSize(ref bb.CPNameFont, delta);
                                 IsForceRefreshAll = true;
                             };
+                            CurrentEdit.OnCtrlWheel = delegate (int delta, GBoardChanger.delGBoardChangerGetColor cColor, GBoardChanger.delGBoardChangerGetFont cFont)
+                            {
+                                float w = bb.CPNameBorder.Width + delta;
+                                if (w < 0) w = 0;
+                                if (w > 10) w = 10;
+                                bb.CPNameBorder.Width = w;
+                                IsForceRefreshAll = true;
+                            };
                             OnEditCurrentChanged?.Invoke(CurrentEdit);
                         }
                     }
@@ -1588,6 +1676,14 @@ namespace Pal98Timer
                                         addFontSize(ref bb.CPCurFont, delta);
                                         IsForceRefreshAll = true;
                                     };
+                                    CurrentEdit.OnCtrlWheel = delegate (int delta, GBoardChanger.delGBoardChangerGetColor cColor, GBoardChanger.delGBoardChangerGetFont cFont)
+                                    {
+                                        float w = bb.CPBadBorder.Width + delta;
+                                        if (w < 0) w = 0;
+                                        if (w > 10) w = 10;
+                                        bb.CPBadBorder.Width = w;
+                                        IsForceRefreshAll = true;
+                                    };
                                     OnEditCurrentChanged?.Invoke(CurrentEdit);
                                 }
                                 break;
@@ -1624,6 +1720,14 @@ namespace Pal98Timer
                                         addFontSize(ref bb.CPCurFont, delta);
                                         IsForceRefreshAll = true;
                                     };
+                                    CurrentEdit.OnCtrlWheel = delegate (int delta, GBoardChanger.delGBoardChangerGetColor cColor, GBoardChanger.delGBoardChangerGetFont cFont)
+                                    {
+                                        float w = bb.CPGoodBorder.Width + delta;
+                                        if (w < 0) w = 0;
+                                        if (w > 10) w = 10;
+                                        bb.CPGoodBorder.Width = w;
+                                        IsForceRefreshAll = true;
+                                    };
                                     OnEditCurrentChanged?.Invoke(CurrentEdit);
                                 }
                                 break;
@@ -1658,6 +1762,14 @@ namespace Pal98Timer
                                     CurrentEdit.OnWheel = delegate (int delta, GBoardChanger.delGBoardChangerGetColor cColor, GBoardChanger.delGBoardChangerGetFont cFont)
                                     {
                                         addFontSize(ref bb.CPCurFont, delta);
+                                        IsForceRefreshAll = true;
+                                    };
+                                    CurrentEdit.OnCtrlWheel = delegate (int delta, GBoardChanger.delGBoardChangerGetColor cColor, GBoardChanger.delGBoardChangerGetFont cFont)
+                                    {
+                                        float w = bb.CPSameBorder.Width + delta;
+                                        if (w < 0) w = 0;
+                                        if (w > 10) w = 10;
+                                        bb.CPSameBorder.Width = w;
                                         IsForceRefreshAll = true;
                                     };
                                     OnEditCurrentChanged?.Invoke(CurrentEdit);
@@ -1727,6 +1839,14 @@ namespace Pal98Timer
                                     addFontSize(ref bb.CPBestFont, delta);
                                     IsForceRefreshAll = true;
                                 };
+                                CurrentEdit.OnCtrlWheel = delegate (int delta, GBoardChanger.delGBoardChangerGetColor cColor, GBoardChanger.delGBoardChangerGetFont cFont)
+                                {
+                                    float w = bb.CPBestBorder.Width + delta;
+                                    if (w < 0) w = 0;
+                                    if (w > 10) w = 10;
+                                    bb.CPBestBorder.Width = w;
+                                    IsForceRefreshAll = true;
+                                };
                                 OnEditCurrentChanged?.Invoke(CurrentEdit);
                             }
                         }
@@ -1769,6 +1889,14 @@ namespace Pal98Timer
                                             addFontSize(ref bb.CPChaFont, delta);
                                             IsForceRefreshAll = true;
                                         };
+                                        CurrentEdit.OnCtrlWheel = delegate (int delta, GBoardChanger.delGBoardChangerGetColor cColor, GBoardChanger.delGBoardChangerGetFont cFont)
+                                        {
+                                            float w = bb.CPBadBorder.Width + delta;
+                                            if (w < 0) w = 0;
+                                            if (w > 10) w = 10;
+                                            bb.CPBadBorder.Width = w;
+                                            IsForceRefreshAll = true;
+                                        };
                                         OnEditCurrentChanged?.Invoke(CurrentEdit);
                                     }
                                     break;
@@ -1805,6 +1933,14 @@ namespace Pal98Timer
                                             addFontSize(ref bb.CPChaFont, delta);
                                             IsForceRefreshAll = true;
                                         };
+                                        CurrentEdit.OnCtrlWheel = delegate (int delta, GBoardChanger.delGBoardChangerGetColor cColor, GBoardChanger.delGBoardChangerGetFont cFont)
+                                        {
+                                            float w = bb.CPGoodBorder.Width + delta;
+                                            if (w < 0) w = 0;
+                                            if (w > 10) w = 10;
+                                            bb.CPGoodBorder.Width = w;
+                                            IsForceRefreshAll = true;
+                                        };
                                         OnEditCurrentChanged?.Invoke(CurrentEdit);
                                     }
                                     break;
@@ -1839,6 +1975,14 @@ namespace Pal98Timer
                                         CurrentEdit.OnWheel = delegate (int delta, GBoardChanger.delGBoardChangerGetColor cColor, GBoardChanger.delGBoardChangerGetFont cFont)
                                         {
                                             addFontSize(ref bb.CPChaFont, delta);
+                                            IsForceRefreshAll = true;
+                                        };
+                                        CurrentEdit.OnCtrlWheel = delegate (int delta, GBoardChanger.delGBoardChangerGetColor cColor, GBoardChanger.delGBoardChangerGetFont cFont)
+                                        {
+                                            float w = bb.CPSameBorder.Width + delta;
+                                            if (w < 0) w = 0;
+                                            if (w > 10) w = 10;
+                                            bb.CPSameBorder.Width = w;
                                             IsForceRefreshAll = true;
                                         };
                                         OnEditCurrentChanged?.Invoke(CurrentEdit);
@@ -2447,6 +2591,7 @@ namespace Pal98Timer
         public delGBoardChangerCall OnRightClick = null;
         public delGBoardChangerCall OnMiddleClick = null;
         public delGBoardChangerCall OnWheel = null;
+        public delGBoardChangerCall OnCtrlWheel = null;
     }
 
     public class GBoard : IDisposable
