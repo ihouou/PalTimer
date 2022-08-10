@@ -12,36 +12,31 @@ namespace Pal98Timer
     {
         [DllImport("user32.dll")]
         public static extern bool ReleaseCapture();
-
         [DllImport("user32.dll")]
-        public static extern bool SendMessage(IntPtr hwnd, int wMsg, int wParam, int lParam);
+        public static extern bool SendMessage(IntPtr hwdn, int wMsg, int mParam, int lParam);
+        //常量
+        public const int WM_SYSCOMMAND = 0x0112;
 
-        private const int VM_NCLBUTTONDOWN = 0XA1;//定义鼠标左键按下
-        private const int HTCAPTION = 2;
+        //窗体移动
+        public const int SC_MOVE = 0xF010;
+        public const int HTCAPTION = 0x0002;
 
-        private const int HTLEFT = 10;
-        private const int HTRIGHT = 11;
-        private const int HTTOP = 12;
-        private const int HTTOPLEFT = 13;
-        private const int HTTOPRIGHT = 14;
-        private const int HTBOTTOM = 15;
-        private const int HTBOTTOMLEFT = 0x10;
-        private const int HTBOTTOMRIGHT = 17;
+        //改变窗体大小
+        public const int WMSZ_LEFT = 0xF001;
+        public const int WMSZ_RIGHT = 0xF002;
+        public const int WMSZ_TOP = 0xF003;
+        public const int WMSZ_TOPLEFT = 0xF004;
+        public const int WMSZ_TOPRIGHT = 0xF005;
+        public const int WMSZ_BOTTOM = 0xF006;
+        public const int WMSZ_BOTTOMLEFT = 0xF007;
+        public const int WMSZ_BOTTOMRIGHT = 0xF008;
 
-        protected override CreateParams CreateParams
-        {
-            get
-            {
-                const int WS_MINIMIZEBOX = 0x00020000;  // Winuser.h中定义  
-                CreateParams cp = base.CreateParams;
-                cp.Style = cp.Style | WS_MINIMIZEBOX;   // 允许最小化操作  
-                return cp;
-            }
-        }
-
+        private const int BORDER_WIDTH = 5;
+        private long lastmutick = 0;
         public NoneBoardFormEx()
         {
             this.FormBorderStyle = FormBorderStyle.None;
+            _bindEvents();
         }
         public NoneBoardFormEx(bool DoubleBuffered)
         {
@@ -51,107 +46,137 @@ namespace Pal98Timer
                 this.DoubleBuffered = true;
                 this.SetStyle(ControlStyles.ResizeRedraw, true);
             }
+            _bindEvents();
         }
-
-        public void SetFormCloseControl(Control c)
+        private void _bindEvents()
         {
-            c.Click += C_Click;
+            this.MouseDown += delegate (object sender, MouseEventArgs e) {
+                int mx = (this.Width - BORDER_WIDTH);
+                int my = (this.Height - BORDER_WIDTH);
+                int tar = 0;
+                if (e.X <= BORDER_WIDTH)
+                {
+                    //left
+                    if (e.Y <= BORDER_WIDTH)
+                    {
+                        tar = WMSZ_TOPLEFT;
+                    }
+                    else if (e.Y >= my)
+                    {
+                        tar = WMSZ_BOTTOMLEFT;
+                    }
+                    else
+                    {
+                        tar = WMSZ_LEFT;
+                    }
+                }
+                else if (e.X >= mx)
+                {
+                    //right
+                    if (e.Y <= BORDER_WIDTH)
+                    {
+                        tar = WMSZ_TOPRIGHT;
+                    }
+                    else if (e.Y >= my)
+                    {
+                        tar = WMSZ_BOTTOMRIGHT;
+                    }
+                    else
+                    {
+                        tar = WMSZ_RIGHT;
+                    }
+                }
+                else
+                {
+                    //mid
+                    if (e.Y <= BORDER_WIDTH)
+                    {
+                        tar = WMSZ_TOP;
+                    }
+                    else if (e.Y >= my)
+                    {
+                        tar = WMSZ_BOTTOM;
+                    }
+                    else
+                    {
+                        int x = this.Left;
+                        int y = this.Top;
+                        ReleaseCapture();
+                        SendMessage(this.Handle, WM_SYSCOMMAND, SC_MOVE + HTCAPTION, 0);//向Windows发送拖动窗体的消息
+                        if (this.Left == x && this.Top == y)
+                        {
+                            this.OnMouseUp(e);
+                            long now = DateTime.Now.Ticks;
+                            long cha = now - lastmutick;
+                            lastmutick = now;
+                            if (cha < 3000000)
+                            {
+                                lastmutick = 0;
+                                this.OnMouseDoubleClick(e);
+                            }
+                        }
+                        return;
+                    }
+                }
+                if (tar != 0)
+                {
+                    ReleaseCapture();
+                    SendMessage(this.Handle, WM_SYSCOMMAND, tar, 0);//向Windows发送拖动窗体的消息
+                }
+            };
+            this.MouseMove += delegate (object sender, MouseEventArgs e) {
+                int mx = (this.Width - BORDER_WIDTH);
+                int my = (this.Height - BORDER_WIDTH);
+                if (e.X <= BORDER_WIDTH)
+                {
+                    //left
+                    if (e.Y <= BORDER_WIDTH)
+                    {
+                        this.Cursor = Cursors.SizeNWSE;
+                    }
+                    else if (e.Y >= my)
+                    {
+                        this.Cursor = Cursors.SizeNESW;
+                    }
+                    else
+                    {
+                        this.Cursor = Cursors.SizeWE;
+                    }
+                }
+                else if (e.X >= mx)
+                {
+                    //right
+                    if (e.Y <= BORDER_WIDTH)
+                    {
+                        this.Cursor = Cursors.SizeNESW;
+                    }
+                    else if (e.Y >= my)
+                    {
+                        this.Cursor = Cursors.SizeNWSE;
+                    }
+                    else
+                    {
+                        this.Cursor = Cursors.SizeWE;
+                    }
+                }
+                else
+                {
+                    //mid
+                    if (e.Y <= BORDER_WIDTH)
+                    {
+                        this.Cursor = Cursors.SizeNS;
+                    }
+                    else if (e.Y >= my)
+                    {
+                        this.Cursor = Cursors.SizeNS;
+                    }
+                    else
+                    {
+                        this.Cursor = Cursors.Arrow;
+                    }
+                }
+            };
         }
-
-        private void C_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
-        public void SetFormMoveControl(Control c)
-        {
-            c.MouseDown += C_MouseDown;
-        }
-
-        private void C_MouseDown(object sender, MouseEventArgs e)
-        {
-            //为当前应用程序释放鼠标捕获
-            ReleaseCapture();
-            //发送消息 让系统误以为在标题栏上按下鼠标
-            SendMessage((IntPtr)this.Handle, VM_NCLBUTTONDOWN, HTCAPTION, 0);
-        }
-
-        protected override void WndProc(ref Message m)
-        {
-            //base.WndProc(ref m);
-            switch (m.Msg)
-
-            {
-
-                case 0x0084:
-
-                    base.WndProc(ref m);
-
-                    Point vPoint = new Point((int)m.LParam & 0xFFFF,
-
-                     (int)m.LParam >> 16 & 0xFFFF);
-
-                    vPoint = PointToClient(vPoint);
-
-                    if (vPoint.X <= 5)
-
-                        if (vPoint.Y <= 5)
-
-                            m.Result = (IntPtr)HTTOPLEFT;
-
-                        else if (vPoint.Y >= ClientSize.Height - 5)
-
-
-                            m.Result = (IntPtr)HTBOTTOMLEFT;
-
-                        else m.Result = (IntPtr)HTLEFT;
-
-                    else if (vPoint.X >= ClientSize.Width - 5)
-
-
-                        if (vPoint.Y <= 5)
-
-                            m.Result = (IntPtr)HTTOPRIGHT;
-
-                        else if (vPoint.Y >= ClientSize.Height - 5)
-
-
-                            m.Result = (IntPtr)HTBOTTOMRIGHT;
-
-                        else m.Result = (IntPtr)HTRIGHT;
-
-                    else if (vPoint.Y <= 5)
-
-
-                        m.Result = (IntPtr)HTTOP;
-
-                    else if (vPoint.Y >= ClientSize.Height - 5)
-
-
-                        m.Result = (IntPtr)HTBOTTOM;
-
-                    break;
-
-                case 0x0201://鼠标左键按下的消息 用于实现拖动窗口功能
-
-                    m.Msg = 0x00A1;//更改消息为非客户区按下鼠标
-
-                    m.LParam = IntPtr.Zero;//默认值
-
-                    m.WParam = new IntPtr(2);//鼠标放在标题栏内
-
-                    base.WndProc(ref m);
-
-                    break;
-
-                default:
-
-                    base.WndProc(ref m);
-
-                    break;
-
-            }
-        }
-
+        
     }
 }

@@ -282,22 +282,6 @@ namespace Pal98Timer
             if (baseCtl != null)
             {
                 BaseCtl = baseCtl;
-                foreach (Control c in BaseCtl.Controls)
-                {
-                    if (c.Tag == null) continue;
-                    switch (c.Tag.ToString())
-                    {
-                        case ":close":
-                            close_ctl = c;
-                            break;
-                        case ":config":
-                            config_ctl = c;
-                            break;
-                        case ":function":
-                            btn_ctl = c;
-                            break;
-                    }
-                }
                 if (!isEdit)
                 {
                     this.bindCtlEvents();
@@ -318,10 +302,6 @@ namespace Pal98Timer
 
         private void bindCtlEvents()
         {
-            if (btn_ctl != null)
-            {
-                btn_ctl.MouseClick += onFuncAreaClicked;
-            }
             if (BaseCtl != null)
             {
                 BaseCtl.MouseDoubleClick += onBaseMouseDBClick;
@@ -329,8 +309,24 @@ namespace Pal98Timer
                 BaseCtl.MouseEnter += delegate (object sender, EventArgs e) {
                     BaseCtl.Focus();
                 };
+
+                BaseCtl.MouseUp += delegate (object sender, MouseEventArgs e) {
+                    if (close_rc.Contains(e.Location))
+                    {
+                        OnCloseClicked?.Invoke();
+                    }
+                    else if (config_rc.Contains(e.Location))
+                    {
+                        OnConfigClicked?.Invoke(e.X, e.Y);
+                    }
+                    else if (btn_rc.Contains(e.Location))
+                    {
+                        OnFunctionAreaClicked(e.Location);
+                    }
+                };
             }
         }
+
         private void createConfigIconFromBase64()
         {
             string base64 = "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";
@@ -377,6 +373,10 @@ namespace Pal98Timer
                 OnMainTimerDBClicked();
             }
         }
+        public delegate void delOnCloseClicked();
+        public delegate void delOnConfigClicked(int x,int y);
+        public delOnCloseClicked OnCloseClicked = null;
+        public delOnConfigClicked OnConfigClicked = null;
         private void OnFunctionAreaClicked(Point pos)
         {
             int x = pos.X + btn_rc.X;
@@ -386,7 +386,7 @@ namespace Pal98Timer
                 {
                     if (b.Enabled)
                     {
-                        b.OnClicked?.Invoke(x, btn_rc.Y, b);
+                        b.OnClicked?.Invoke(x, btn_rc.Y + btn_rc.Height, b);
                     }
                     return;
                 }
@@ -1890,13 +1890,6 @@ namespace Pal98Timer
         private bool isCloseCtlChanged = false;
         private bool isBtnCtlChanged = false;
         private bool isConfigCtlChanged = false;
-        private Control close_ctl = null;
-        private Control btn_ctl = null;
-        private Control config_ctl = null;
-        private void onFuncAreaClicked(object sender, MouseEventArgs e)
-        {
-            OnFunctionAreaClicked(e.Location);
-        }
         private void onBaseMouseWheel(object sender, MouseEventArgs e)
         {
             OnMouseWheel(sender, e);
@@ -1925,42 +1918,7 @@ namespace Pal98Timer
                 Height = BaseCtl.Height;
                 isSizeChanged = true;
             }
-            if (close_ctl != null)
-            {
-                if (close_ctl.Left != close_rc.X || close_ctl.Top != close_rc.Y || close_ctl.Width != close_rc.Width || close_ctl.Height != close_rc.Height)
-                {
-                    close_rc.X = close_ctl.Left;
-                    close_rc.Y = close_ctl.Top;
-                    close_rc.Width = close_ctl.Width;
-                    close_rc.Height = close_ctl.Height;
-                    isCloseCtlChanged = true;
-                }
-            }
-
-            if (btn_ctl != null)
-            {
-                if (btn_ctl.Left != btn_rc.X || btn_ctl.Top != btn_rc.Y || btn_ctl.Width != btn_rc.Width || btn_ctl.Height != btn_rc.Height)
-                {
-                    btn_rc.X = btn_ctl.Left;
-                    btn_rc.Y = btn_ctl.Top;
-                    btn_rc.Width = btn_ctl.Width;
-                    btn_rc.Height = btn_ctl.Height;
-                    isBtnCtlChanged = true;
-                }
-            }
-
-            if (config_ctl != null)
-            {
-                if (config_ctl.Left != config_rc.X || config_ctl.Top != config_rc.Y || config_ctl.Width != config_rc.Width || config_ctl.Height != config_rc.Height)
-                {
-                    config_rc.X = config_ctl.Left;
-                    config_rc.Y = config_ctl.Top;
-                    config_rc.Width = config_ctl.Width;
-                    config_rc.Height = config_ctl.Height;
-                    isConfigCtlChanged = true;
-                }
-            }
-
+            
             if (isSizeChanged)
             {
                 Image tmpi = CI;
@@ -1983,6 +1941,24 @@ namespace Pal98Timer
                 {
                     CG.Clear(Color.Transparent);
                 }
+
+                close_rc.X = Width - 33;
+                close_rc.Y = 3;
+                close_rc.Width = 30;
+                close_rc.Height = 30;
+                isCloseCtlChanged = true;
+
+                config_rc.X = Width - 66;
+                config_rc.Y = 3;
+                config_rc.Width = 30;
+                config_rc.Height = 30;
+                isConfigCtlChanged = true;
+
+                btn_rc.X = 2;
+                btn_rc.Y = Height - 66;
+                btn_rc.Width = Width - 4;
+                btn_rc.Height = 33;
+                isBtnCtlChanged = true;
             }
             DrawClose(CG, ur);
             DrawConfig(CG, ur);
@@ -2065,7 +2041,6 @@ namespace Pal98Timer
         }
         private void DrawClose(Graphics g, delUpdateRect ur = null)
         {
-            if (close_ctl == null) return;
             if (isSizeChanged || isBGChanged || isBBChanged || isCloseCtlChanged)
             {
                 if (!isSizeChanged && !isBGChanged)
@@ -2086,7 +2061,6 @@ namespace Pal98Timer
         }
         private void DrawConfig(Graphics g, delUpdateRect ur = null)
         {
-            if (config_ctl == null) return;
             if (isSizeChanged || isBGChanged || isBBChanged || isConfigCtlChanged)
             {
                 if (!isSizeChanged && !isBGChanged)
@@ -2288,7 +2262,6 @@ namespace Pal98Timer
         }
         private bool DrawButtons(Graphics g, delUpdateRect ur = null)
         {
-            if (btn_ctl == null) return false;
             bool isForceDrawAll = isBtnsChanged;
             if (isSizeChanged || isBGChanged || isBBChanged || isBtnCtlChanged)
             {

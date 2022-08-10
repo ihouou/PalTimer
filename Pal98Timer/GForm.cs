@@ -32,7 +32,6 @@ namespace Pal98Timer
             _keyboardHook = new KeyboardLib();
             _keyboardHook.InstallHook(this.OnKeyPress);
             InitializeComponent();
-            SetFormCloseControl(lblClose);
             this.FormClosing += GForm_FormClosing;
             this.FormClosed += GForm_FormClosed;
 
@@ -62,6 +61,12 @@ namespace Pal98Timer
             rr.OnMainTimerDBClicked = OnMainTimerDBClicked;
             rr.SetGBoard(bb);
             rr.SetBG(bgpath);
+            rr.OnConfigClicked = delegate (int x, int y) {
+                mnMain.Show(this, x, y);
+            };
+            rr.OnCloseClicked = delegate () {
+                this.Close();
+            };
 
             cmCloud= new ContextMenuStrip(this.components);
             btnCloudInit = new ToolStripMenuItem();
@@ -71,8 +76,8 @@ namespace Pal98Timer
 
             btnPause = rr.AddBtn("暂停", delegate (int x, int y, GRender.GBtn btn) { UIPause(); }, 9);
             btnReset = rr.AddBtn("重置", delegate (int x, int y, GRender.GBtn btn) { btnReset_Click(null, null); }, 10);
-            btnData = rr.AddBtn("功能", delegate (int x, int y, GRender.GBtn btn) { mnData.Show(lblFunArea, x, lblFunArea.Height); }, 20);
-            btnCloud = rr.AddBtn("云", delegate (int x, int y, GRender.GBtn btn) { cmCloud.Show(lblFunArea, x, lblFunArea.Height); }, 30);
+            btnData = rr.AddBtn("功能", delegate (int x, int y, GRender.GBtn btn) { mnData.Show(this,x,y); }, 20);
+            btnCloud = rr.AddBtn("云", delegate (int x, int y, GRender.GBtn btn) { cmCloud.Show(this,x,y); }, 30);
             btnCloudInit.Click += delegate (object sender, EventArgs e) {
                 InitCloud();
             };
@@ -705,12 +710,7 @@ namespace Pal98Timer
                 //Invalidate();
             }
         }
-
-        private void lblConfig_Click(object sender, EventArgs e)
-        {
-            mnMain.Show(lblConfig, 0, lblConfig.Height);
-        }
-
+        
         private void btnKeyChange_Click(object sender, EventArgs e)
         {
             /*IsKeyInEdit = true;
@@ -773,7 +773,7 @@ namespace Pal98Timer
             return cm;*/
             ContextMenuStrip cm = new ContextMenuStrip(this.components);
             btn.OnClicked = delegate (int x, int y, GRender.GBtn ctl) {
-                cm.Show(lblFunArea, x, lblFunArea.Height);
+                cm.Show(x,y);
             };
             core.AddUIC(cm);
             return cm;

@@ -30,9 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GForm));
-            this.lblClose = new System.Windows.Forms.Label();
-            this.lblConfig = new System.Windows.Forms.Label();
-            this.lblFunArea = new System.Windows.Forms.Label();
             this.tmMain = new System.Windows.Forms.Timer(this.components);
             this.mnData = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.btnKeyChange = new System.Windows.Forms.ToolStripMenuItem();
@@ -48,38 +45,6 @@
             this.mnMain.SuspendLayout();
             this.SuspendLayout();
             // 
-            // lblClose
-            // 
-            this.lblClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblClose.BackColor = System.Drawing.Color.Transparent;
-            this.lblClose.Location = new System.Drawing.Point(292, 4);
-            this.lblClose.Name = "lblClose";
-            this.lblClose.Size = new System.Drawing.Size(30, 30);
-            this.lblClose.TabIndex = 0;
-            this.lblClose.Tag = ":close";
-            // 
-            // lblConfig
-            // 
-            this.lblConfig.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblConfig.BackColor = System.Drawing.Color.Transparent;
-            this.lblConfig.Location = new System.Drawing.Point(256, 4);
-            this.lblConfig.Name = "lblConfig";
-            this.lblConfig.Size = new System.Drawing.Size(30, 30);
-            this.lblConfig.TabIndex = 1;
-            this.lblConfig.Tag = ":config";
-            this.lblConfig.Click += new System.EventHandler(this.lblConfig_Click);
-            // 
-            // lblFunArea
-            // 
-            this.lblFunArea.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblFunArea.BackColor = System.Drawing.Color.Transparent;
-            this.lblFunArea.Location = new System.Drawing.Point(3, 782);
-            this.lblFunArea.Name = "lblFunArea";
-            this.lblFunArea.Size = new System.Drawing.Size(321, 33);
-            this.lblFunArea.TabIndex = 2;
-            this.lblFunArea.Tag = ":function";
-            // 
             // tmMain
             // 
             this.tmMain.Enabled = true;
@@ -93,7 +58,7 @@
             this.btnShowPSInDots,
             this.btnEditBest});
             this.mnData.Name = "mnData";
-            this.mnData.Size = new System.Drawing.Size(185, 114);
+            this.mnData.Size = new System.Drawing.Size(185, 92);
             // 
             // btnKeyChange
             // 
@@ -167,9 +132,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(327, 849);
-            this.Controls.Add(this.lblFunArea);
-            this.Controls.Add(this.lblConfig);
-            this.Controls.Add(this.lblClose);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "GForm";
             this.Text = "自动计时器";
@@ -180,10 +142,6 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Label lblClose;
-        private System.Windows.Forms.Label lblConfig;
-        private System.Windows.Forms.Label lblFunArea;
         private System.Windows.Forms.Timer tmMain;
         public System.Windows.Forms.ContextMenuStrip mnData;
         private System.Windows.Forms.ToolStripMenuItem btnKeyChange;
