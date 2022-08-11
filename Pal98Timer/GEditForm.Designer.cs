@@ -39,7 +39,6 @@
             this.gpBlock = new System.Windows.Forms.GroupBox();
             this.lblBlock = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.dlgColor = new System.Windows.Forms.ColorDialog();
             this.dlgFont = new System.Windows.Forms.FontDialog();
@@ -165,17 +164,6 @@
             this.label2.Text = "移动鼠标到需要修改样式的位置";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // label1
-            // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label1.ForeColor = System.Drawing.Color.Transparent;
-            this.label1.Location = new System.Drawing.Point(3, 612);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(309, 30);
-            this.label1.TabIndex = 0;
-            this.label1.Tag = ":function";
-            // 
             // timer1
             // 
             this.timer1.Enabled = true;
@@ -216,7 +204,6 @@
         #endregion
 
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.GroupBox gpBlock;
         private System.Windows.Forms.Label lblBlock;
