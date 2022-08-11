@@ -1255,7 +1255,22 @@ namespace Pal98Timer
         public string Name;
         public string NickName = "";
         public TimeSpan Best;
-        public TimeSpan Current;
+        private TimeSpan _current;
+        public TimeSpan Current
+        {
+            get
+            {
+                return _current;
+            }
+            set
+            {
+                _current = value;
+                if (_uiItem != null)
+                {
+                    _uiItem.Cur = value;
+                }
+            }
+        }
         public Checker Check;
         public bool IsBegin = false;
         public bool IsEnd = false;
