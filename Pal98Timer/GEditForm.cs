@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace Pal98Timer
 {
-    public partial class GEditForm : FormEx
+    public partial class GEditForm : Form
     {
         private GBoard bb;
         private GRender rr;
@@ -18,10 +18,16 @@ namespace Pal98Timer
         private TimeSpan cur = new TimeSpan(0, 20, 15);
         private TimeSpan cha = new TimeSpan(0, 0, 3);
         private GForm mf;
+        private DFPanel pnMain;
         public GEditForm(GForm mf)
         {
             this.mf = mf;
             InitializeComponent();
+            pnMain = new DFPanel();
+            pnMain.Dock = DockStyle.Fill;
+            splitContainer1.Panel1.Controls.Add(pnMain);
+
+
             this.FormClosed += delegate (object sender, FormClosedEventArgs e) {
                 this.Dispose();
             };
@@ -66,6 +72,15 @@ namespace Pal98Timer
                     gpBlock.Visible = true;
                 }
             };
+
+            tbItemHeight.Value = bb.ItemHeight;
+            tbItemHeight.Scroll += delegate (object sender, EventArgs e) {
+                bb.ItemHeight = tbItemHeight.Value;
+                bb.ItemHalfHeight = GEX.GDIMulti(bb.ItemHeight, 0.5f);
+                rr.RefreshItemHeight();
+                rr.IsForceRefreshAll = true;
+            };
+
             InitRender();
         }
 

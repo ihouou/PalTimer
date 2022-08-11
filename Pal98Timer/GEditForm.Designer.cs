@@ -31,24 +31,23 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GEditForm));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.pnBack = new Pal98Timer.DFPanel();
-            this.pnMain = new Pal98Timer.DFPanel();
-            this.label1 = new System.Windows.Forms.Label();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.tbItemHeight = new System.Windows.Forms.TrackBar();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnSetBG = new System.Windows.Forms.Button();
             this.btnClearBG = new System.Windows.Forms.Button();
             this.gpBlock = new System.Windows.Forms.GroupBox();
             this.lblBlock = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.dlgColor = new System.Windows.Forms.ColorDialog();
             this.dlgFont = new System.Windows.Forms.FontDialog();
             this.dlgFile = new System.Windows.Forms.OpenFileDialog();
-            this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            this.pnBack.SuspendLayout();
-            this.pnMain.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tbItemHeight)).BeginInit();
             this.gpBlock.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -59,12 +58,9 @@
             this.splitContainer1.Location = new System.Drawing.Point(0, 0);
             this.splitContainer1.Name = "splitContainer1";
             // 
-            // splitContainer1.Panel1
-            // 
-            this.splitContainer1.Panel1.Controls.Add(this.pnBack);
-            // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.groupBox1);
             this.splitContainer1.Panel2.Controls.Add(this.btnSave);
             this.splitContainer1.Panel2.Controls.Add(this.btnSetBG);
             this.splitContainer1.Panel2.Controls.Add(this.btnClearBG);
@@ -74,40 +70,32 @@
             this.splitContainer1.SplitterDistance = 338;
             this.splitContainer1.TabIndex = 0;
             // 
-            // pnBack
+            // groupBox1
             // 
-            this.pnBack.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.tbItemHeight);
+            this.groupBox1.Location = new System.Drawing.Point(5, 309);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(200, 72);
+            this.groupBox1.TabIndex = 5;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "设置行高";
+            // 
+            // tbItemHeight
+            // 
+            this.tbItemHeight.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pnBack.BackColor = System.Drawing.Color.Black;
-            this.pnBack.Controls.Add(this.pnMain);
-            this.pnBack.Location = new System.Drawing.Point(12, 12);
-            this.pnBack.MinimumSize = new System.Drawing.Size(290, 0);
-            this.pnBack.Name = "pnBack";
-            this.pnBack.Size = new System.Drawing.Size(315, 676);
-            this.pnBack.TabIndex = 0;
-            // 
-            // pnMain
-            // 
-            this.pnMain.BackColor = System.Drawing.Color.Transparent;
-            this.pnMain.Controls.Add(this.label1);
-            this.pnMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnMain.Location = new System.Drawing.Point(0, 0);
-            this.pnMain.MinimumSize = new System.Drawing.Size(290, 0);
-            this.pnMain.Name = "pnMain";
-            this.pnMain.Size = new System.Drawing.Size(315, 676);
-            this.pnMain.TabIndex = 0;
-            // 
-            // label1
-            // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label1.ForeColor = System.Drawing.Color.Transparent;
-            this.label1.Location = new System.Drawing.Point(3, 612);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(309, 30);
-            this.label1.TabIndex = 0;
-            this.label1.Tag = ":function";
+            this.tbItemHeight.AutoSize = false;
+            this.tbItemHeight.LargeChange = 1;
+            this.tbItemHeight.Location = new System.Drawing.Point(6, 20);
+            this.tbItemHeight.Maximum = 30;
+            this.tbItemHeight.Minimum = 20;
+            this.tbItemHeight.Name = "tbItemHeight";
+            this.tbItemHeight.Size = new System.Drawing.Size(188, 45);
+            this.tbItemHeight.TabIndex = 0;
+            this.tbItemHeight.Value = 20;
             // 
             // btnSave
             // 
@@ -177,6 +165,17 @@
             this.label2.Text = "移动鼠标到需要修改样式的位置";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label1.ForeColor = System.Drawing.Color.Transparent;
+            this.label1.Location = new System.Drawing.Point(3, 612);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(309, 30);
+            this.label1.TabIndex = 0;
+            this.label1.Tag = ":function";
+            // 
             // timer1
             // 
             this.timer1.Enabled = true;
@@ -205,11 +204,10 @@
             this.MinimumSize = new System.Drawing.Size(550, 500);
             this.Name = "GEditForm";
             this.Text = "编辑样式";
-            this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.ResumeLayout(false);
-            this.pnBack.ResumeLayout(false);
-            this.pnMain.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.tbItemHeight)).EndInit();
             this.gpBlock.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -218,8 +216,6 @@
         #endregion
 
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private DFPanel pnBack;
-        private DFPanel pnMain;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.GroupBox gpBlock;
@@ -231,5 +227,7 @@
         private System.Windows.Forms.ColorDialog dlgColor;
         private System.Windows.Forms.FontDialog dlgFont;
         private System.Windows.Forms.OpenFileDialog dlgFile;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.TrackBar tbItemHeight;
     }
 }

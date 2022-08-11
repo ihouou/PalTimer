@@ -361,7 +361,7 @@ namespace Pal98Timer
         {
             if (OnDBClickItem != null && itemList.Count > 0 && rcItems.Contains(pos))
             {
-                int idx = (int)Math.Floor(((double)(pos.Y - rcItems.Y)) / GItem.Height);
+                int idx = (int)Math.Floor(((double)(pos.Y - rcItems.Y)) / bb.ItemHeight);
                 idx += ItemScroll;
                 if (idx >= 0 && idx < itemList.Count)
                 {
@@ -523,7 +523,12 @@ namespace Pal98Timer
                 bb = gb;
                 GC.Collect();
             }
+            RefreshItemHeight();
             isBBChanged = true;
+        }
+        public void RefreshItemHeight()
+        {
+            BuildRects_Item(rcItems.Height < (bb.ItemHeight * itemList.Count));
         }
         public GBoard GetGBoard()
         {
@@ -737,8 +742,6 @@ namespace Pal98Timer
             public const int EditMetaSlow = -20;
             public const int EditMetaEqual = -30;
             public const int EditMetaActive = -40;
-            public const int Height = 28;
-            public const int HalfHeight = 14;
             private bool isDirty = true;
             public bool IsDirty
             {
@@ -964,7 +967,7 @@ namespace Pal98Timer
                 if (_cidx != value)
                 {
                     _cidx = value;
-                    int CanShowCount = (int)Math.Floor(((double)(rcItems.Height)) / GItem.Height);
+                    int CanShowCount = (int)Math.Floor(((double)(rcItems.Height)) / bb.ItemHeight);
                     if (CanShowCount < itemList.Count)
                     {
                         while ((CanShowCount + ItemScroll) < (value+2))
@@ -1068,10 +1071,10 @@ namespace Pal98Timer
                 ModifyRect(ref rcItems, 0, 95, Width, Height - 200 - 95);
                 ModifyRect(ref rcItemScroll, 0, 0, 0, 0);
             }
-            ModifyRect(ref rcIName, rcItems.X, 0, rcItems.Width - 170, GItem.Height);
-            ModifyRect(ref rcIBest, rcItems.X + rcItems.Width - 170, 0, 60, GItem.HalfHeight);
-            ModifyRect(ref rcICha, rcIBest.X, 0, rcIBest.Width, GItem.Height - GItem.HalfHeight);
-            ModifyRect(ref rcICur, rcItems.X + rcItems.Width - 110, 0, 110, GItem.Height);
+            ModifyRect(ref rcIName, rcItems.X, 0, rcItems.Width - 170, bb.ItemHeight);
+            ModifyRect(ref rcIBest, rcItems.X + rcItems.Width - 170, 0, 60, bb.ItemHalfHeight);
+            ModifyRect(ref rcICha, rcIBest.X, 0, rcIBest.Width, bb.ItemHeight - bb.ItemHalfHeight);
+            ModifyRect(ref rcICur, rcItems.X + rcItems.Width - 110, 0, 110, bb.ItemHeight);
         }
         public GBoardChanger CurrentEdit = null;
         public delegate void delOnEditCurrentChanged(GBoardChanger gbc);
@@ -1580,11 +1583,11 @@ namespace Pal98Timer
             }
             else if (rcItems.Contains(e.Location))
             {
-                if (e.Y < (rcItems.Y + itemList.Count * GItem.Height))
+                if (e.Y < (rcItems.Y + itemList.Count * bb.ItemHeight))
                 {
                     int yoff = e.Y - rcItems.Y;
                     GItem itm = null;
-                    int idx = (int)Math.Floor(((double)yoff) / GItem.Height);
+                    int idx = (int)Math.Floor(((double)yoff) / bb.ItemHeight);
                     idx += ItemScroll;
                     if (idx >= 0 && idx < itemList.Count)
                     {
@@ -1800,11 +1803,11 @@ namespace Pal98Timer
                     else
                     {
                         //best || cha
-                        while (yoff >= GItem.Height)
+                        while (yoff >= bb.ItemHeight)
                         {
-                            yoff -= GItem.Height;
+                            yoff -= bb.ItemHeight;
                         }
-                        if (yoff < GItem.HalfHeight)
+                        if (yoff < bb.ItemHalfHeight)
                         {
                             //best
                             if (CurrentEdit == null || CurrentEdit.type != 14)
@@ -2476,7 +2479,7 @@ namespace Pal98Timer
         private bool DrawCheckPoints(Graphics g, delUpdateRect ur = null)
         {
             if (rcItems.Height <= 0) return false;
-            int CanShowCount = (int)Math.Floor(((double)(rcItems.Height)) / GItem.Height);
+            int CanShowCount = (int)Math.Floor(((double)(rcItems.Height)) / bb.ItemHeight);
             if (CanShowCount < 1) CanShowCount = 1;
             if (CanShowCount >= itemList.Count)
             {
@@ -2506,7 +2509,7 @@ namespace Pal98Timer
             bool isForceDrawAll = false;
             if (isSizeChanged || isBGChanged || isBBChanged || isItemsChanged || isItemScroll)
             {
-                if (!isSizeChanged && !isBGChanged)
+                if ((!isSizeChanged && !isBGChanged) || isBBChanged)
                 {
                     GEX.ClearRect(g, rcItems, bg, Width, Height);
                 }
@@ -2524,10 +2527,10 @@ namespace Pal98Timer
             bool ret = false;
             for (int i = ItemScroll, j = 0; i < itemList.Count && j < CanShowCount; ++i, ++j)
             {
-                int y = rcItems.Y + j * GItem.Height;
+                int y = rcItems.Y + j * bb.ItemHeight;
                 rcIName.Y = y;
                 rcIBest.Y = y;
-                rcICha.Y = y + GItem.HalfHeight;
+                rcICha.Y = y + bb.ItemHalfHeight;
                 rcICur.Y = y;
                 if (itemList[i].Draw(g, isForceDrawAll, bb, rcIName, rcIBest, rcICha, rcICur, bg, Width, Height, ur))
                 {
@@ -2661,6 +2664,8 @@ namespace Pal98Timer
         public Pen IsCBorder;
         public SolidBrush IsCTextFill;
         public Font IsCFont;
+        public int ItemHeight = 28;
+        public int ItemHalfHeight = 14;
 
         public GBoard()
         {
@@ -2694,6 +2699,10 @@ namespace Pal98Timer
                     else if (p.FieldType == typeof(SolidBrush[]))
                     {
                         p.SetValue(this, (val as SolidBrush[]).Clone());
+                    }
+                    else if (p.FieldType == typeof(int))
+                    {
+                        p.SetValue(this, val);
                     }
                 }
             }
@@ -2748,6 +2757,17 @@ namespace Pal98Timer
                         if (ba != null)
                         {
                             i.SetValue(this, ba);
+                        }
+                    }
+                    else if (i.FieldType == typeof(int))
+                    {
+                        if (dic.ContainsKey(i.Name))
+                        {
+                            int bi = 0;
+                            if (int.TryParse(dic[i.Name], out bi))
+                            {
+                                i.SetValue(this, bi);
+                            }
                         }
                     }
                 }
@@ -2810,6 +2830,10 @@ namespace Pal98Timer
                     else if (p.FieldType == typeof(SolidBrush[]))
                     {
                         name += SolidBrushArrToString(p.GetValue(this) as SolidBrush[]);
+                    }
+                    else if(p.FieldType==typeof(int))
+                    {
+                        name += p.GetValue(this).ToString();
                     }
                     sb.AppendLine(name);
                 }
@@ -2923,6 +2947,9 @@ namespace Pal98Timer
 
         private void BuildDefault()
         {
+            ItemHeight = 28;
+            ItemHalfHeight = 14;
+
             IsCFont = new Font("Consolas", 12F, FontStyle.Bold);
             IsCTextFill = new SolidBrush(Color.White);
             IsCFill = new SolidBrush(Color.Red);
