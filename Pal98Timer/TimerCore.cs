@@ -902,7 +902,7 @@ namespace Pal98Timer
         public string GetTimerJson()
         {
             HObj exdata = new HObj();
-            exdata["Current"] = MT.ToString();
+            exdata["Current"] = MT.ToFullString();
             exdata["Step"] = CurrentStep;
             exdata["OSTime"] = DateTime.Now.Ticks.ToString();
             if (CheckPoints != null)
@@ -913,7 +913,7 @@ namespace Pal98Timer
                     HObj cur = new HObj();
                     cur["name"] = c.Name;
                     cur["des"] = c.NickName.Replace("\"","").Replace("'","");
-                    cur["time"] = TItem.TimeSpanToString(c.Current);
+                    cur["time"] = TItem.TimeSpanToFullString(c.Current);
                     cps.Add(cur);
                 }
                 exdata["CheckPoints"] = cps;
@@ -1223,6 +1223,10 @@ namespace Pal98Timer
         {
             return CurrentTS.Hours.ToString().PadLeft(2, '0') + ":" + CurrentTS.Minutes.ToString().PadLeft(2, '0') + ":" + CurrentTS.Seconds.ToString().PadLeft(2, '0') + "." + (CurrentTS.Milliseconds / 10).ToString().PadLeft(2, '0');
         }
+        public string ToFullString()
+        {
+            return CurrentTS.Hours.ToString().PadLeft(2, '0') + ":" + CurrentTS.Minutes.ToString().PadLeft(2, '0') + ":" + CurrentTS.Seconds.ToString().PadLeft(2, '0') + "." + CurrentTS.Milliseconds.ToString().PadLeft(3, '0');
+        }
         public void Start()
         {
             if (_Status != 1)
@@ -1336,6 +1340,10 @@ namespace Pal98Timer
         public static string TimeSpanToString(TimeSpan ts)
         {
             return ts.Hours.ToString().PadLeft(2, '0') + ":" + ts.Minutes.ToString().PadLeft(2, '0') + ":" + ts.Seconds.ToString().PadLeft(2, '0') + "." + (ts.Milliseconds / 10).ToString().PadLeft(2, '0');
+        }
+        public static string TimeSpanToFullString(TimeSpan ts)
+        {
+            return ts.Hours.ToString().PadLeft(2, '0') + ":" + ts.Minutes.ToString().PadLeft(2, '0') + ":" + ts.Seconds.ToString().PadLeft(2, '0') + "." + ts.Milliseconds.ToString().PadLeft(3, '0');
         }
 
         public static string TimeSpanToStringLite(TimeSpan ts)

@@ -12,7 +12,7 @@ namespace Pal98Timer
 {
     public partial class GForm : NoneBoardFormEx
     {
-        public const string CurrentVersion = "A.35";
+        public const string CurrentVersion = "3.34.1";
         public const string bgpath = @"bg.png";
         private TimerCore core;
         private bool IsAutoLuck = false;
@@ -27,6 +27,8 @@ namespace Pal98Timer
         private ToolStripMenuItem btnCloudInit;
         private PCloud cloud;
         private KeyboardLib _keyboardHook = null;
+        private int locx = 0;
+        private int locy = 0;
         public GForm():base(true)
         {
             _keyboardHook = new KeyboardLib();
@@ -34,6 +36,7 @@ namespace Pal98Timer
             InitializeComponent();
             this.FormClosing += GForm_FormClosing;
             this.FormClosed += GForm_FormClosed;
+            this.Shown += GForm_Shown;
 
             string filepath = Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName) + "\\size";
             try
@@ -47,6 +50,14 @@ namespace Pal98Timer
                             string[] sizestr = sr.ReadToEnd().Split('*');
                             this.Width = int.Parse(sizestr[0]);
                             this.Height = int.Parse(sizestr[1]);
+                            if (sizestr.Length > 2)
+                            {
+                                locx = int.Parse(sizestr[2]);
+                            }
+                            if (sizestr.Length > 3)
+                            {
+                                locy = int.Parse(sizestr[3]);
+                            }
                         }
                     }
                 }
@@ -126,7 +137,12 @@ namespace Pal98Timer
 
             ShowKCEnable();
         }
-        
+
+        private void GForm_Shown(object sender, EventArgs e)
+        {
+            this.SetDesktopBounds(locx, locy, this.Width, this.Height);
+        }
+
         private void InitCloud()
         {
             if (cloud != null)
@@ -575,7 +591,7 @@ namespace Pal98Timer
         {
             if (core != null && core.CoreName != "S")
             {
-                string sizestr = this.Width + "*" + this.Height;
+                string sizestr = this.Width + "*" + this.Height + "*" + this.DesktopBounds.X + "*" + this.DesktopBounds.Y;
                 string filepath = Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName) + "\\size";
                 if (File.Exists(filepath)) File.Delete(filepath);
                 using (FileStream fs = new FileStream(filepath, FileMode.Create, FileAccess.ReadWrite))

@@ -678,8 +678,8 @@ namespace Pal98Timer
 
         protected override void FillMoreTimerData(HObj exdata)
         {
-            exdata["Idle"] = ST.ToString();
-            exdata["Lite"] = LT.ToString();
+            exdata["Idle"] = ST.ToFullString();
+            exdata["Lite"] = LT.ToFullString();
             exdata["GMD5"] = GMD5;
             exdata["MaxXWJ"] = MaxXWJ;
         }

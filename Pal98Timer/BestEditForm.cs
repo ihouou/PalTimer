@@ -96,7 +96,7 @@ namespace Pal98Timer
                 CheckPointNewer cp = i.GetValue();
                 cur["name"] = cp.Name;
                 cur["des"]=cp.NickName.Replace("\"", "").Replace("'", "");
-                cur["time"] = TItem.TimeSpanToString(cp.BestTS);
+                cur["time"] = TItem.TimeSpanToFullString(cp.BestTS);
                 cps.Add(cur);
             }
 
