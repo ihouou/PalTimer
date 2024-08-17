@@ -817,7 +817,8 @@ namespace Pal98Timer
                 string dllmd5 = GetFileMD5(GetGameFilePath("Pal.dll"));
                 string datamd5 = GetFileMD5(GetGameFilePath("DATA.MKF"));
                 string sssmd5 = GetFileMD5(GetGameFilePath("SSS.MKF"));
-                GMD5 = dllmd5 + "_" + datamd5 + "_" + sssmd5;
+                string vb40032md5 = GetFileMD5(GetGameFilePath("VB40032.dll"));
+                GMD5 = dllmd5 + "_" + datamd5 + "_" + sssmd5 + "_" + vb40032md5;
             }
             catch
             {
