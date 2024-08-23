@@ -568,6 +568,10 @@ namespace Pal98Timer
             form.UIPause();
             SendPluginsEvent("HandPause", null);
         }
+        protected void MakeFate(int code)
+        {
+            SendPluginsEvent("MakeFate", code);
+        }
         public delegate void CurrentStepChangeDel(int currentidx);
         /// <summary>
         /// 节点序号改变时的事件
@@ -949,14 +953,14 @@ namespace Pal98Timer
             foreach (var f in files)
             {
                 string sn = f.FullName.Replace(pluginPath, "");
-                if (sn.StartsWith(CoreName + ".") && sn.EndsWith(".tpg"))
+                if (sn.StartsWith(CoreName + ".") && sn.EndsWith(".dll"))
                 {
-                    string tpsfile = f.FullName;
-                    if (File.Exists(tpsfile))
+                    string dllfile = f.FullName;
+                    if (File.Exists(dllfile))
                     {
                         try
                         {
-                            _loadOnePlugin(tpsfile);
+                            _loadOnePlugin(dllfile);
                         }
                         catch
                         { }
@@ -964,15 +968,16 @@ namespace Pal98Timer
                 }
             }
         }
-        private void _loadOnePlugin(string tpgPath)
+        private void _loadOnePlugin(string dllPath)
         {
-            TimerPluginPackageInfo ti = new TimerPluginPackageInfo(tpgPath);
-            if (!ti.Enable || !ti.IsOK || ti.Version!=TimerPlugin.Version.ToString()) return;
+            //TimerPluginPackageInfo ti = new TimerPluginPackageInfo(tpgPath);
+            //if (!ti.Enable || !ti.IsOK || ti.Version!=TimerPlugin.Version.ToString()) return;
             //string dllpath = tpgPath + ".dll";
             //ti.SaveDll(dllpath);
-            //System.Reflection.Assembly asm = System.Reflection.Assembly.LoadFrom(dllpath);
-            System.Reflection.Assembly asm = System.Reflection.Assembly.Load(ti.Data);
-            TimerPlugin p = (TimerPlugin)System.Activator.CreateInstance(asm.GetType(ti.ClassName + ".Main"));
+            System.Reflection.Assembly asm = System.Reflection.Assembly.LoadFrom(dllPath);
+            TimerPlugin p = (TimerPlugin)System.Activator.CreateInstance(asm.GetType("PAL98.BlackMithFateMaker.Main"));
+            //System.Reflection.Assembly asm = System.Reflection.Assembly.Load(ti.Data);
+            //TimerPlugin p = (TimerPlugin)System.Activator.CreateInstance(asm.GetType(ti.ClassName + ".Main"));
             TimerPlugin.EPluginPosition pos = p.GetPosition();
             if (!Plugins.ContainsKey(pos))
             {

@@ -52,10 +52,10 @@
     <ApplicationIcon>Logo.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>E81425FFC13DB6558BCA72F4CFC89BD252D4F67F</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>DBB1AC838E3932FEF7B664710D6020B0ACB4E395</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>Pal98Timer_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>Pal98Timer_1_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>false</GenerateManifests>
@@ -281,6 +281,7 @@
       <DependentUpon>Upload.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
+    <None Include="Pal98Timer_1_TemporaryKey.pfx" />
     <None Include="Pal98Timer_TemporaryKey.pfx" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">

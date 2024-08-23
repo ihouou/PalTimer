@@ -1091,6 +1091,11 @@ namespace Pal98Timer
                         BtnSwitch_Click(null, null);
                     };
                     break;
+                case 1:
+                case 2:
+                case 3:
+                    MakeFate(FunNo);
+                    break;
                 /*case 12:
                     DebugForm df = new DebugForm();
                     df.ShowData(GameObj, BattleLong);
