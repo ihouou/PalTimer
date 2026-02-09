@@ -92,6 +92,14 @@ namespace Pal98Timer
 
         protected override void InitCheckPoints()
         {
+            // 如果本地存在bestPAL98.txt且不存在bestPAL98DX9.txt，则复制
+            string sourceBestFile = "bestPAL98.txt";
+            string targetBestFile = "bestPAL98DX9.txt";
+            if (File.Exists(sourceBestFile) && !File.Exists(targetBestFile))
+            {
+                File.Copy(sourceBestFile, targetBestFile);
+            }
+            
             LoadBest();
             _CurrentStep = -1;
             Data = new HObj();
