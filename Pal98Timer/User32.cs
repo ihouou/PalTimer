@@ -106,5 +106,8 @@ namespace HFrame.OS
         [DllImport("User32.dll", CharSet = CharSet.Auto)]
         public static extern int GetWindowThreadProcessId(IntPtr hwnd, out int ID);   //获取线程ID 
 
+        [DllImport("User32.dll", CharSet = CharSet.Auto)]
+        public static extern int GetWindowText(IntPtr hwnd, StringBuilder lpString, int cch);   //获取窗口标题
+
     }
 }

@@ -25,7 +25,7 @@ namespace Pal98Timer
         private const string tar = "KeyChanger";
         private static int call(int act,int data=0)
         {
-            int hwnd = FindWindow(null, "改建器");
+            int hwnd = FindWindow(null, "改键器");
             if (hwnd != 0)
             {
                 return SendMessage(hwnd, TIMERCALL, (IntPtr)act, (IntPtr)data).ToInt32();

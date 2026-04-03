@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading;
@@ -64,6 +65,12 @@ namespace Pal98Timer
         private List<string> NamedBattleRes = new List<string>();
 
         private bool IsShowSpeed = false;
+        
+        // 战斗中实时显示用的临时变量
+        private short CurrentBattleHCG = 0;  // 当前战斗中获得的火虫草
+        private short CurrentBattleXLL = 0;  // 当前战斗中获得的血玲珑
+        private short CurrentBattleLQJ = 0;  // 当前战斗中获得的龙泉剑
+        
         public 仙剑98柔情(GForm form) : base(form)
         {
             CoreName = "PAL98";
@@ -432,16 +439,18 @@ namespace Pal98Timer
         }
         public override string GetMoreInfo()
         {
-            //MaxTLF = 9;
-            //MaxQTJ = 9;
-            //return "蜂" + MaxFC + " 蜜" + MaxFM + " 火" + MaxHCG + " 血" + MaxXLL + " 夜" + MaxYXY + " 剑" + MaxLQJ;
+            // 在战斗中显示实时数据
+            int displayHCG = MaxHCG + (IsInBattle ? CurrentBattleHCG : (int)0);
+            int displayXLL = MaxXLL + (IsInBattle ? CurrentBattleXLL : (int)0);
+            int displayLQJ = MaxLQJ + (IsInBattle ? CurrentBattleLQJ : (int)0);
+            
             if (IsShowSpeed)
             {
-                return MoveSpeed.ToString("F2") + "   " + "蜂" + MaxFC + " 蜜" + MaxFM + " 火" + MaxHCG + " 血" + MaxXLL + " 夜" + MaxYXY + " 剑" + MaxLQJ + ((MaxTLF > 0) ? (" 土" + MaxTLF) : "") + ((MaxQTJ > 0) ? (" 甲" + MaxQTJ) : "");
+                return MoveSpeed.ToString("F2") + "   " + "蜂" + MaxFC + " 蜜" + MaxFM + " 火" + displayHCG + " 血" + displayXLL + " 夜" + MaxYXY + " 剑" + displayLQJ + ((MaxTLF > 0) ? (" 土" + MaxTLF) : "") + ((MaxQTJ > 0) ? (" 甲" + MaxQTJ) : "");
             }
             else
             {
-                return "蜂" + MaxFC + " 蜜" + MaxFM + " 火" + MaxHCG + " 血" + MaxXLL + " 夜" + MaxYXY + " 剑" + MaxLQJ + ((MaxTLF > 0) ? (" 土" + MaxTLF) : "") + ((MaxQTJ > 0) ? (" 甲" + MaxQTJ) : "");
+                return "蜂" + MaxFC + " 蜜" + MaxFM + " 火" + displayHCG + " 血" + displayXLL + " 夜" + MaxYXY + " 剑" + displayLQJ + ((MaxTLF > 0) ? (" 土" + MaxTLF) : "") + ((MaxQTJ > 0) ? (" 甲" + MaxQTJ) : "");
             }
         }
 
@@ -752,14 +761,25 @@ namespace Pal98Timer
         private bool GetPalHandle()
         {
             Process[] res = Process.GetProcessesByName("Pal");
+            
+            // 过滤已退出的进程，避免重启时误报
             if (res.Length > 1)
             {
-                if (!HasAlertMutiPal)
+                var aliveProcesses = res.Where(p => {
+                    try { return !p.HasExited; }
+                    catch { return false; }
+                }).ToArray();
+                
+                if (aliveProcesses.Length > 1)
                 {
-                    cryerror = "检测到多个Pal.exe进程，请关闭其他的，只保留一个！";
-                    HasAlertMutiPal = true;
+                    if (!HasAlertMutiPal)
+                    {
+                        cryerror = "检测到多个Pal.exe进程，请关闭其他的，只保留一个！";
+                        HasAlertMutiPal = true;
+                    }
+                    return false;
                 }
-                return false;
+                res = aliveProcesses;
             }
 
             HasAlertMutiPal = false;
@@ -951,11 +971,22 @@ namespace Pal98Timer
             BattleLong = new TimeSpan(0);
             InBattleTime = DateTime.Now;
             biw = new BattleItemWatch();
+            
+            // 重置战斗中实时显示的临时变量
+            CurrentBattleHCG = 0;
+            CurrentBattleXLL = 0;
+            CurrentBattleLQJ = 0;
+            
             if (CurrentStep <= 5)
             {
                 //战斗前记录下个数
                 biw.Insert(0x73, GameObj.GetItemCount(0x73));//蜂
                 biw.Insert(0x83, GameObj.GetItemCount(0x83));//蜜
+                biw.Insert(0x8F, GameObj.GetItemCount(0x8F));//火
+            }
+            else
+            {
+                // 如果不在前5关，也要记录火虫草的初始值以便实时统计
                 biw.Insert(0x8F, GameObj.GetItemCount(0x8F));//火
             }
             biw.Insert(0xB8, GameObj.GetItemCount(0xB8));//龙泉剑
@@ -969,12 +1000,12 @@ namespace Pal98Timer
         private void Battling()
         {
             BattleLong = DateTime.Now - InBattleTime;
-            /*if (CurrentStep <= 5)
-            {
-                //战斗中每隔100毫秒算下差
-                biw.SetCount(GameObj);
-            }*/
             biw.SetCount(GameObj);
+            
+            // 实时更新火、血、剑的数量
+            CurrentBattleHCG = biw.GettedCount(0x8F);  // 火虫草
+            CurrentBattleXLL = biw.GettedCount(0xA2);  // 血玲珑
+            CurrentBattleLQJ = biw.GettedCount(0xB8);  // 龙泉剑
         }
         private void BattleEnd()
         {

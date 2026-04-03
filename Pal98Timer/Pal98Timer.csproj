@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Pal98Timer</RootNamespace>
     <AssemblyName>Pal98Timer</AssemblyName>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
     <IsWebBootstrapper>false</IsWebBootstrapper>
@@ -61,7 +61,7 @@
     <GenerateManifests>false</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>
@@ -109,7 +109,11 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="PalCloudLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>lib\PalCloudLib.dll</HintPath>
@@ -176,6 +180,7 @@
       <DependentUpon>PluginMgrForm.cs</DependentUpon>
     </Compile>
     <Compile Include="仙剑5前传.cs" />
+    <Compile Include="仙剑98柔情不欢乐模式.cs" />
     <Compile Include="仙剑98官方Steam.cs" />
     <Compile Include="仙剑二官方Steam.cs" />
     <Compile Include="古剑2官方.cs" />
@@ -212,6 +217,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="仙剑三.cs" />
+    <Compile Include="仙剑98柔情DX9.cs" />
     <Compile Include="仙剑98柔情.cs" />
     <Compile Include="PalPackVersion.cs" />
     <Compile Include="Program.cs" />

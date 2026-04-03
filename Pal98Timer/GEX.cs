@@ -1041,14 +1041,31 @@ namespace Pal98Timer
             ModifyRect(ref rcBL, 5, Height - 26, GEX.GDIMulti(Width, 0.4F), 26);
             ModifyRect(ref rcBR, rcBL.X + rcBL.Width, rcBL.Y, Width - 2 * rcBL.X - rcBL.Width, rcBL.Height);
 
-            ModifyRect(ref rcMoreInfo, 5, Height - 100, Width - 10, 26);
-            ModifyRect(ref rcMainTimer, 20, Height - 150, Width - 65, 50);
-            ModifyRect(ref rcMainTimerMS, rcMainTimer.X + rcMainTimer.Width, rcMainTimer.Y, Width - 25 - rcMainTimer.Width, rcMainTimer.Height);
-            ModifyRect(ref rcIsC, -1, rcMainTimer.Y + 5, 20, rcMainTimer.Height - 10);
+            // For small windows (简版: 270x200), adjust layout to prevent overlapping
+            if (Height <= 250)
+            {
+                // Compact layout for 简版
+                ModifyRect(ref rcMoreInfo, 5, Height - 75, Width - 10, 20);
+                ModifyRect(ref rcMainTimer, 0, Height - 120, Width - 70, 40);
+                ModifyRect(ref rcMainTimerMS, rcMainTimer.X + rcMainTimer.Width, rcMainTimer.Y, Width - 10 - rcMainTimer.Width, rcMainTimer.Height);
+                ModifyRect(ref rcIsC, -1, rcMainTimer.Y + 5, 20, rcMainTimer.Height - 10);
+                
+                ModifyRect(ref rcSubTimer, 10, Height - 140, GEX.GDIMulti(Width, 0.35F), 20);
+                ModifyRect(ref rcOutTimer, rcSubTimer.X + rcSubTimer.Width, rcSubTimer.Y, Width - 2 * rcSubTimer.X - rcSubTimer.Width, rcSubTimer.Height);
+                ModifyRect(ref rcWillClear, 10, Height - 160, Width - 20, 20);
+            }
+            else
+            {
+                // Standard layout for normal windows
+                ModifyRect(ref rcMoreInfo, 5, Height - 100, Width - 10, 26);
+                ModifyRect(ref rcMainTimer, 0, Height - 150, Width - 85, 50);
+                ModifyRect(ref rcMainTimerMS, rcMainTimer.X + rcMainTimer.Width, rcMainTimer.Y, Width - 25 - rcMainTimer.Width, rcMainTimer.Height);
+                ModifyRect(ref rcIsC, -1, rcMainTimer.Y + 5, 20, rcMainTimer.Height - 10);
 
-            ModifyRect(ref rcSubTimer, 10, Height - 170, GEX.GDIMulti(Width, 0.35F), 26);
-            ModifyRect(ref rcOutTimer, rcSubTimer.X + rcSubTimer.Width, rcSubTimer.Y, Width - 2 * rcSubTimer.X - rcSubTimer.Width, rcSubTimer.Height);
-            ModifyRect(ref rcWillClear, 10, Height - 200, Width - 20, 26);
+                ModifyRect(ref rcSubTimer, 10, Height - 170, GEX.GDIMulti(Width, 0.35F), 26);
+                ModifyRect(ref rcOutTimer, rcSubTimer.X + rcSubTimer.Width, rcSubTimer.Y, Width - 2 * rcSubTimer.X - rcSubTimer.Width, rcSubTimer.Height);
+                ModifyRect(ref rcWillClear, 10, Height - 200, Width - 20, 26);
+            }
 
             ModifyRect(ref rcDots, 0, 60, Width, 30);
 
@@ -2420,6 +2437,18 @@ namespace Pal98Timer
             }
             bool ret = false;
             Rectangle rc = new Rectangle();
+            
+            // 计算可见按钮数量以居中显示
+            int visibleBtnCount = 0;
+            for (int i = 0; i < btnList.Count; ++i)
+            {
+                if (btnList[i].IsVisible) visibleBtnCount++;
+            }
+            
+            // 计算居中起始位置
+            int totalBtnWidth = visibleBtnCount * GBtn.Width + (visibleBtnCount - 1) * GBtn.Margin;
+            int startX = btn_rc.X + (btn_rc.Width - totalBtnWidth) / 2;
+            
             int p = 0;
             for (int i = 0; i < btnList.Count; ++i)
             {
@@ -2428,7 +2457,7 @@ namespace Pal98Timer
                 if (isForceDrawAll || cur.IsDirty)
                 {
                     ret = true;
-                    ModifyRect(ref rc, btn_rc.X + p * (GBtn.Margin + GBtn.Width), btn_rc.Y, GBtn.Width, btn_rc.Height);
+                    ModifyRect(ref rc, startX + p * (GBtn.Margin + GBtn.Width), btn_rc.Y, GBtn.Width, btn_rc.Height);
                     GEX.ClearRect(g, rc, bg, Width, Height);
                     cur.Draw(g, rc, bb);
                     if (!isForceDrawAll)

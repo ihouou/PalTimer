@@ -12,11 +12,12 @@ namespace Pal98Timer
 {
     public partial class GForm : NoneBoardFormEx
     {
-        public const string CurrentVersion = "3.34.1";
+        public const string CurrentVersion = "3.35.5";
         public const string bgpath = @"bg.png";
         private TimerCore core;
         private bool IsAutoLuck = false;
         private Dictionary<string, ToolStripMenuItem> CoreBtns;
+        private int transparencyValue = 100; // 透明度 0-100, 100为不透明
 
         public GRender rr;
         public GRender.GBtn btnPause;
@@ -130,17 +131,19 @@ namespace Pal98Timer
             }
             catch (Exception ex)
             {
-                LoadCore(new 仙剑98柔情(this));
+                LoadCore(new 仙剑98柔情DX9(this));
             }
             
             rr.SetVersion(CurrentVersion);
 
             ShowKCEnable();
+            LoadTransparency();
         }
 
         private void GForm_Shown(object sender, EventArgs e)
         {
             this.SetDesktopBounds(locx, locy, this.Width, this.Height);
+            UpdateTransparency();
         }
 
         private void InitCloud()
@@ -401,8 +404,18 @@ namespace Pal98Timer
         public void ShowConfigs()
         {
             rr?.SetTitle(MConfig.ins.Title);
-            rr?.SetBL(MConfig.ins.Luck(true));
-            rr?.SetBR(MConfig.ins.ColorEgg);
+            
+            // Only set BL to Luck if there's no active BL plugin
+            if (!core.HasPlugin(TimerPluginBase.TimerPlugin.EPluginPosition.BL))
+            {
+                rr?.SetBL(MConfig.ins.Luck(true));
+            }
+            
+            // Only set BR to ColorEgg if there's no active BR plugin
+            if (!core.HasPlugin(TimerPluginBase.TimerPlugin.EPluginPosition.BR))
+            {
+                rr?.SetBR(MConfig.ins.ColorEgg);
+            }
             
             /*lblMTFront.ForeColor = MConfig.ins.MainColor;
             lblMTBack.ForeColor = MConfig.ins.MainColor;
@@ -534,9 +547,11 @@ namespace Pal98Timer
                         if (KeyChangerDel.IsEnable())
                         {
                             KeyChangerDel.Disable();
+                            KeyChangerDel.Close();  // 功能4：关闭KEYCHANGER.EXE进程
                         }
                         else
                         {
+                            KeyChangerDel.Open();  // 功能4：重新打开KEYCHANGER.EXE
                             KeyChangerDel.Enable();
                         }
                         ShowKCEnable();
@@ -873,6 +888,70 @@ namespace Pal98Timer
         {
             btnShowPSInDots.Checked = !btnShowPSInDots.Checked;
             IsShowPSInDots = btnShowPSInDots.Checked;
+        }
+
+        private void LoadTransparency()
+        {
+            string transparencyFile = "transparency";
+            try
+            {
+                if (File.Exists(transparencyFile))
+                {
+                    string content = File.ReadAllText(transparencyFile);
+                    if (int.TryParse(content, out int value))
+                    {
+                        transparencyValue = Math.Max(0, Math.Min(100, value));
+                    }
+                }
+            }
+            catch { }
+            UpdateTransparencyText();
+        }
+
+        private void SaveTransparency()
+        {
+            string transparencyFile = "transparency";
+            try
+            {
+                File.WriteAllText(transparencyFile, transparencyValue.ToString());
+            }
+            catch { }
+        }
+
+        private void UpdateTransparency()
+        {
+            // 将0-100的透明度值转换为Form的Opacity (0.0-1.0)
+            // 0表示完全透明，100表示完全不透明
+            this.Opacity = transparencyValue / 100.0;
+        }
+
+        private void UpdateTransparencyText()
+        {
+            btnTransparency.Text = "透明度 (" + transparencyValue + "%)";
+        }
+
+        private void btnTransparency_Click(object sender, EventArgs e)
+        {
+            // 创建一个简单的输入对话框
+            string input = Microsoft.VisualBasic.Interaction.InputBox(
+                "请输入透明度 (0-100):\n0 = 完全透明\n100 = 完全不透明",
+                "设置透明度",
+                transparencyValue.ToString());
+            
+            if (!string.IsNullOrEmpty(input))
+            {
+                if (int.TryParse(input, out int value))
+                {
+                    transparencyValue = Math.Max(0, Math.Min(100, value));
+                    UpdateTransparency();
+                    UpdateTransparencyText();
+                    SaveTransparency();
+                }
+                else
+                {
+                    MessageBox.Show("请输入有效的数字 (0-100)", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
         }
     }
 

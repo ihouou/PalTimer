@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading;
@@ -744,14 +745,25 @@ namespace Pal98Timer
         private bool GetPalHandle()
         {
             Process[] res = Process.GetProcessesByName("PAL");
+            
+            // 过滤已退出的进程，避免重启时误报
             if (res.Length > 1)
             {
-                if (!HasAlertMutiPal)
+                var aliveProcesses = res.Where(p => {
+                    try { return !p.HasExited; }
+                    catch { return false; }
+                }).ToArray();
+                
+                if (aliveProcesses.Length > 1)
                 {
-                    cryerror = "检测到多个PAL.exe进程，请关闭其他的，只保留一个！";
-                    HasAlertMutiPal = true;
+                    if (!HasAlertMutiPal)
+                    {
+                        cryerror = "检测到多个PAL.exe进程，请关闭其他的，只保留一个！";
+                        HasAlertMutiPal = true;
+                    }
+                    return false;
                 }
-                return false;
+                res = aliveProcesses;
             }
 
             HasAlertMutiPal = false;

@@ -51,7 +51,7 @@
             // 
             this.niMain.ContextMenuStrip = this.cmMain;
             this.niMain.Icon = ((System.Drawing.Icon)(resources.GetObject("niMain.Icon")));
-            this.niMain.Text = "改建器 by Houou";
+            this.niMain.Text = "改键器 by Houou";
             this.niMain.Visible = true;
             this.niMain.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.niMain_MouseDoubleClick);
             // 
@@ -150,7 +150,7 @@
             this.Name = "MainForm";
             this.Opacity = 0D;
             this.ShowInTaskbar = false;
-            this.Text = "改建器";
+            this.Text = "改键器";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.Shown += new System.EventHandler(this.MainForm_Shown);

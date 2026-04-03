@@ -940,7 +940,7 @@ namespace Pal98Timer
         /// <summary>
         /// 加载此内核能用的所有插件
         /// </summary>
-        public void LoadPlugins()
+        public virtual void LoadPlugins()
         {
             string pluginPath = TimerPluginPackageInfo.GetPluginDir();
             if (!Directory.Exists(pluginPath)) return;

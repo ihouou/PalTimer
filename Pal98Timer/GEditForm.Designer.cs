@@ -89,7 +89,7 @@
             this.tbItemHeight.AutoSize = false;
             this.tbItemHeight.LargeChange = 1;
             this.tbItemHeight.Location = new System.Drawing.Point(6, 20);
-            this.tbItemHeight.Maximum = 30;
+            this.tbItemHeight.Maximum = 80;
             this.tbItemHeight.Minimum = 20;
             this.tbItemHeight.Name = "tbItemHeight";
             this.tbItemHeight.Size = new System.Drawing.Size(188, 45);

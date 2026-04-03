@@ -74,7 +74,7 @@ namespace KeyChanger
 
             ShowKCEnable();
             ShowBCEEnable();
-            niMain.ShowBalloonTip(1000, "改建器", "已启动，双击图标打开按键展示，右键设置", ToolTipIcon.Info);
+            niMain.ShowBalloonTip(1000, "改键器", "已启动，双击图标打开按键展示，右键设置", ToolTipIcon.Info);
             try
             {
                 initForPaint();
@@ -400,7 +400,7 @@ namespace KeyChanger
 
         private void Exit()
         {
-            niMain.ShowBalloonTip(1000, "改建器", "已退出", ToolTipIcon.Warning);
+            niMain.ShowBalloonTip(1000, "改键器", "已退出", ToolTipIcon.Warning);
             _keyboardHook.UninstallHook();
             niMain.Dispose();
             Environment.Exit(0);

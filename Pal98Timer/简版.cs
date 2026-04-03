@@ -113,7 +113,7 @@ namespace Pal98Timer
               };
 
             btnSwitch = form.NewMenuItem();
-            btnSwitch.Text = "切换至98速通版";
+            btnSwitch.Text = "切换至98速通DX9版";
             btnSwitch.Click += BtnSwitch_Click;
 
             /*form.pnMid.Visible = false;
@@ -135,7 +135,7 @@ namespace Pal98Timer
 
         private void BtnSwitch_Click(object sender, EventArgs e)
         {
-            LoadCore(new 仙剑98柔情(form));
+            LoadCore(new 仙剑98柔情DX9(form));
         }
 
         private bool IsBegin = false;

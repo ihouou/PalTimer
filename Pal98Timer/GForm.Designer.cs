@@ -36,6 +36,7 @@
             this.btnAutoLuck = new System.Windows.Forms.ToolStripMenuItem();
             this.btnShowPSInDots = new System.Windows.Forms.ToolStripMenuItem();
             this.btnEditBest = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnTransparency = new System.Windows.Forms.ToolStripMenuItem();
             this.mnMain = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.btnChangeStyle = new System.Windows.Forms.ToolStripMenuItem();
             this.btnPluginManage = new System.Windows.Forms.ToolStripMenuItem();
@@ -56,9 +57,10 @@
             this.btnKeyChange,
             this.btnAutoLuck,
             this.btnShowPSInDots,
-            this.btnEditBest});
+            this.btnEditBest,
+            this.btnTransparency});
             this.mnData.Name = "mnData";
-            this.mnData.Size = new System.Drawing.Size(185, 92);
+            this.mnData.Size = new System.Drawing.Size(185, 114);
             // 
             // btnKeyChange
             // 
@@ -89,6 +91,13 @@
             this.btnEditBest.Size = new System.Drawing.Size(184, 22);
             this.btnEditBest.Text = "编辑最佳线";
             this.btnEditBest.Click += new System.EventHandler(this.btnEditBest_Click);
+            // 
+            // btnTransparency
+            // 
+            this.btnTransparency.Name = "btnTransparency";
+            this.btnTransparency.Size = new System.Drawing.Size(184, 22);
+            this.btnTransparency.Text = "透明度 (100%)";
+            this.btnTransparency.Click += new System.EventHandler(this.btnTransparency_Click);
             // 
             // mnMain
             // 
@@ -153,5 +162,6 @@
         private System.Windows.Forms.ToolStripMenuItem btnAbout;
         private System.Windows.Forms.ToolStripMenuItem btnEditBest;
         private System.Windows.Forms.ToolStripMenuItem btnShowPSInDots;
+        private System.Windows.Forms.ToolStripMenuItem btnTransparency;
     }
 }
